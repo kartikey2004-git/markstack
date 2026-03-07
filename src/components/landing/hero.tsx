@@ -24,7 +24,7 @@ export function Hero() {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-primary/20 to-primary/10 border border-primary/20 backdrop-blur-sm">
             <Sparkles className="w-3 h-3 text-primary" />
             <span className="text-xs font-medium text-primary">
-              New: AI-Powered Writing
+              New: AI-Powered Writing Assistant
             </span>
           </div>
 
@@ -68,13 +68,13 @@ export function Hero() {
               </span>
               <br />
               <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-                Publish Beautiful Blogs.
+                Publish with Markstack.
               </span>
             </h1>
             <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed px-4 font-light">
-              The modern markdown editor with instant preview, intelligent
-              auto-save, and seamless publishing. Create professional blogs that
-              captivate your audience.
+              Markstack is the modern markdown platform with instant preview,
+              intelligent auto-save, and seamless publishing. Create
+              professional content that captivates your audience.
             </p>
           </div>
 
@@ -130,7 +130,7 @@ export function Hero() {
             }}
           >
             <Eye className="w-5 h-5 group-hover:scale-110 transition-transform" />
-            Browse Blogs
+            Browse Content
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Button>
         </div>
