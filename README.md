@@ -1,24 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a [Next.js](https://nextjs.org) project with an AI-powered Markdown editor.
+
+## Features
+
+- **Live Markdown Editor** with Monaco Editor
+- **AI-Powered Structure** - Convert messy notes into structured Markdown using Google Gemini
+- **Live Preview** with syntax highlighting
+- **Slash Commands** and toolbar formatting
+- **Drag & Drop** image uploads
 
 ## Getting Started
 
-First, run the development server:
+### 1. Install Dependencies
+
+```bash
+npm install
+# or
+bun install
+```
+
+### 2. Set up Environment Variables
+
+Create a `.env.local` file in the root directory:
+
+```env
+# Google Generative AI Configuration
+GOOGLE_GENERATIVE_AI_API_KEY=your_google_gemini_api_key_here
+GEMINI_MODEL=gemini-2.0-flash-exp
+```
+
+To get a Google Gemini API key:
+
+1. Visit [Google AI Studio](https://aistudio.google.com/app/apikey)
+2. Create a new API key
+3. Copy it to your `.env.local` file
+
+### 3. Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 # or
 bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. Try the AI Structure Feature
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Navigate to [http://localhost:3000/editor](http://localhost:3000/editor)
+2. Paste some messy notes into the editor
+3. Click the **✨ Structure** button in the toolbar
+4. Watch as AI converts it into properly structured Markdown!
 
 ## Learn More
 
