@@ -2,7 +2,7 @@
 
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Upload, FileText } from 'lucide-react';
+import { UploadIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -34,7 +34,7 @@ export function FileUpload({ onFileUpload, className }: FileUploadProps) {
     <div {...getRootProps()} className={cn('inline-block', className)}>
       <input {...getInputProps()} />
       <Button variant="outline" size="sm" className="gap-2">
-        <FileText className="h-4 w-4" />
+        <UploadIcon className="h-4 w-4" />
         Upload .md
       </Button>
     </div>

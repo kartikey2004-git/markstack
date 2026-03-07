@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import { toast } from "sonner";
 import {
   applyMarkdownFormat,
   FormatType,
@@ -102,6 +103,57 @@ export function useMarkdown(initialContent: string = "") {
     [updateContent],
   );
 
+  const handleStructureMarkdown = useCallback(async () => {
+    if (!editorRef.current) return;
+
+    let toastId: string | number | undefined;
+
+    try {
+      const currentContent = editorRef.current.getValue();
+
+      if (!currentContent.trim()) {
+        toast.warning("No content to structure");
+        return;
+      }
+
+      toastId = toast.loading("Structuring markdown...");
+
+      const response = await fetch("/api/structure-markdown", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ markdown: currentContent }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || "Failed to structure markdown");
+      }
+
+      const data = await response.json();
+      const structuredContent = data.markdown;
+
+      if (structuredContent && structuredContent !== currentContent) {
+        editorRef.current.setValue(structuredContent);
+        await updateContent(structuredContent);
+        toast.success("Markdown structured successfully!", { id: toastId });
+      } else {
+        toast.info("No changes needed", { id: toastId });
+      }
+    } catch (error) {
+      console.error("Error structuring markdown:", error);
+      if (toastId) {
+        toast.error("Failed to structure markdown. Please try again.", {
+          id: toastId,
+        });
+      } else {
+        toast.error("Failed to structure markdown. Please try again.");
+      }
+      throw error;
+    }
+  }, [updateContent]);
+
   const setEditorRef = useCallback((editor: any) => {
     editorRef.current = editor;
   }, []);
@@ -115,6 +167,7 @@ export function useMarkdown(initialContent: string = "") {
     insertSyntax,
     handleImageUpload,
     handleFileUpload,
+    handleStructureMarkdown,
     setEditorRef,
   };
 }

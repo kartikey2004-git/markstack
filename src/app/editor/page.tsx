@@ -19,6 +19,7 @@ export default function EditorPage() {
     insertSyntax,
     handleImageUpload,
     handleFileUpload,
+    handleStructureMarkdown,
     setEditorRef,
   } = useMarkdown(`# Welcome to the Markdown Editor
 
@@ -68,7 +69,10 @@ Enjoy editing!`);
         <FileUpload onFileUpload={handleFileUpload} />
       </div>
 
-      <Toolbar onInsert={insertSyntax} />
+      <Toolbar
+        onInsert={insertSyntax}
+        onStructureMarkdown={handleStructureMarkdown}
+      />
 
       <div className="flex flex-1 overflow-hidden">
         <div className="relative flex-1 border-r">
