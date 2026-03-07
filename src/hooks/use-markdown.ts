@@ -94,10 +94,19 @@ export function useMarkdown(initialContent: string = "") {
       if (file.type === "text/markdown" || file.name.endsWith(".md")) {
         try {
           const text = await file.text();
+
+          // Update both the content state and the editor
+          if (editorRef.current) {
+            editorRef.current.setValue(text);
+          }
+
           await updateContent(text);
         } catch (error) {
           console.error("Error reading file:", error);
+          toast.error("Failed to read file");
         }
+      } else {
+        toast.error("Please upload a markdown file (.md)");
       }
     },
     [updateContent],

@@ -23,13 +23,19 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { FileUpload } from "./file-upload";
 
 export interface ToolbarProps {
   onInsert: (syntax: string) => Promise<void>;
   onStructureMarkdown?: () => Promise<void>;
+  onFileUpload?: (file: File) => void;
 }
 
-export function Toolbar({ onInsert, onStructureMarkdown }: ToolbarProps) {
+export function Toolbar({
+  onInsert,
+  onStructureMarkdown,
+  onFileUpload,
+}: ToolbarProps) {
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
   const [isStructuring, setIsStructuring] = useState(false);
 
@@ -115,6 +121,12 @@ export function Toolbar({ onInsert, onStructureMarkdown }: ToolbarProps) {
             <p>Structure Markdown</p>
           </TooltipContent>
         </Tooltip>
+
+        {onFileUpload && (
+          <div className="ml-2">
+            <FileUpload onFileUpload={onFileUpload} />
+          </div>
+        )}
       </div>
     </TooltipProvider>
   );
