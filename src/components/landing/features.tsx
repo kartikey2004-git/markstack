@@ -1,43 +1,42 @@
 import { Card } from "@/components/ui/card";
-import {
-  Edit3,
-  Eye,
-  Save,
-  Zap,
-  Globe,
-  FolderOpen,
-} from "lucide-react";
+import { Edit3, Eye, Save, Zap, Globe, FolderOpen } from "lucide-react";
 
 const features = [
   {
     icon: Edit3,
     title: "Monaco Editor",
-    description: "Professional code editor with syntax highlighting, line numbers, and intelligent auto-completion.",
+    description:
+      "Professional code editor with syntax highlighting, line numbers, and intelligent auto-completion.",
   },
   {
     icon: Eye,
     title: "Live Preview",
-    description: "Real-time markdown preview with MDX support, syntax highlighting, and beautiful typography.",
+    description:
+      "Real-time markdown preview with MDX support, syntax highlighting, and beautiful typography.",
   },
   {
     icon: Save,
     title: "Auto-Save Drafts",
-    description: "Never lose your work with automatic draft saving to local storage while you write.",
+    description:
+      "Never lose your work with automatic draft saving to local storage while you write.",
   },
   {
     icon: Zap,
     title: "Slash Commands",
-    description: "Quick formatting with slash commands. Type / to access formatting options and shortcuts.",
+    description:
+      "Quick formatting with slash commands. Type / to access formatting options and shortcuts.",
   },
   {
     icon: Globe,
     title: "SEO Friendly",
-    description: "Automatic slug generation and optimized meta tags for better search engine visibility.",
+    description:
+      "Automatic slug generation and optimized meta tags for better search engine visibility.",
   },
   {
     icon: FolderOpen,
     title: "File Storage",
-    description: "Simple JSON-based blog storage with automatic backups and easy content management.",
+    description:
+      "Simple JSON-based content storage with automatic backups and easy management through Markstack.",
   },
 ];
 
@@ -46,13 +45,14 @@ export function Features() {
     <section className="space-y-8 py-16 sm:py-20 lg:py-24">
       <div className="text-center space-y-4">
         <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-          Everything you need to create amazing content
+          Markstack Features
         </h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto px-4">
-          Built with modern tools and designed for writers who value simplicity and power.
+          Powerful markdown platform designed for modern content creators who
+          value simplicity and efficiency.
         </p>
       </div>
-      
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto px-4">
         {features.map((feature, index) => (
           <Card
@@ -65,9 +65,7 @@ export function Features() {
               </div>
               <h3 className="text-lg font-semibold">{feature.title}</h3>
             </div>
-            <p className="text-muted-foreground">
-              {feature.description}
-            </p>
+            <p className="text-muted-foreground">{feature.description}</p>
           </Card>
         ))}
       </div>

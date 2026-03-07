@@ -144,16 +144,16 @@ export default async function Dashboard() {
           </Card>
         </div>
 
-        {/* All Blog Posts */}
+        {/* All Content */}
         <section id="blogs" className="space-y-6 scroll-mt-20">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-bold tracking-tight">
-                All Blog Posts
+                Published Content
               </h2>
               <p className="text-muted-foreground mt-1">
                 {allBlogs.length} {allBlogs.length === 1 ? "post" : "posts"}{" "}
-                published
+                published with Markstack
               </p>
             </div>
           </div>
@@ -169,14 +169,14 @@ export default async function Dashboard() {
                 </div>
               </div>
               <div className="text-center space-y-2 max-w-md">
-                <h3 className="text-2xl font-semibold">No blog posts yet</h3>
+                <h3 className="text-2xl font-semibold">No content yet</h3>
                 <p className="text-muted-foreground">
-                  Start your blogging journey by creating your first blog post.
+                  Start your Markstack journey by creating your first post.
                 </p>
                 <Link href="/editor">
                   <Button size="lg" className="mt-4">
                     <Plus className="w-4 h-4 mr-2" />
-                    Write Your First Blog Post
+                    Write Your First Post
                   </Button>
                 </Link>
               </div>

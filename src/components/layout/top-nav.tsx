@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { FileText,  Home, Plus } from "lucide-react";
+import { FileText, Home, Plus } from "lucide-react";
 
 export function TopNav() {
   const pathname = usePathname();
@@ -29,7 +29,7 @@ export function TopNav() {
           {/* Logo */}
           <div className="flex items-center gap-2">
             <FileText className="h-6 w-6" />
-            <span className="text-lg font-semibold">Blog App</span>
+            <span className="text-lg font-semibold">Markstack</span>
           </div>
 
           {/* Navigation Links */}
