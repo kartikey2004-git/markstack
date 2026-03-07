@@ -1,8 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
-import { generateSlug } from '@/lib/utils';
-import { serializeMDX } from '@/lib/markdown/mdx-renderer';
+import { NextRequest, NextResponse } from "next/server";
+import { generateSlug } from "@/lib/utils";
+import { serializeMDX } from "@/lib/markdown/mdx-renderer";
+import { createBlog } from "@/lib/supabase/blogs";
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,8 +10,8 @@ export async function POST(request: NextRequest) {
     // Validate inputs
     if (!title?.trim() || !content?.trim()) {
       return NextResponse.json(
-        { error: 'Title and content are required' },
-        { status: 400 }
+        { error: "Title and content are required" },
+        { status: 400 },
       );
     }
 
@@ -20,40 +19,29 @@ export async function POST(request: NextRequest) {
     const slug = generateSlug(title);
     const htmlContent = await serializeMDX(content);
 
-    // Create blog data
-    const blogData = {
+    // Create blog in Supabase
+    const blog = await createBlog({
       title: title.trim(),
-      description: description?.trim() || '',
+      description: description?.trim() || "",
       content: content.trim(),
-      htmlContent,
+      html_content: htmlContent,
       slug,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
-    // Ensure blogs directory exists
-    const blogsDir = join(process.cwd(), 'blogs');
-    try {
-      await mkdir(blogsDir, { recursive: true });
-    } catch (error) {
-      // Directory might already exist
-    }
-
-    // Save blog as JSON file
-    const filePath = join(blogsDir, `${slug}.json`);
-    await writeFile(filePath, JSON.stringify(blogData, null, 2));
-
-    return NextResponse.json({ 
-      success: true, 
-      slug,
-      message: 'Blog saved successfully' 
     });
 
+    if (!blog) {
+      return NextResponse.json(
+        { error: "Failed to save blog to database" },
+        { status: 500 },
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      slug: blog.slug,
+      message: "Blog saved successfully",
+    });
   } catch (error) {
-    console.error('Error saving blog:', error);
-    return NextResponse.json(
-      { error: 'Failed to save blog' },
-      { status: 500 }
-    );
+    console.error("Error saving blog:", error);
+    return NextResponse.json({ error: "Failed to save blog" }, { status: 500 });
   }
 }

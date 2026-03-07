@@ -1,7 +1,5 @@
 import { TopNav } from "@/components/layout/top-nav";
 import { notFound } from "next/navigation";
-import { readFile } from "fs/promises";
-import { join } from "path";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -15,26 +13,21 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { MDXContent } from "@/components/blog/mdx-content";
+import { getBlogBySlug } from "@/lib/supabase/blogs";
 
 interface BlogPost {
+  id: string;
   title: string;
   description: string;
   content: string;
-  htmlContent: any;
+  html_content: any;
   slug: string;
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_at: string;
 }
 
 async function getBlogPost(slug: string): Promise<BlogPost | null> {
-  try {
-    const filePath = join(process.cwd(), "blogs", `${slug}.json`);
-    const fileContent = await readFile(filePath, "utf-8");
-    return JSON.parse(fileContent);
-  } catch (error) {
-    console.error("Error reading blog post:", error);
-    return null;
-  }
+  return await getBlogBySlug(slug);
 }
 
 export async function generateMetadata({
@@ -87,8 +80,6 @@ export default async function BlogPostPage({
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
       <TopNav />
       <div className="container mx-auto px-4 py-8 max-w-4xl">
-      
-
         {/* Blog Header */}
         <header className="mb-12 space-y-6">
           <div className="space-y-4">
@@ -113,14 +104,13 @@ export default async function BlogPostPage({
             )}
 
             <div className="flex items-center gap-6 text-sm text-muted-foreground">
-              
               <div className="flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
-                <span>{formatDate(post.createdAt)}</span>
+                <span>{formatDate(post.created_at)}</span>
               </div>
-              {post.updatedAt !== post.createdAt && (
+              {post.updated_at !== post.created_at && (
                 <div className="flex items-center gap-1">
-                  <span>Updated {formatDate(post.updatedAt)}</span>
+                  <span>Updated {formatDate(post.updated_at)}</span>
                 </div>
               )}
             </div>
@@ -131,7 +121,7 @@ export default async function BlogPostPage({
 
         {/* Blog Content */}
         <main className="prose prose-gray max-w-none dark:prose-invert prose-headings:font-semibold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:leading-relaxed prose-p:text-base prose-code:font-mono prose-pre:bg-muted prose-pre:p-6 prose-pre:rounded-lg prose-pre:overflow-x-auto prose-img:rounded-lg prose-img:shadow-lg">
-          <MDXContent content={post.htmlContent} />
+          <MDXContent content={post.html_content} />
         </main>
 
         {/* Footer */}
