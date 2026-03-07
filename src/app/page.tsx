@@ -29,8 +29,9 @@ import { Hero } from "@/components/landing/hero";
 import { Features } from "@/components/landing/features";
 import { FAQ } from "@/components/landing/faq";
 import { Footer } from "@/components/landing/footer";
+import { getBlogs, type BlogPost } from "@/lib/supabase/blogs";
 
-interface BlogPost {
+interface BlogListItem {
   slug: string;
   title: string;
   description: string;
@@ -38,25 +39,25 @@ interface BlogPost {
   updatedAt: string;
 }
 
-async function getBlogStats() {
+// Force dynamic rendering
+export const dynamic = "force-dynamic";
+
+async function getBlogStats(): Promise<{
+  totalBlogs: number;
+  allBlogs: BlogListItem[];
+}> {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/blogs`,
-      {
-        cache: "no-store",
-      },
-    );
-
-    if (!response.ok) {
-      return { totalBlogs: 0, allBlogs: [] };
-    }
-
-    const data = await response.json();
-    const blogs = data.blogs || [];
+    const blogs = await getBlogs();
 
     return {
       totalBlogs: blogs.length,
-      allBlogs: blogs as BlogPost[],
+      allBlogs: blogs.map((blog) => ({
+        slug: blog.slug,
+        title: blog.title,
+        description: blog.description,
+        createdAt: blog.created_at,
+        updatedAt: blog.updated_at,
+      })),
     };
   } catch (error) {
     console.error("Error fetching blog stats:", error);
@@ -115,7 +116,7 @@ export default async function Dashboard() {
             <CardContent>
               <div className="text-2xl font-bold">
                 {
-                  allBlogs.filter((blog: BlogPost) => {
+                  allBlogs.filter((blog: BlogListItem) => {
                     const blogDate = new Date(blog.createdAt);
                     const now = new Date();
                     return (
@@ -182,7 +183,7 @@ export default async function Dashboard() {
             </div>
           ) : (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {allBlogs.map((blog: BlogPost) => (
+              {allBlogs.map((blog: BlogListItem) => (
                 <Card
                   key={blog.slug}
                   className="group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 border-0 shadow-sm bg-card/50 backdrop-blur-sm"
