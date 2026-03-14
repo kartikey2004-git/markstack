@@ -58,15 +58,17 @@ export function SignInForm() {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle>Sign in</CardTitle>
+    <Card className="mx-auto w-full max-w-md rounded-xl border-border/80 bg-card/90 shadow-sm">
+      <CardHeader className="space-y-1 pb-3">
+        <CardTitle className="text-xl font-semibold tracking-tight">
+          Sign in
+        </CardTitle>
         <CardDescription>
           Enter your credentials to access your account
         </CardDescription>
       </CardHeader>
       <form onSubmit={signIn}>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 pb-4">
           {error && (
             <Alert variant="destructive">
               <AlertDescription>{error}</AlertDescription>
@@ -82,6 +84,7 @@ export function SignInForm() {
               placeholder="john@example.com"
               required
               disabled={isLoading}
+              className="h-10"
             />
           </div>
           <div className="space-y-2">
@@ -94,15 +97,15 @@ export function SignInForm() {
               placeholder="Enter your password"
               required
               disabled={isLoading}
+              className="h-10"
             />
           </div>
         </CardContent>
-        <CardFooter className="flex flex-col space-y-2">
-          <Button type="submit" className="w-full" disabled={isLoading}>
+        <CardFooter className="flex flex-col space-y-2 pt-0">
+          <Button type="submit" className="h-10 w-full" disabled={isLoading}>
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Sign In
           </Button>
-        
         </CardFooter>
       </form>
     </Card>

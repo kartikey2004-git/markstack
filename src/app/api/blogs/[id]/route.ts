@@ -52,7 +52,7 @@ export async function PATCH(
     }
 
     const body = await request.json();
-    const { title, content, slug, description, published } = body;
+    const { title, content, slug, description } = body;
 
     const existingBlog = await db.blog.findFirst({
       where: {
@@ -77,7 +77,7 @@ export async function PATCH(
     }
     if (slug !== undefined) updateData.slug = slug;
     if (description !== undefined) updateData.description = description || null;
-    if (published !== undefined) updateData.published = published;
+    updateData.published = true;
 
     const blog = await db.blog.update({
       where: {

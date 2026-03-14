@@ -60,15 +60,17 @@ export function SignUpForm() {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle>Create an account</CardTitle>
+    <Card className="mx-auto w-full max-w-md rounded-xl border-border/80 bg-card/90 shadow-sm">
+      <CardHeader className="space-y-1 pb-3">
+        <CardTitle className="text-xl font-semibold tracking-tight">
+          Create an account
+        </CardTitle>
         <CardDescription>
           Enter your information to create your account
         </CardDescription>
       </CardHeader>
       <form onSubmit={signUp}>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 pb-4">
           {error && (
             <Alert variant="destructive">
               <AlertDescription>{error}</AlertDescription>
@@ -84,6 +86,7 @@ export function SignUpForm() {
               placeholder="John Doe"
               required
               disabled={isLoading}
+              className="h-10"
             />
           </div>
           <div className="space-y-2">
@@ -96,6 +99,7 @@ export function SignUpForm() {
               placeholder="john@example.com"
               required
               disabled={isLoading}
+              className="h-10"
             />
           </div>
           <div className="space-y-2">
@@ -109,11 +113,12 @@ export function SignUpForm() {
               required
               minLength={8}
               disabled={isLoading}
+              className="h-10"
             />
           </div>
         </CardContent>
-        <CardFooter>
-          <Button type="submit" className="w-full" disabled={isLoading}>
+        <CardFooter className="pt-0">
+          <Button type="submit" className="h-10 w-full" disabled={isLoading}>
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Sign Up
           </Button>

@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
-import { Navbar } from "@/components/layout/navbar";
+import { Providers } from "./providers";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -21,8 +20,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MarkStack - Blog Platform",
-  description: "A modern blog platform built with Next.js and Prisma",
+  title: "MarkStack",
+  description: "Markdown publishing platform",
 };
 
 export default function RootLayout({
@@ -31,13 +30,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body
         className={`${inter.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Navbar />
-        <TooltipProvider>{children}</TooltipProvider>
-        <Toaster />
+        <Providers>
+          {children}
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );

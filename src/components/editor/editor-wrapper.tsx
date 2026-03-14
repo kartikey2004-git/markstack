@@ -10,6 +10,7 @@ import { ImageDropzone } from "@/components/editor/image-dropzone";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   ResizablePanelGroup,
   ResizablePanel,
@@ -32,7 +33,6 @@ export function EditorWrapper({ blog }: EditorWrapperProps) {
     isLoading,
     insertSyntax,
     handleImageUpload,
-    handleFileUpload,
     handleStructureMarkdown,
     setEditorRef,
   } = useMarkdown("");
@@ -91,70 +91,72 @@ export function EditorWrapper({ blog }: EditorWrapperProps) {
   }, [content, saveBlog, blog]);
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto p-6 space-y-8">
-        {/* Blog Save Toolbar */}
-        <div className="border-b bg-background p-4 space-y-3">
-          <div className="flex flex-col sm:flex-row gap-3">
+    <div className="space-y-4">
+      <Card className="border-border/80 bg-card/70 shadow-sm">
+        <CardContent className="p-4">
+          <div className="grid gap-3 lg:grid-cols-[1.8fr_2fr_auto]">
             <Input
               placeholder="Blog title..."
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="flex-1"
+              className="h-10"
             />
             <Textarea
               placeholder="Brief description..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="flex-1 min-h-8 resize-none"
+              className="min-h-10 resize-none"
               rows={1}
             />
             <Button
               onClick={handleSaveBlog}
               disabled={isSaving || !title.trim() || !content.trim()}
-              className="whitespace-nowrap"
+              className="h-10 whitespace-nowrap"
             >
-              <Save className="w-4 h-4 mr-2" />
+              <Save className="mr-2 size-4" />
               {isSaving ? "Saving..." : "Save Blog"}
             </Button>
           </div>
-        </div>
+        </CardContent>
+      </Card>
 
+      <Card className="overflow-hidden border-border/80 bg-card/70 shadow-sm">
         <Toolbar
           onInsert={insertSyntax}
           onStructureMarkdown={handleStructureMarkdown}
-          onFileUpload={handleFileUpload}
         />
 
-        <ResizablePanelGroup orientation="horizontal" className="flex-1">
-          <ResizablePanel defaultSize={50} minSize={30}>
-            <div className="relative h-full border-r">
-              <ImageDropzone onImageUpload={handleImageUpload} />
-              <MarkdownEditor
-                value={content}
-                onChange={setContent}
-                onEditorReady={handleEditorReady}
-              />
-            </div>
-          </ResizablePanel>
+        <div className="h-[70vh] min-h-130">
+          <ResizablePanelGroup orientation="horizontal" className="h-full">
+            <ResizablePanel defaultSize={50} minSize={30}>
+              <div className="relative h-full border-r bg-background">
+                <ImageDropzone onImageUpload={handleImageUpload} />
+                <MarkdownEditor
+                  value={content}
+                  onChange={setContent}
+                  onEditorReady={handleEditorReady}
+                />
+              </div>
+            </ResizablePanel>
 
-          <ResizableHandle withHandle />
+            <ResizableHandle withHandle className="bg-border/70" />
 
-          <ResizablePanel defaultSize={50} minSize={30}>
-            <div className="h-full bg-background font-sans">
-              {isLoading ? (
-                <div className="flex h-full items-center justify-center">
-                  <div className="text-sm text-muted-foreground">
-                    Loading preview...
+            <ResizablePanel defaultSize={50} minSize={30}>
+              <div className="h-full bg-background font-sans">
+                {isLoading ? (
+                  <div className="flex h-full items-center justify-center">
+                    <div className="text-sm text-muted-foreground">
+                      Loading preview...
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <MarkdownPreview content={serializedContent} />
-              )}
-            </div>
-          </ResizablePanel>
-        </ResizablePanelGroup>
-      </div>
+                ) : (
+                  <MarkdownPreview content={serializedContent} />
+                )}
+              </div>
+            </ResizablePanel>
+          </ResizablePanelGroup>
+        </div>
+      </Card>
     </div>
   );
 }

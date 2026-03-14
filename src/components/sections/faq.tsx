@@ -37,29 +37,28 @@ const faqs = [
 
 export function FAQ() {
   return (
-    <section className="space-y-8 py-16 sm:py-20 lg:py-24">
-      <div className="text-center space-y-4">
-        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-          Frequently Asked Questions
+    <section id="faq" className="space-y-8 py-8 sm:py-10">
+      <div className="space-y-3 text-center">
+        <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+          Frequently asked questions
         </h2>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto px-4">
-          Everything you need to know about using Markstack for your content
-          creation needs.
+        <p className="mx-auto max-w-2xl text-base text-muted-foreground sm:text-lg">
+          Everything you need to get productive quickly in MarkStack.
         </p>
       </div>
 
-      <div className="max-w-3xl mx-auto px-4">
-        <Accordion type="single" collapsible className="space-y-4">
+      <div className="mx-auto max-w-3xl">
+        <Accordion type="single" collapsible className="space-y-3">
           {faqs.map((faq, index) => (
             <AccordionItem
               key={index}
               value={`item-${index}`}
-              className="border-0 shadow-sm bg-card/50 backdrop-blur-sm rounded-lg px-6"
+              className="rounded-xl border border-border/70 bg-card/70 px-5 shadow-none transition-colors duration-200"
             >
-              <AccordionTrigger className="hover:no-underline py-4">
+              <AccordionTrigger className="py-4 text-left text-sm font-medium hover:no-underline">
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="pb-4 text-muted-foreground">
+              <AccordionContent className="pb-4 text-sm leading-6 text-muted-foreground">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>

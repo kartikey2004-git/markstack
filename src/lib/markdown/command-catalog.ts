@@ -95,13 +95,6 @@ const COMMAND_DEFINITIONS: readonly MarkdownCommandDefinition[] = [
     slashSyntax: "---",
   },
   {
-    label: "Image",
-    description: "Insert an image",
-    toolbarSyntax: "image",
-    slashId: "image",
-    slashSyntax: "![Alt text](url)",
-  },
-  {
     label: "Link",
     description: "Add a link",
     slashId: "link",

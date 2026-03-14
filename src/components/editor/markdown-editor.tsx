@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useEffect, useState } from "react";
 import Editor from "@monaco-editor/react";
 import type { Monaco } from "@monaco-editor/react";
+import { useTheme } from "next-themes";
 import { useSlashCommands } from "@/hooks/use-slash-commands";
 import type { EditorInstance } from "@/types/editor";
 
@@ -18,6 +19,12 @@ export function MarkdownEditor({
   onEditorReady,
 }: MarkdownEditorProps) {
   const editorRef = useRef<EditorInstance | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const { resolvedTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const {
     isOpen,
@@ -97,6 +104,7 @@ export function MarkdownEditor({
         value={value}
         onChange={(value) => onChange(value || "")}
         onMount={handleEditorDidMount}
+        theme={mounted && resolvedTheme === "light" ? "vs" : "vs-dark"}
         options={{
           minimap: { enabled: false },
           wordWrap: "on",
@@ -105,7 +113,6 @@ export function MarkdownEditor({
           fontSize: 15,
           fontFamily:
             'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif',
-          theme: "vs-dark",
           padding: { top: 20, bottom: 20 },
           lineHeight: 1.6,
         }}
@@ -113,7 +120,7 @@ export function MarkdownEditor({
 
       {isOpen && (
         <div
-          className="absolute z-50 w-64 rounded-sm border bg-popover p-1 shadow-md"
+          className="absolute z-50 w-64 rounded-md border border-border bg-popover p-1 shadow-lg"
           style={{
             top: position.top,
             left: position.left,
@@ -124,7 +131,7 @@ export function MarkdownEditor({
               filteredCommands.map((command, index) => (
                 <div
                   key={command.id}
-                  className={`flex cursor-pointer items-center rounded-sm px-2 py-1.5 text-sm hover:bg-accent ${
+                  className={`flex cursor-pointer items-center rounded-md px-2 py-1.5 text-sm hover:bg-accent ${
                     index === selectedIndex ? "bg-accent" : ""
                   }`}
                   onClick={() => selectCommand(command)}

@@ -8,7 +8,6 @@ import {
   List,
   ListOrdered,
   Quote,
-  Image,
   Minus,
   Heading1,
   Heading2,
@@ -25,19 +24,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { FileUpload } from "./file-upload";
 
 export interface ToolbarProps {
   onInsert: (syntax: string) => Promise<void>;
   onStructureMarkdown?: () => Promise<void>;
-  onFileUpload?: (file: File) => void;
 }
 
-export function Toolbar({
-  onInsert,
-  onStructureMarkdown,
-  onFileUpload,
-}: ToolbarProps) {
+export function Toolbar({ onInsert, onStructureMarkdown }: ToolbarProps) {
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
   const [isStructuring, setIsStructuring] = useState(false);
 
@@ -73,7 +66,6 @@ export function Toolbar({
     quote: Quote,
     codeblock: Code,
     divider: Minus,
-    image: Image,
   };
 
   const toolbarButtons = toolbarCommandDefinitions.map(({ label, syntax }) => ({
@@ -84,16 +76,16 @@ export function Toolbar({
 
   return (
     <TooltipProvider>
-      <div className="flex items-center gap-1 p-2 border-b bg-background">
+      <div className="flex flex-wrap items-center gap-1.5 border-b bg-muted/30 p-2">
         {toolbarButtons.map(({ icon: Icon, label, syntax }) => (
           <Tooltip key={syntax}>
             <TooltipTrigger asChild>
               <Button
                 variant="ghost"
-                size="sm"
+                size="icon-sm"
                 onClick={() => handleInsert(syntax)}
                 disabled={loadingAction === syntax}
-                className="h-8 w-8 p-0"
+                className="transition-all duration-200 ease-in-out"
               >
                 <Icon className="h-4 w-4" />
               </Button>
@@ -104,7 +96,7 @@ export function Toolbar({
           </Tooltip>
         ))}
 
-        <div className="w-px h-6 bg-border mx-1" />
+        <div className="mx-1 h-6 w-px bg-border" />
 
         <Tooltip>
           <TooltipTrigger asChild>
@@ -113,7 +105,7 @@ export function Toolbar({
               size="sm"
               onClick={handleStructureMarkdown}
               disabled={isStructuring || !onStructureMarkdown}
-              className="h-8 px-2"
+              className="h-8 px-2 transition-all duration-200 ease-in-out"
             >
               {isStructuring ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -129,12 +121,6 @@ export function Toolbar({
             <p>Structure Markdown</p>
           </TooltipContent>
         </Tooltip>
-
-        {onFileUpload && (
-          <div className="ml-2">
-            <FileUpload onFileUpload={onFileUpload} />
-          </div>
-        )}
       </div>
     </TooltipProvider>
   );

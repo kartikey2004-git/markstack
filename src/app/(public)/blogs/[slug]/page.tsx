@@ -1,26 +1,17 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import {
-  ArrowLeft,
-  Calendar,
-  Clock,
-  User,
-  ArrowRight,
-  Share2,
-  Eye,
-  EyeOff,
-} from "lucide-react";
+import { Calendar, Clock, User, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { MDXContent } from "@/components/shared/mdx-content";
+import { BlogShareButtons } from "@/components/shared/blog-share-buttons";
 import db from "@/lib/database";
-import { toggleBlogPublishForAuthor } from "@/lib/blogs/toggle-publish";
-import { getCurrentUser, requireAuth } from "@/lib/auth-utils";
+import { getCurrentUser } from "@/lib/auth-utils";
 import { serializeMDX } from "@/lib/markdown/mdx-renderer";
 import { calculateReadTime } from "@/lib/markdown/read-time";
-import { revalidatePath } from "next/cache";
 import type { SerializedMdx } from "@/lib/markdown/mdx-renderer";
+import { AppContainer } from "@/components/layout/app-container";
 
 function isSerializedMdx(value: unknown): value is SerializedMdx {
   return (
@@ -90,8 +81,6 @@ export default async function BlogPostPage({
     notFound();
   }
 
-  const postId = post.id;
-
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -105,60 +94,39 @@ export default async function BlogPostPage({
     ? post.htmlContent
     : await serializeMDX(post.content);
 
-  async function togglePublishAction() {
-    "use server";
-
-    const user = await requireAuth(`/blogs/${slug}`);
-    const updatedBlog = await toggleBlogPublishForAuthor(postId, user.id);
-
-    if (!updatedBlog) {
-      redirect(`/blogs/${slug}`);
-    }
-
-    revalidatePath(`/blogs/${slug}`);
-    revalidatePath("/blogs");
-    revalidatePath("/editor");
-    redirect(`/blogs/${slug}`);
-  }
-
   return (
-    <div className="min-h-screen bg-linear-to-b from-background to-muted/20">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="bg-background">
+      <AppContainer className="max-w-4xl py-8 sm:py-12">
         {/* Blog Header */}
-        <header className="mb-12 space-y-6">
+        <header className="mb-10 space-y-6 sm:mb-12">
           <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <Badge variant="secondary" className="text-xs">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <Badge variant="secondary" className="rounded-md text-xs">
                 Blog Post
               </Badge>
-              {!post.published && (
-                <Badge variant="outline" className="text-xs">
-                  Draft
-                </Badge>
-              )}
-              <div className="flex items-center text-sm text-muted-foreground">
-                <Clock className="w-4 h-4 mr-1" />
+              <div className="flex items-center rounded-md border bg-muted/40 px-2 py-1 text-xs text-muted-foreground sm:text-sm">
+                <Clock className="mr-1 size-3.5" />
                 {readingTime} min read
               </div>
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight">
+            <h1 className="text-balance text-4xl font-semibold tracking-tight sm:text-5xl">
               {post.title}
             </h1>
 
             {post.description && (
-              <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl">
+              <p className="max-w-3xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
                 {post.description}
               </p>
             )}
 
-            <div className="flex items-center gap-6 text-sm text-muted-foreground">
+            <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground sm:gap-6">
               <div className="flex items-center gap-1">
-                <User className="w-4 h-4" />
+                <User className="size-4" />
                 <span>{post.author.name || post.author.email}</span>
               </div>
               <div className="flex items-center gap-1">
-                <Calendar className="w-4 h-4" />
+                <Calendar className="size-4" />
                 <span>{formatDate(post.createdAt.toString())}</span>
               </div>
               {post.updatedAt !== post.createdAt && (
@@ -174,66 +142,34 @@ export default async function BlogPostPage({
         </header>
 
         {/* Blog Content */}
-        <main className="prose prose-gray max-w-none dark:prose-invert prose-headings:font-semibold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:leading-relaxed prose-p:text-base prose-code:font-mono prose-pre:bg-muted prose-pre:p-6 prose-pre:rounded-lg prose-pre:overflow-x-auto prose-img:rounded-lg prose-img:shadow-lg">
+        <main className="prose prose-gray max-w-none dark:prose-invert prose-headings:font-semibold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:text-base prose-p:leading-relaxed prose-pre:overflow-x-auto prose-pre:rounded-lg prose-pre:bg-muted prose-pre:p-5 prose-img:rounded-lg">
           <MDXContent content={renderedContent} />
         </main>
 
         {/* Footer */}
-        <footer className="mt-16 pt-8 border-t">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="text-center sm:text-left">
-              <p className="text-sm text-muted-foreground mb-2">
+        <footer className="mt-14 border-t pt-8">
+          <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+            <div>
+              <p className="mb-2 text-sm text-muted-foreground">
                 Enjoyed this post? Share it with others!
               </p>
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm" className="gap-2">
-                  <Share2 className="w-4 h-4" />
-                  Share
-                </Button>
-              </div>
+              <BlogShareButtons
+                title={post.title}
+                description={post.description}
+              />
             </div>
 
             <div className="flex gap-2">
-              {currentUser && currentUser.id === post.authorId && (
-                <>
-                  <form action={togglePublishAction}>
-                    <Button
-                      type="submit"
-                      variant={post.published ? "outline" : "default"}
-                      size="sm"
-                      className="gap-2"
-                    >
-                      {post.published ? (
-                        <>
-                          <EyeOff className="w-4 h-4" />
-                          Unpublish
-                        </>
-                      ) : (
-                        <>
-                          <Eye className="w-4 h-4" />
-                          Publish
-                        </>
-                      )}
-                    </Button>
-                  </form>
-                  <Link href={`/editor/${post.id}`}>
-                    <Button variant="outline" className="gap-2">
-                      <ArrowLeft className="w-4 h-4" />
-                      Edit Post
-                    </Button>
-                  </Link>
-                </>
-              )}
               <Link href="/editor">
                 <Button className="gap-2">
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="size-4" />
                   Write New Post
                 </Button>
               </Link>
             </div>
           </div>
         </footer>
-      </div>
+      </AppContainer>
     </div>
   );
 }

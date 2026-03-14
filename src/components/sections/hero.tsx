@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { Edit3, Eye, Zap, Save, Sparkles, ArrowRight } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 
@@ -38,26 +38,29 @@ export function Hero() {
   };
 
   return (
-    <section className="relative overflow-hidden">
-      <div className="mx-auto max-w-6xl px-6 py-24 text-center">
+    <section className="relative overflow-hidden rounded-2xl border bg-card/50 px-6 py-16 shadow-sm sm:px-10 sm:py-20">
+      <div className="mx-auto max-w-4xl text-center">
         <div className="mb-6 flex justify-center">
-          <Badge className="gap-2 px-3 py-1 text-xs text-black bg-muted border border-border">
-            <Sparkles className="w-3 h-3" />
+          <Badge
+            variant="secondary"
+            className="gap-2 rounded-md border border-border px-3 py-1 text-xs"
+          >
+            <Sparkles className="size-3" />
             Writing Assistant
           </Badge>
         </div>
 
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.05]">
-          Write Markdown.
+        <h1 className="text-balance text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+          Publish better markdown,
           <br />
-          <span className="bg-linear-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-            Publish with Markstack.
+          <span className="text-muted-foreground">
+            from first draft to shipped post.
           </span>
         </h1>
 
-        <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
-          A modern markdown platform with instant preview, intelligent auto-save
-          and seamless publishing. Built for writers and developers.
+        <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+          MarkStack combines a focused editor, instant preview, and reliable
+          publishing flow in a calm interface designed for daily writing.
         </p>
 
         <div className="mt-8 flex flex-wrap justify-center gap-2">
@@ -66,34 +69,62 @@ export function Hero() {
             { icon: Eye, label: "Live Preview" },
             { icon: Save, label: "Auto Save" },
             { icon: Zap, label: "Slash Commands" },
-          ].map(({ icon: Icon, label }, index) => (
-            <Badge key={index} variant="secondary" className="gap-1">
-              <Icon className="w-3 h-3" /> {label}
+          ].map(({ icon: Icon, label }) => (
+            <Badge
+              key={label}
+              variant="outline"
+              className="gap-1.5 rounded-md border-border/80 bg-background/80 px-3 py-1"
+            >
+              <Icon className="size-3.5" />
+              {label}
             </Badge>
           ))}
         </div>
 
-        <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
           <Button
             size="lg"
-            className="gap-2 px-8 h-12 text-base group"
+            className="h-10 gap-2 px-5 transition-all duration-200 ease-in-out"
             onClick={handleStartWriting}
             disabled={isAuthenticated === null}
           >
             Start Writing
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
+            <ArrowRight className="size-4 transition-transform duration-200 group-hover/button:translate-x-0.5" />
           </Button>
 
           <Button
             variant="outline"
             size="lg"
-            className="h-12 px-8"
+            className="h-10 px-5"
             onClick={handleBrowseContent}
             disabled={isAuthenticated === null}
           >
             Browse Content
           </Button>
         </div>
+
+        <Card className="mx-auto mt-12 max-w-2xl border-border/70 bg-background/80 shadow-none">
+          <CardContent className="grid gap-6 p-5 text-left sm:grid-cols-3">
+            <div>
+              <p className="text-2xl font-semibold tracking-tight">2x</p>
+              <p className="text-sm text-muted-foreground">
+                Faster drafting with slash commands
+              </p>
+            </div>
+            <div>
+              <p className="text-2xl font-semibold tracking-tight">Live</p>
+              <p className="text-sm text-muted-foreground">
+                Preview that mirrors publication output
+              </p>
+            </div>
+            <div>
+              <p className="text-2xl font-semibold tracking-tight">Zero</p>
+              <p className="text-sm text-muted-foreground">
+                Setup friction for your writing workflow
+              </p>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </section>
   );

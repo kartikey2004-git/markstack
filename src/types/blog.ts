@@ -18,7 +18,6 @@ export interface BlogMutationPayload {
   slug: string;
   content: string;
   description?: string;
-  published?: boolean;
 }
 
 export interface BlogDraft {
