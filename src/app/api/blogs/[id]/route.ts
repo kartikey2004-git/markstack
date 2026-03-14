@@ -54,18 +54,7 @@ export async function PATCH(
     const body = await request.json();
     const { title, content, slug, description } = body;
 
-    const existingBlog = await db.blog.findFirst({
-      where: {
-        id,
-        authorId: user.id,
-      },
-    });
-
-    if (!existingBlog) {
-      return NextResponse.json({ error: "Blog not found" }, { status: 404 });
-    }
-
-    const updateData: Prisma.BlogUpdateInput = {};
+    const updateData: Prisma.BlogUpdateManyMutationInput = {};
     if (title !== undefined) updateData.title = title;
     if (content !== undefined) {
       const normalizedContent = String(content).trim();
@@ -79,12 +68,28 @@ export async function PATCH(
     if (description !== undefined) updateData.description = description || null;
     updateData.published = true;
 
-    const blog = await db.blog.update({
+    const updateResult = await db.blog.updateMany({
       where: {
         id,
+        authorId: user.id,
       },
       data: updateData,
     });
+
+    if (updateResult.count === 0) {
+      return NextResponse.json({ error: "Blog not found" }, { status: 404 });
+    }
+
+    const blog = await db.blog.findFirst({
+      where: {
+        id,
+        authorId: user.id,
+      },
+    });
+
+    if (!blog) {
+      return NextResponse.json({ error: "Blog not found" }, { status: 404 });
+    }
 
     return NextResponse.json(blog);
   } catch (error: unknown) {
@@ -122,22 +127,16 @@ export async function DELETE(
       return user;
     }
 
-    const existingBlog = await db.blog.findFirst({
+    const deleteResult = await db.blog.deleteMany({
       where: {
         id,
         authorId: user.id,
       },
     });
 
-    if (!existingBlog) {
+    if (deleteResult.count === 0) {
       return NextResponse.json({ error: "Blog not found" }, { status: 404 });
     }
-
-    await db.blog.delete({
-      where: {
-        id,
-      },
-    });
 
     return NextResponse.json(
       { message: "Blog deleted successfully" },
@@ -145,10 +144,6 @@ export async function DELETE(
     );
   } catch (error: unknown) {
     console.error("Error deleting blog:", error);
-
-    if (getErrorCode(error) === "P2025") {
-      return NextResponse.json({ error: "Blog not found" }, { status: 404 });
-    }
 
     return NextResponse.json(
       { error: "Failed to delete blog" },
