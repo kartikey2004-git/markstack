@@ -130,9 +130,9 @@ export function UserMenu() {
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => router.push("/blogs")}>
+          <DropdownMenuItem onClick={() => router.push("/dashboard/blogs")}>
             <BookOpen className="mr-2 h-4 w-4" />
-            <span>Blogs</span>
+            <span>My Blogs</span>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => router.push("/editor")}>
             <PenSquare className="mr-2 h-4 w-4" />
