@@ -10,17 +10,7 @@ import db from "@/lib/database";
 import { getCurrentUser } from "@/lib/auth-utils";
 import { serializeMDX } from "@/lib/markdown/mdx-renderer";
 import { calculateReadTime } from "@/lib/markdown/read-time";
-import type { SerializedMdx } from "@/lib/markdown/mdx-renderer";
 import { AppContainer } from "@/components/layout/app-container";
-
-function isSerializedMdx(value: unknown): value is SerializedMdx {
-  return (
-    typeof value === "object" &&
-    value !== null &&
-    "compiledSource" in value &&
-    typeof (value as { compiledSource?: unknown }).compiledSource === "string"
-  );
-}
 
 async function getBlogPost(slug: string, authorId?: string) {
   const blog = await db.blog.findFirst({
@@ -90,9 +80,10 @@ export default async function BlogPostPage({
   };
 
   const readingTime = post.readTime ?? calculateReadTime(post.content);
-  const renderedContent = isSerializedMdx(post.htmlContent)
-    ? post.htmlContent
-    : await serializeMDX(post.content);
+  // Always re-serialize from raw markdown so the compiled output always uses
+  // the production JSX runtime (development: false), regardless of what may
+  // be stored in the DB htmlContent column.
+  const renderedContent = await serializeMDX(post.content);
 
   return (
     <div className="bg-background">
