@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const protectedRoutes = ["/dashboard", "/settings", "/editor", "/blogs"];
+const protectedRoutes = ["/dashboard", "/settings", "/editor"];
 const authRoutes = ["/auth"];
 
 // Better Auth uses __Secure- prefix on HTTPS (production), plain name on HTTP (dev)
