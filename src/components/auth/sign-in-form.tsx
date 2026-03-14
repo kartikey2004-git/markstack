@@ -50,7 +50,7 @@ export function SignInForm() {
           },
         },
       );
-    } catch (err) {
+    } catch {
       setError("An unexpected error occurred");
     } finally {
       setIsLoading(false);

@@ -4,6 +4,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth-utils";
 import { AppContainer } from "@/components/layout/app-container";
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default async function AuthPage({
   searchParams,
