@@ -192,7 +192,7 @@
 }
 
 .prose h6 {
-  @apply text-sm font-semibold mt-3 mb-2 text-foreground text-muted-foreground;
+  @apply text-sm font-semibold mt-3 mb-2 text-muted-foreground;
 }
 
 .prose p {

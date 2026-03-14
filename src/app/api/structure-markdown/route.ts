@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { structureMarkdown } from "@/lib/ai/structureMarkdown";
+import { requireApiAuth } from "@/lib/auth-utils";
 
 export async function POST(request: NextRequest) {
   try {
+    const user = await requireApiAuth();
+    if (user instanceof NextResponse) {
+      return user;
+    }
+
     const body = await request.json();
     const { markdown } = body;
 

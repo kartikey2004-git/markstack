@@ -11,6 +11,12 @@ export type FormatType =
   | "codeblock"
   | "divider";
 
+import type {
+  EditorEdit,
+  EditorInstance,
+  EditorSelection,
+} from "@/types/editor";
+
 interface FormatConfig {
   prefix?: string;
   suffix?: string;
@@ -33,7 +39,10 @@ const FORMAT_CONFIGS: Record<FormatType, FormatConfig> = {
   divider: { prefix: "---\n" },
 };
 
-export function applyMarkdownFormat(editor: any, formatType: FormatType): void {
+export function applyMarkdownFormat(
+  editor: EditorInstance,
+  formatType: FormatType,
+): void {
   const selection = editor.getSelection();
   const model = editor.getModel();
 
@@ -54,8 +63,14 @@ export function applyMarkdownFormat(editor: any, formatType: FormatType): void {
   }
 }
 
-function getSelectedText(editor: any, selection: any): string {
+function getSelectedText(
+  editor: EditorInstance,
+  selection: EditorSelection,
+): string {
   const model = editor.getModel();
+  if (!model) {
+    return "";
+  }
 
   if (selection.isEmpty()) {
     // No selection, get current line
@@ -68,8 +83,6 @@ function getSelectedText(editor: any, selection: any): string {
 }
 
 function isAlreadyFormatted(text: string, formatType: FormatType): boolean {
-  const config = FORMAT_CONFIGS[formatType];
-
   switch (formatType) {
     case "bold":
       return text.startsWith("**") && text.endsWith("**");
@@ -101,11 +114,15 @@ function isAlreadyFormatted(text: string, formatType: FormatType): boolean {
 }
 
 function removeFormatting(
-  editor: any,
-  selection: any,
+  editor: EditorInstance,
+  selection: EditorSelection,
   formatType: FormatType,
 ): void {
   const model = editor.getModel();
+  if (!model) {
+    return;
+  }
+
   const text = model.getValueInRange(selection);
   let newText = text;
 
@@ -156,13 +173,11 @@ function removeFormatting(
 }
 
 function applyFormatting(
-  editor: any,
-  selection: any,
+  editor: EditorInstance,
+  selection: EditorSelection,
   formatType: FormatType,
   config: FormatConfig,
 ): void {
-  const model = editor.getModel();
-
   if (selection.isEmpty()) {
     // No selection - insert at cursor position
     insertAtCursor(editor, selection, config);
@@ -177,8 +192,8 @@ function applyFormatting(
 }
 
 function insertAtCursor(
-  editor: any,
-  selection: any,
+  editor: EditorInstance,
+  selection: EditorSelection,
   config: FormatConfig,
 ): void {
   const position = selection.getPosition();
@@ -213,11 +228,15 @@ function insertAtCursor(
 }
 
 function applySingleFormatting(
-  editor: any,
-  selection: any,
+  editor: EditorInstance,
+  selection: EditorSelection,
   config: FormatConfig,
 ): void {
   const model = editor.getModel();
+  if (!model) {
+    return;
+  }
+
   const selectedText = model.getValueInRange(selection);
   const newText = config.prefix + selectedText + (config.suffix || "");
 
@@ -231,17 +250,21 @@ function applySingleFormatting(
 }
 
 function applyMultiLineFormatting(
-  editor: any,
-  selection: any,
+  editor: EditorInstance,
+  selection: EditorSelection,
   config: FormatConfig,
   formatType: FormatType,
 ): void {
   const model = editor.getModel();
+  if (!model) {
+    return;
+  }
+
   const startLine = selection.startLineNumber;
   const endLine = selection.endLineNumber;
 
   // Process each line
-  const edits: any[] = [];
+  const edits: EditorEdit[] = [];
 
   for (let lineNum = startLine; lineNum <= endLine; lineNum++) {
     const lineContent = model.getLineContent(lineNum);

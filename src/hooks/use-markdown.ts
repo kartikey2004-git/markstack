@@ -8,12 +8,15 @@ import {
 } from "@/lib/markdown/format-selection";
 import { serializeMDX } from "@/lib/markdown/mdx-renderer";
 import { uploadImage, createImageMarkdown } from "@/lib/markdown/image-upload";
+import type { SerializedMdx } from "@/lib/markdown/mdx-renderer";
+import type { EditorInstance } from "@/types/editor";
 
 export function useMarkdown(initialContent: string = "") {
   const [content, setContent] = useState(initialContent);
-  const [serializedContent, setSerializedContent] = useState<any>(null);
+  const [serializedContent, setSerializedContent] =
+    useState<SerializedMdx | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const editorRef = useRef<any>(null);
+  const editorRef = useRef<EditorInstance | null>(null);
 
   const updateContent = useCallback(async (newContent: string) => {
     setContent(newContent);
@@ -39,6 +42,10 @@ export function useMarkdown(initialContent: string = "") {
         // This would open an image dialog - for now just insert placeholder
         const position = editor.getPosition();
         const model = editor.getModel();
+        if (!position || !model) {
+          return;
+        }
+
         const offset = model.getOffsetAt(position);
         const newContent =
           content.slice(0, offset) +
@@ -72,6 +79,10 @@ export function useMarkdown(initialContent: string = "") {
           const editor = editorRef.current;
           const position = editor.getPosition();
           const model = editor.getModel();
+          if (!position || !model) {
+            return;
+          }
+
           const offset = model.getOffsetAt(position);
           const newContent =
             content.slice(0, offset) +
@@ -136,11 +147,13 @@ export function useMarkdown(initialContent: string = "") {
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
+        const errorData = await response
+          .json()
+          .catch(() => ({}) as { error?: string });
         throw new Error(errorData.error || "Failed to structure markdown");
       }
 
-      const data = await response.json();
+      const data = (await response.json()) as { markdown?: string };
       const structuredContent = data.markdown;
 
       if (structuredContent && structuredContent !== currentContent) {
@@ -163,7 +176,7 @@ export function useMarkdown(initialContent: string = "") {
     }
   }, [updateContent]);
 
-  const setEditorRef = useCallback((editor: any) => {
+  const setEditorRef = useCallback((editor: EditorInstance) => {
     editorRef.current = editor;
   }, []);
 

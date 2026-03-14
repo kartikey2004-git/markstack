@@ -1,24 +1,95 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getBlogs } from "@/lib/supabase/blogs";
+import { requireApiAuth } from "@/lib/auth-utils";
+import db from "@/lib/database";
+import { serializeMDX } from "@/lib/markdown/mdx-renderer";
+import { calculateReadTime } from "@/lib/markdown/read-time";
+import { getErrorCode } from "@/lib/server/error-utils";
+import type { Prisma } from "@prisma/client";
 
 export async function GET() {
   try {
-    const blogs = await getBlogs();
+    const user = await requireApiAuth();
+    if (user instanceof NextResponse) {
+      return user;
+    }
 
-    // Transform the data to match the expected format
-    const transformedBlogs = blogs.map((blog) => ({
-      slug: blog.slug,
-      title: blog.title,
-      description: blog.description,
-      createdAt: blog.created_at,
-      updatedAt: blog.updated_at,
-    }));
+    const blogs = await db.blog.findMany({
+      where: {
+        authorId: user.id,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        description: true,
+        createdAt: true,
+        updatedAt: true,
+        published: true,
+      },
+    });
 
-    return NextResponse.json({ blogs: transformedBlogs });
+    return NextResponse.json({ blogs });
   } catch (error) {
     console.error("Error fetching blogs:", error);
     return NextResponse.json(
       { error: "Failed to fetch blogs" },
+      { status: 500 },
+    );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const user = await requireApiAuth();
+    if (user instanceof NextResponse) {
+      return user;
+    }
+
+    const body = await request.json();
+    const { title, content, slug, description, published } = body;
+
+    if (!title || !content || !slug) {
+      return NextResponse.json(
+        { error: "Title, content, and slug are required" },
+        { status: 400 },
+      );
+    }
+
+    const normalizedContent = String(content).trim();
+    const htmlContent = (await serializeMDX(
+      normalizedContent,
+    )) as Prisma.InputJsonValue;
+    const readTime = calculateReadTime(normalizedContent);
+
+    const blog = await db.blog.create({
+      data: {
+        title,
+        content: normalizedContent,
+        slug,
+        description: description || null,
+        htmlContent,
+        readTime,
+        published: published || false,
+        authorId: user.id,
+      },
+    });
+
+    return NextResponse.json(blog, { status: 201 });
+  } catch (error: unknown) {
+    console.error("Error creating blog:", error);
+
+    if (getErrorCode(error) === "P2002") {
+      return NextResponse.json(
+        { error: "A blog with this slug already exists" },
+        { status: 409 },
+      );
+    }
+
+    return NextResponse.json(
+      { error: "Failed to create blog" },
       { status: 500 },
     );
   }
