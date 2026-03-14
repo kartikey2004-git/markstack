@@ -29,8 +29,8 @@ const navigation = [
     icon: PenSquare,
   },
   {
-    href: "/blogs",
-    label: "Blogs",
+    href: "/dashboard/blogs",
+    label: "My Blogs",
     description: "Manage your posts",
     icon: BookText,
   },
@@ -42,7 +42,8 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <nav className="space-y-1">
       {navigation.map((item) => {
-        const isActive = pathname === item.href;
+        const isActive =
+          pathname === item.href || pathname.startsWith(`${item.href}/`);
         const Icon = item.icon;
 
         return (
