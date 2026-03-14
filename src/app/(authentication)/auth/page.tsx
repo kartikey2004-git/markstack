@@ -36,23 +36,25 @@ export default async function AuthPage({
           </p>
         </div>
 
-        <Tabs
-          defaultValue={tab === "signup" ? "signup" : "signin"}
-          className="w-full"
-        >
-          <TabsList className="grid h-10 w-full grid-cols-2 rounded-lg border bg-card p-1">
-            <TabsTrigger value="signin">Sign In</TabsTrigger>
-            <TabsTrigger value="signup">Sign Up</TabsTrigger>
-          </TabsList>
+        <Suspense fallback={<Skeleton className="h-64 w-full rounded-xl" />}>
+          <Tabs
+            defaultValue={tab === "signup" ? "signup" : "signin"}
+            className="w-full"
+          >
+            <TabsList className="grid h-10 w-full grid-cols-2 rounded-lg border bg-card p-1">
+              <TabsTrigger value="signin">Sign In</TabsTrigger>
+              <TabsTrigger value="signup">Sign Up</TabsTrigger>
+            </TabsList>
 
-          <TabsContent value="signin" className="mt-6">
-            <SignInForm />
-          </TabsContent>
+            <TabsContent value="signin" className="mt-6">
+              <SignInForm />
+            </TabsContent>
 
-          <TabsContent value="signup" className="mt-6">
-            <SignUpForm />
-          </TabsContent>
-        </Tabs>
+            <TabsContent value="signup" className="mt-6">
+              <SignUpForm />
+            </TabsContent>
+          </Tabs>
+        </Suspense>
       </div>
     </AppContainer>
   );
