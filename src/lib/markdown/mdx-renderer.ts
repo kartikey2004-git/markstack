@@ -10,6 +10,7 @@ export async function serializeMDX(content: string) {
     mdxOptions: {
       remarkPlugins: [remarkGfm],
       rehypePlugins: [rehypeSlug, rehypeHighlight],
+      development: false,
     },
   });
 }
