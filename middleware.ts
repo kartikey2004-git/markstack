@@ -1,26 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "./src/lib/auth";
 
 const protectedRoutes = ["/dashboard", "/settings", "/editor"];
 const protectedExactRoutes = ["/blogs"];
 const authRoutes = ["/auth"];
 
+// Better Auth session cookie name (default)
+const SESSION_COOKIE = "better-auth.session_token";
+
 function matchesRoute(pathname: string, route: string) {
   return pathname === route || pathname.startsWith(`${route}/`);
 }
 
-export default async function middleware(req: NextRequest) {
+export default function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
   const isProtectedRoute =
     protectedRoutes.some((route) => matchesRoute(path, route)) ||
     protectedExactRoutes.includes(path);
+  
   const isAuthRoute = authRoutes.some((route) => matchesRoute(path, route));
 
-  const session = await auth.api.getSession({
-    headers: req.headers,
-  });
+  const hasSession = req.cookies.has(SESSION_COOKIE);
 
-  if (isProtectedRoute && !session?.user) {
+  if (isProtectedRoute && !hasSession) {
     const loginUrl = new URL("/auth", req.nextUrl);
     loginUrl.searchParams.set(
       "callbackUrl",
@@ -29,7 +30,7 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  if (isAuthRoute && session?.user) {
+  if (isAuthRoute && hasSession) {
     return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
   }
 
