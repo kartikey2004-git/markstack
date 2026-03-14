@@ -9,164 +9,175 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Edit, Trash2, Eye, Plus } from "lucide-react";
+import { MoreHorizontal, Edit, Trash2, Eye, Plus, Clock3 } from "lucide-react";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
+import { AppContainer } from "@/components/layout/app-container";
 
 export default function BlogsPage() {
   const { blogs, loading, error, deleteBlog } = useBlogs();
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="container mx-auto py-8">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
-            <p className="mt-2 text-gray-600">Loading blogs...</p>
+      <AppContainer className="py-8 sm:py-10">
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <Skeleton className="h-8 w-40" />
+            <Skeleton className="h-4 w-64" />
+          </div>
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <Card
+                key={index}
+                className="border-border/80 bg-card/70 shadow-sm"
+              >
+                <CardHeader className="space-y-3">
+                  <Skeleton className="h-5 w-3/4" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-2/3" />
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Skeleton className="h-4 w-1/2" />
+                  <Skeleton className="h-9 w-full" />
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
-      </div>
+      </AppContainer>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="container mx-auto py-8">
-          <div className="text-center">
-            <p className="text-red-600">{error}</p>
-          </div>
-        </div>
-      </div>
+      <AppContainer className="py-10">
+        <Card className="mx-auto max-w-xl border-destructive/30 bg-destructive/5">
+          <CardHeader>
+            <CardTitle>Unable to load blogs</CardTitle>
+            <CardDescription>{error}</CardDescription>
+          </CardHeader>
+        </Card>
+      </AppContainer>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto py-8">
-        <div className="mb-8 flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Your Blogs</h1>
-            <p className="text-gray-600 mt-2">
-              Manage and edit your blog posts
-            </p>
-          </div>
-          <Link href="/editor">
-            <Button className="gap-2">
-              <Plus className="w-4 h-4" />
-              New Blog
-            </Button>
-          </Link>
+    <AppContainer className="space-y-6 py-8 sm:py-10">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-1">
+          <h1 className="text-3xl font-semibold tracking-tight">Your blogs</h1>
+          <p className="text-sm text-muted-foreground sm:text-base">
+            Manage your posts in one place.
+          </p>
         </div>
+        <Link href="/editor" className="w-full sm:w-auto">
+          <Button className="h-10 w-full gap-2 sm:w-auto">
+            <Plus className="size-4" />
+            New blog
+          </Button>
+        </Link>
+      </div>
 
-        {blogs.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="text-gray-400 mb-4">
-              <svg
-                className="mx-auto h-12 w-12"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
-                />
-              </svg>
-            </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              No blogs yet
-            </h3>
-            <p className="text-gray-600 mb-4">
-              Get started by creating your first blog post.
+      {blogs.length === 0 ? (
+        <Card className="border-dashed border-border/80 bg-card/60">
+          <CardContent className="py-14 text-center">
+            <h3 className="text-lg font-medium">No blogs yet</h3>
+            <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
+              Create your first post to start building your writing archive.
             </p>
             <Link href="/editor">
-              <Button>Create Your First Blog</Button>
+              <Button className="mt-6">Create your first blog</Button>
             </Link>
-          </div>
-        ) : (
-          <div className="grid gap-6">
-            {blogs.map((blog) => (
-              <Card key={blog.id} className="hover:shadow-md transition-shadow">
-                <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <CardTitle className="text-xl">{blog.title}</CardTitle>
-                        <Badge
-                          variant={blog.published ? "default" : "secondary"}
-                        >
-                          {blog.published ? "Published" : "Draft"}
-                        </Badge>
-                      </div>
-                      {blog.description && (
-                        <CardDescription className="text-base">
-                          {blog.description}
-                        </CardDescription>
-                      )}
-                    </div>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm">
-                          <MoreHorizontal className="w-4 h-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem asChild>
-                          <Link href={`/editor/${blog.id}`} className="gap-2">
-                            <Edit className="w-4 h-4" />
-                            Edit
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                          <Link href={`/blogs/${blog.slug}`} className="gap-2">
-                            <Eye className="w-4 h-4" />
-                            Preview
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          className="gap-2 text-red-600"
-                          onClick={() => deleteBlog(blog.id)}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                          Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {blogs.map((blog) => (
+            <Card
+              key={blog.id}
+              className="flex h-full flex-col border-border/80 bg-card/70 shadow-sm"
+            >
+              <CardHeader className="space-y-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 space-y-1">
+                    <CardTitle className="line-clamp-2 text-lg font-semibold tracking-tight">
+                      {blog.title}
+                    </CardTitle>
+                    <CardDescription className="truncate text-xs">
+                      /{blog.slug}
+                    </CardDescription>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex justify-between items-center text-sm text-gray-500">
-                    <div>
-                      Created{" "}
-                      {formatDistanceToNow(new Date(blog.createdAt), {
-                        addSuffix: true,
-                      })}
-                    </div>
-                    {blog.updatedAt !== blog.createdAt && (
-                      <div>
-                        Updated{" "}
-                        {formatDistanceToNow(new Date(blog.updatedAt), {
-                          addSuffix: true,
-                        })}
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        className="shrink-0"
+                      >
+                        <MoreHorizontal className="size-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem asChild>
+                        <Link href={`/editor/${blog.id}`} className="gap-2">
+                          <Edit className="size-4" />
+                          Edit
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href={`/blogs/${blog.slug}`} className="gap-2">
+                          <Eye className="size-4" />
+                          View
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="gap-2 text-destructive focus:text-destructive"
+                        onClick={() => deleteBlog(blog.id)}
+                      >
+                        <Trash2 className="size-4" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+                <p className="line-clamp-3 text-sm leading-6 text-muted-foreground">
+                  {blog.description || "No description added yet."}
+                </p>
+              </CardHeader>
+              <CardContent className="mt-auto space-y-4">
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Clock3 className="size-3.5" />
+                  Updated{" "}
+                  {formatDistanceToNow(new Date(blog.updatedAt), {
+                    addSuffix: true,
+                  })}
+                </div>
+                <div className="flex items-center gap-2">
+                  <Link href={`/editor/${blog.id}`} className="flex-1">
+                    <Button variant="outline" className="w-full gap-2">
+                      <Edit className="size-4" />
+                      Edit
+                    </Button>
+                  </Link>
+                  <Link href={`/blogs/${blog.slug}`} className="flex-1">
+                    <Button className="w-full gap-2">
+                      <Eye className="size-4" />
+                      View
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+    </AppContainer>
   );
 }

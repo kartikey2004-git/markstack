@@ -30,30 +30,34 @@ const features = [
 
 export function Features() {
   return (
-    <section className="space-y-8 py-16 sm:py-20 lg:py-24">
-      <div className="text-center space-y-4">
-        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-          Features
+    <section id="features" className="space-y-8 py-8 sm:py-10">
+      <div className="space-y-3 text-center">
+        <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+          Built for clean workflows
         </h2>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto px-4">
-          Powerful markdown platform designed for modern content creators who
-          value simplicity and efficiency.
+        <p className="mx-auto max-w-2xl text-base text-muted-foreground sm:text-lg">
+          A focused writing stack with the right defaults, structured controls,
+          and polished rendering.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto px-4">
-        {features.map((feature, index) => (
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {features.map((feature) => (
           <Card
-            key={index}
-            className="border-0 shadow-sm rounded-sm bg-card/50 backdrop-blur-sm p-6 hover:shadow-lg transition-all duration-200 hover:-translate-y-1"
+            key={feature.title}
+            className="group rounded-xl border border-border/70 bg-card/65 p-5 shadow-none transition-all duration-200 ease-in-out hover:border-border hover:bg-card hover:shadow-sm"
           >
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                <feature.icon className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="text-lg font-semibold">{feature.title}</h3>
+            <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-md border bg-muted/40">
+              <feature.icon className="h-5 w-5 text-foreground" />
             </div>
-            <p className="text-muted-foreground">{feature.description}</p>
+            <div className="space-y-2">
+              <h3 className="text-base font-semibold tracking-tight">
+                {feature.title}
+              </h3>
+              <p className="text-sm leading-6 text-muted-foreground">
+                {feature.description}
+              </p>
+            </div>
           </Card>
         ))}
       </div>

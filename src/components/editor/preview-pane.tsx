@@ -12,7 +12,7 @@ export function MarkdownPreview({ content }: MarkdownPreviewProps) {
   if (!content) {
     return (
       <div className="flex h-full items-center justify-center p-6">
-        <p className="text-muted-foreground font-medium">
+        <p className="font-medium text-muted-foreground">
           Start typing to see preview...
         </p>
       </div>
@@ -20,9 +20,9 @@ export function MarkdownPreview({ content }: MarkdownPreviewProps) {
   }
 
   return (
-    <div className="h-full overflow-auto p-8">
+    <div className="h-full overflow-auto p-6 sm:p-8">
       <div
-        className="prose prose-gray max-w-none dark:prose-invert prose-headings:font-semibold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:leading-relaxed prose-code:font-mono prose-pre:bg-muted prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto"
+        className="prose prose-gray max-w-none dark:prose-invert prose-headings:font-semibold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:leading-relaxed prose-code:font-mono prose-pre:overflow-x-auto prose-pre:rounded-lg prose-pre:bg-muted prose-pre:p-4"
         style={{
           fontSize: "15px",
           lineHeight: "1.7",

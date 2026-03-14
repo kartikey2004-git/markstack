@@ -1,30 +1,51 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { UserMenu } from "@/components/shared/user-menu";
+import { AppContainer } from "@/components/layout/app-container";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
+import { cn } from "@/lib/utils";
+
+const navigation = [
+  { href: "/", label: "Home" },
+  { href: "/blogs", label: "Blogs" },
+  { href: "/editor", label: "Editor" },
+];
 
 export function Navbar() {
-  return (
-    <nav className="border-b bg-white/95 backdrop-blur supports-backdrop-filter:bg-white/60">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-8">
-            <Link href="/" className="text-xl font-bold">
-              MarkStack
-            </Link>
-            <div className="hidden md:flex space-x-6">
-              <Link href="/blogs" className="text-gray-600 hover:text-gray-900">
-                Blogs
-              </Link>
-            
-            </div>
-          </div>
+  const pathname = usePathname();
 
-          <div className="flex items-center space-x-4">
-            <UserMenu />
+  return (
+    <nav className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur">
+      <AppContainer className="flex h-14 items-center justify-between gap-4">
+        <div className="flex min-w-0 items-center gap-6">
+          <Link href="/" className="text-sm font-semibold tracking-tight">
+            MarkStack
+          </Link>
+          <div className="hidden items-center gap-1 md:flex">
+            {navigation.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "rounded-md px-3 py-1.5 text-sm transition-all duration-200 ease-in-out",
+                  pathname === item.href
+                    ? "bg-muted text-foreground"
+                    : "text-muted-foreground hover:bg-muted/70 hover:text-foreground",
+                )}
+              >
+                {item.label}
+              </Link>
+            ))}
           </div>
         </div>
-      </div>
+
+        <div className="flex items-center gap-2">
+          <ThemeToggle className="hidden sm:inline-flex" />
+          <UserMenu />
+        </div>
+      </AppContainer>
     </nav>
   );
 }

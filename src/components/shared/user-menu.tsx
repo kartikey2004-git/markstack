@@ -79,11 +79,13 @@ export function UserMenu() {
 
   if (!user) {
     return (
-      <div className="flex items-center space-x-2">
-        <Button variant="outline" onClick={redirectToSignIn}>
+      <div className="flex items-center gap-2">
+        <Button variant="outline" size="sm" onClick={redirectToSignIn}>
           Sign In
         </Button>
-        <Button onClick={redirectToSignUp}>Sign Up</Button>
+        <Button size="sm" onClick={redirectToSignUp}>
+          Sign Up
+        </Button>
       </div>
     );
   }
@@ -94,13 +96,18 @@ export function UserMenu() {
         variant="outline"
         size="sm"
         onClick={() => router.push("/editor")}
+        className="hidden sm:inline-flex"
       >
         <PenSquare className="mr-2 h-4 w-4" />
         Write
       </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            className="relative rounded-full border border-transparent hover:border-border"
+          >
             <Avatar className="h-8 w-8">
               <AvatarImage
                 src={user.image ?? undefined}
