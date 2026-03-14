@@ -73,7 +73,7 @@ ${markdown}`;
 
     try {
       const { text } = await generateText({
-        model: google(config.model as any),
+        model: google(config.model),
         prompt: prompt,
         temperature: 0.1,
         maxOutputTokens: 4000,
