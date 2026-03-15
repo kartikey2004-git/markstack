@@ -16,7 +16,10 @@ async function getBlogPost(slug: string, authorId?: string) {
   const blog = await db.blog.findFirst({
     where: {
       slug,
-      ...(authorId ? {} : { published: true }),
+      OR: [
+        { published: true },
+        ...(authorId ? [{ authorId, published: false }] : []),
+      ],
     },
     include: {
       author: {
@@ -27,11 +30,6 @@ async function getBlogPost(slug: string, authorId?: string) {
       },
     },
   });
-
-  // If blog is not published, only show it to the author
-  if (blog && !blog.published && blog.authorId !== authorId) {
-    return null;
-  }
 
   return blog;
 }
