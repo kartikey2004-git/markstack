@@ -11,6 +11,8 @@ const navigation = [
   { href: "/", label: "Home" },
   { href: "/blogs", label: "Blogs" },
   { href: "/editor", label: "Editor" },
+  { href: "/canvases", label: "My Canvases" },
+  { href: "/canvas/new", label: "New Canvas" },
 ];
 
 export function Navbar() {
