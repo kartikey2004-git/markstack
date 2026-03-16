@@ -160,7 +160,7 @@ export function TodoCalendar({ className }: TodoCalendarProps) {
   return (
     <div className={`flex flex-col gap-6 h-full p-2 ${className}`}>
       {/* Top Controls Section */}
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid lg:grid-cols-2 grid-cols-1 gap-6">
         {/* Calendar Card */}
         <div className="h-full">
           <CalendarPanel

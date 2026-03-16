@@ -15,7 +15,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Loader2, LogOut, PenSquare, BookOpen } from "lucide-react";
+import {
+  Loader2,
+  LogOut,
+  PenSquare,
+  BookOpen,
+  User,
+  LayoutDashboard,
+  CheckSquare,
+  Palette,
+  Settings,
+} from "lucide-react";
 
 type SessionUser = {
   name?: string | null;
@@ -121,9 +131,24 @@ export function UserMenu() {
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
+
           <DropdownMenuItem onClick={() => router.push("/dashboard/blogs")}>
             <BookOpen className="mr-2 h-4 w-4" />
             <span>My Blogs</span>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem onClick={() => router.push("/blogs")}>
+            <BookOpen className="mr-2 h-4 w-4" />
+            <span>All Blogs</span>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem onClick={() => router.push("/todos")}>
+            <CheckSquare className="mr-2 h-4 w-4" />
+            <span>Todos</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => router.push("/canvases")}>
+            <Palette className="mr-2 h-4 w-4" />
+            <span>Canvas</span>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => router.push("/editor")}>
             <PenSquare className="mr-2 h-4 w-4" />
