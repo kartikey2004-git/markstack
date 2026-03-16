@@ -15,9 +15,7 @@ export default async function AuthPage({
   const session = await getSession();
   const { tab, callbackUrl } = await searchParams;
 
-  const safeCallbackUrl = callbackUrl?.startsWith("/")
-    ? callbackUrl
-    : "/editor";
+  const safeCallbackUrl = callbackUrl?.startsWith("/") ? callbackUrl : "/";
 
   // Redirect authenticated users to their callback destination.
   if (session?.user) {
