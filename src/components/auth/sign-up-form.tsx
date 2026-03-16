@@ -25,7 +25,7 @@ export function SignUpForm() {
   const [error, setError] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/editor";
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   const signUp = async (e: React.FormEvent) => {
     e.preventDefault();

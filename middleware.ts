@@ -32,7 +32,11 @@ export default function middleware(req: NextRequest) {
   }
 
   if (isAuthRoute && hasSession) {
-    return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
+    // Don't force redirect to dashboard - let users stay where they are
+    // or redirect to homepage if they specifically visit /auth
+    if (path === "/auth") {
+      return NextResponse.redirect(new URL("/", req.nextUrl));
+    }
   }
 
   return NextResponse.next();
