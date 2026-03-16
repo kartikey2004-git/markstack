@@ -9,29 +9,34 @@ import {
 
 const faqs = [
   {
-    question: "How do I create content with Markstack?",
+    question: "What is MarkStack?",
     answer:
-      "Simply navigate to the Markstack editor, start writing in markdown, and use the live preview to see your content render in real-time. Your work is automatically saved as a draft.",
+      "MarkStack is a creator workspace that combines visual canvases, blog publishing, and task planning in one organized platform.",
   },
   {
-    question: "Can I preview markdown before publishing?",
+    question: "What can I create with MarkStack?",
     answer:
-      "Yes! The split-screen editor shows your markdown on one side and a live preview on the other, updating instantly as you type.",
+      "You can design visual canvases for creative projects, write and publish markdown blogs, and organize tasks with our calendar-based todo planner.",
   },
   {
-    question: "Where is my content stored in Markstack?",
+    question: "Do I need an account to read blogs?",
     answer:
-      "Your content is stored securely in Markstack's database. Each post includes your content, metadata, and rendered HTML for fast loading and easy access.",
+      "No, anyone can read published blogs without an account. You only need to sign up to create content, canvases, or manage todos.",
   },
   {
-    question: "Can I edit content after publishing?",
+    question: "How does the canvas editor work?",
     answer:
-      "Yes! Markstack allows you to edit your content after publishing. Simply navigate to your post and use the editor to make updates, which are saved automatically.",
+      "The canvas editor provides a visual workspace where you can create designs, sketches, and diagrams. Your work is automatically saved and organized.",
   },
   {
-    question: "What markdown features are supported?",
+    question: "Can I manage my own blog posts?",
     answer:
-      "Full GitHub-flavored markdown support including tables, code blocks with syntax highlighting, images, and MDX components.",
+      "Yes, registered users can write, edit, and publish blog posts with markdown support, live preview, and automatic SEO optimization.",
+  },
+  {
+    question: "Is MarkStack free to use?",
+    answer:
+      "MarkStack offers a complete workspace for creators. Sign up to access all features including canvases, blogs, and task planning.",
   },
 ];
 
@@ -43,7 +48,7 @@ export function FAQ() {
           Frequently asked questions
         </h2>
         <p className="mx-auto max-w-2xl text-base text-muted-foreground sm:text-lg">
-          Everything you need to get productive quickly in MarkStack.
+          Everything you need to know about MarkStack's creator workspace.
         </p>
       </div>
 

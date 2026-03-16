@@ -46,29 +46,28 @@ export function Hero() {
             className="gap-2 rounded-md border border-border px-3 py-1 text-xs"
           >
             <Sparkles className="size-3" />
-            Writing Assistant
+            Creator Workspace
           </Badge>
         </div>
 
         <h1 className="text-balance text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
-          Publish better markdown,
+          Create, write, and organize,
           <br />
-          <span className="text-muted-foreground">
-            from first draft to shipped post.
-          </span>
+          <span className="text-muted-foreground">all in one workspace.</span>
         </h1>
 
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-          MarkStack combines a focused editor, instant preview, and reliable
-          publishing flow in a calm interface designed for daily writing.
+          MarkStack combines visual canvases, markdown blogs, and task planning
+          in a clean workspace designed for creators who build and organize
+          their ideas.
         </p>
 
         <div className="mt-8 flex flex-wrap justify-center gap-2">
           {[
-            { icon: Edit3, label: "Monaco Editor" },
-            { icon: Eye, label: "Live Preview" },
-            { icon: Save, label: "Auto Save" },
-            { icon: Zap, label: "Slash Commands" },
+            { icon: Edit3, label: "Visual Canvas" },
+            { icon: Eye, label: "Blog Publishing" },
+            { icon: Save, label: "Todo Planning" },
+            { icon: Zap, label: "Markdown Editor" },
           ].map(({ icon: Icon, label }) => (
             <Badge
               key={label}
@@ -106,21 +105,21 @@ export function Hero() {
         <Card className="mx-auto mt-12 max-w-2xl border-border/70 bg-background/80 shadow-none">
           <CardContent className="grid gap-6 p-5 text-left sm:grid-cols-3">
             <div>
-              <p className="text-2xl font-semibold tracking-tight">2x</p>
+              <p className="text-2xl font-semibold tracking-tight">3</p>
               <p className="text-sm text-muted-foreground">
-                Faster drafting with slash commands
+                Creative tools in one workspace
               </p>
             </div>
             <div>
-              <p className="text-2xl font-semibold tracking-tight">Live</p>
+              <p className="text-2xl font-semibold tracking-tight">Public</p>
               <p className="text-sm text-muted-foreground">
-                Preview that mirrors publication output
+                Blog publishing and sharing
               </p>
             </div>
             <div>
-              <p className="text-2xl font-semibold tracking-tight">Zero</p>
+              <p className="text-2xl font-semibold tracking-tight">Organized</p>
               <p className="text-sm text-muted-foreground">
-                Setup friction for your writing workflow
+                Task planning with calendar view
               </p>
             </div>
           </CardContent>
