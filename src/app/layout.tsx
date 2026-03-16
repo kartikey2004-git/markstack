@@ -21,7 +21,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "MarkStack",
-  description: "Markdown publishing platform",
+  description:
+    "Creator workspace with visual canvases, blog publishing, and task planning",
 };
 
 export default function RootLayout({

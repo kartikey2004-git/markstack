@@ -1,30 +1,30 @@
 import { Card } from "@/components/ui/card";
-import { Edit3, Eye, Zap, Globe } from "lucide-react";
+import { Edit3, Palette, Calendar, FileText } from "lucide-react";
 
 const features = [
   {
+    icon: Palette,
+    title: "Visual Canvas",
+    description:
+      "Create and organize visual designs with our interactive canvas workspace. Perfect for sketches, diagrams, and creative projects.",
+  },
+  {
+    icon: FileText,
+    title: "Blog Publishing",
+    description:
+      "Write and publish markdown blogs with live preview, tags, and public sharing. Your content reaches readers instantly.",
+  },
+  {
+    icon: Calendar,
+    title: "Todo Planner",
+    description:
+      "Organize tasks with our calendar-based todo system. Plan, track, and complete your work with date-based organization.",
+  },
+  {
     icon: Edit3,
-    title: "Monaco Editor",
+    title: "Markdown Editor",
     description:
-      "Professional code editor with syntax highlighting, line numbers, and intelligent auto-completion.",
-  },
-  {
-    icon: Eye,
-    title: "Live Preview",
-    description:
-      "Real-time markdown preview with MDX support, syntax highlighting, and beautiful typography.",
-  },
-  {
-    icon: Zap,
-    title: "Slash Commands",
-    description:
-      "Quick formatting with slash commands. Type / to access formatting options and shortcuts.",
-  },
-  {
-    icon: Globe,
-    title: "SEO Friendly",
-    description:
-      "Automatic slug generation and optimized meta tags for better search engine visibility.",
+      "Professional markdown editor with Monaco-powered syntax highlighting and real-time preview for perfect formatting.",
   },
 ];
 
@@ -33,11 +33,11 @@ export function Features() {
     <section id="features" className="space-y-8 py-8 sm:py-10">
       <div className="space-y-3 text-center">
         <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-          Built for clean workflows
+          Everything creators need
         </h2>
         <p className="mx-auto max-w-2xl text-base text-muted-foreground sm:text-lg">
-          A focused writing stack with the right defaults, structured controls,
-          and polished rendering.
+          A complete workspace with visual design, writing tools, and task
+          planning.
         </p>
       </div>
 
