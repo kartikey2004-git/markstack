@@ -10,9 +10,6 @@ import { cn } from "@/lib/utils";
 const navigation = [
   { href: "/", label: "Home" },
   { href: "/blogs", label: "Blogs" },
-  { href: "/editor", label: "Editor" },
-  { href: "/canvases", label: "My Canvases" },
-  { href: "/todos", label: "Todo Planner" },
 ];
 
 export function Navbar() {

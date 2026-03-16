@@ -3,6 +3,7 @@
 import { useRef, useCallback, useEffect } from "react";
 import { useMarkdown } from "@/hooks/use-markdown";
 import { useBlogSave } from "@/hooks/use-blog-save";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { Toolbar } from "@/components/editor/editor-toolbar";
 import { MarkdownEditor } from "@/components/editor/markdown-editor";
 import { MarkdownPreview } from "@/components/editor/preview-pane";
@@ -26,6 +27,7 @@ interface EditorWrapperProps {
 
 export function EditorWrapper({ blog }: EditorWrapperProps) {
   const editorRef = useRef<EditorInstance | null>(null);
+  const isMobile = useIsMobile();
   const {
     content,
     setContent,
@@ -127,9 +129,14 @@ export function EditorWrapper({ blog }: EditorWrapperProps) {
         />
 
         <div className="h-[70vh] min-h-130">
-          <ResizablePanelGroup orientation="horizontal" className="h-full">
+          <ResizablePanelGroup
+            orientation={isMobile ? "vertical" : "horizontal"}
+            className="h-full"
+          >
             <ResizablePanel defaultSize={50} minSize={30}>
-              <div className="relative h-full border-r bg-background">
+              <div
+                className={`relative h-full bg-background ${isMobile ? "border-b" : "border-r"}`}
+              >
                 <ImageDropzone onImageUpload={handleImageUpload} />
                 <MarkdownEditor
                   value={content}
@@ -142,7 +149,7 @@ export function EditorWrapper({ blog }: EditorWrapperProps) {
             <ResizableHandle withHandle className="bg-border/70" />
 
             <ResizablePanel defaultSize={50} minSize={30}>
-              <div className="h-full bg-background font-sans">
+              <div className="h-full bg-background font-sans overflow-auto">
                 {isLoading ? (
                   <div className="flex h-full items-center justify-center">
                     <div className="text-sm text-muted-foreground">
