@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { DashboardShell } from "@/components/dashboard/dashboard-shell";
+import { AppSidebar } from "@/components/app-sidebar";
 
 export default function ProtectedLayout({ children }: { children: ReactNode }) {
-  return <DashboardShell>{children}</DashboardShell>;
+  return <AppSidebar>{children}</AppSidebar>;
 }

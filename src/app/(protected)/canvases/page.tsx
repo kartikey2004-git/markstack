@@ -5,8 +5,10 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Plus, Eye, Share2, Trash2 } from "lucide-react";
+import { PageSkeleton } from "@/components/ui/page-skeleton";
+import { Plus, Eye, Share2, Trash2, Palette, FileText } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { ProtectedPageWrapper } from "@/components/layout/protected-page-wrapper";
 
 interface Canvas {
   id: string;
@@ -49,17 +51,17 @@ export default function AllCanvasesPage() {
     try {
       const response = await fetch(`/api/canvas/${canvasId}`, {
         method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ canvasId }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ canvasId }),
       });
 
       if (!response.ok) {
         throw new Error("Failed to delete canvas");
       }
 
-      setCanvases(canvases.filter(canvas => canvas.id !== canvasId));
+      setCanvases(canvases.filter((canvas) => canvas.id !== canvasId));
     } catch (err) {
       alert(err instanceof Error ? err.message : "Failed to delete canvas");
     }
@@ -67,65 +69,62 @@ export default function AllCanvasesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <div className="container mx-auto py-8">
-          <div className="flex items-center justify-center h-64">
-            <div className="text-lg">Loading canvases...</div>
-          </div>
-        </div>
-      </div>
+      <ProtectedPageWrapper>
+        <PageSkeleton cardCount={8} gridCols="2" />
+      </ProtectedPageWrapper>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-background">
-        <div className="container mx-auto py-8">
-          <div className="flex items-center justify-center h-64">
-            <div className="text-red-500 text-lg">{error}</div>
-          </div>
+      <ProtectedPageWrapper>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-red-500 text-lg">{error}</div>
         </div>
-      </div>
+      </ProtectedPageWrapper>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">My Canvases</h1>
-            <p className="text-muted-foreground">
-              Manage and organize your design canvases
-            </p>
+    <ProtectedPageWrapper
+      title="Your Canvases"
+      description="Manage and organize your design canvases"
+      actions={
+        <Link href="/canvas/new">
+          <Button className="bg-black text-white hover:bg-black/90">
+            <Plus className="w-4 h-4 mr-2" />
+            New Canvas
+          </Button>
+        </Link>
+      }
+    >
+      {canvases.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-16">
+          <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6">
+            <Palette className="w-12 h-12 text-muted-foreground" />
           </div>
-          <Link href="/canvas/new">
-            <Button>
-              <Plus className="w-4 h-4 mr-2" />
-              New Canvas
-            </Button>
-          </Link>
-        </div>
-
-        {canvases.length === 0 ? (
-          <div className="text-center py-16">
-            <div className="text-muted-foreground text-lg mb-4">
-              No canvases yet
-            </div>
-            <p className="text-muted-foreground mb-8">
-              Create your first canvas to get started
-            </p>
+          <h3 className="text-2xl font-semibold mb-2">No canvases yet</h3>
+          <p className="text-muted-foreground text-center max-w-md mb-8">
+            Start creating by setting up your first design canvas. Organize your
+            ideas, sketches, and projects in one place.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4">
             <Link href="/canvas/new">
-              <Button size="lg">
+              <Button
+                size="lg"
+                className="bg-black text-white hover:bg-black/90"
+              >
                 <Plus className="w-5 h-5 mr-2" />
                 Create Your First Canvas
               </Button>
             </Link>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        </div>
+      ) : (
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
             {canvases.map((canvas) => (
-              <Card key={canvas.id} className="hover:shadow-lg transition-shadow">
+              <Card key={canvas.id}>
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <CardTitle className="text-lg truncate">
@@ -144,12 +143,20 @@ export default function AllCanvasesPage() {
                 <CardContent className="pt-0">
                   <div className="space-y-4">
                     <div className="text-sm text-muted-foreground">
-                      Created {formatDistanceToNow(new Date(canvas.createdAt), { addSuffix: true })} ago
+                      Created{" "}
+                      {formatDistanceToNow(new Date(canvas.createdAt), {
+                        addSuffix: true,
+                      })}{" "}
+                      ago
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      Updated {formatDistanceToNow(new Date(canvas.updatedAt), { addSuffix: true })} ago
+                      Updated{" "}
+                      {formatDistanceToNow(new Date(canvas.updatedAt), {
+                        addSuffix: true,
+                      })}{" "}
+                      ago
                     </div>
-                    
+
                     <div className="flex gap-2 pt-4">
                       <Link href={`/canvas/${canvas.id}`}>
                         <Button variant="outline" size="sm" className="flex-1">
@@ -157,13 +164,13 @@ export default function AllCanvasesPage() {
                           Open
                         </Button>
                       </Link>
-                      
+
                       <Link href={`/canvas/${canvas.id}`}>
                         <Button variant="outline" size="sm">
                           <Share2 className="w-4 h-4" />
                         </Button>
                       </Link>
-                      
+
                       <Button
                         variant="outline"
                         size="sm"
@@ -178,8 +185,8 @@ export default function AllCanvasesPage() {
               </Card>
             ))}
           </div>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+    </ProtectedPageWrapper>
   );
 }

@@ -4,7 +4,13 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { toast } from "sonner";
 import { nanoid } from "nanoid";
 
@@ -45,7 +51,7 @@ export default function NewCanvasPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="fixed inset-0 flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Create New Canvas</CardTitle>
@@ -72,10 +78,10 @@ export default function NewCanvasPage() {
               }}
             />
           </div>
-          <Button 
-            onClick={createCanvas} 
+          <Button
+            onClick={createCanvas}
             disabled={creating || !title.trim()}
-            className="w-full"
+            className="w-full bg-black text-white hover:bg-black/90 disabled:bg-black/50"
           >
             {creating ? "Creating..." : "Create Canvas"}
           </Button>
