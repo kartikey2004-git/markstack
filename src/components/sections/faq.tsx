@@ -44,26 +44,26 @@ export function FAQ() {
   return (
     <section id="faq" className="space-y-8 py-8 sm:py-10">
       <div className="space-y-3 text-center">
-        <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+        <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
           Frequently asked questions
         </h2>
-        <p className="mx-auto max-w-2xl text-base text-muted-foreground sm:text-lg">
+        <p className="mx-auto max-w-2xl text-sm text-muted-foreground sm:text-base md:text-lg">
           Everything you need to know about MarkStack's creator workspace.
         </p>
       </div>
 
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-3xl px-2 sm:px-0">
         <Accordion type="single" collapsible className="space-y-3">
           {faqs.map((faq, index) => (
             <AccordionItem
               key={index}
               value={`item-${index}`}
-              className="rounded-xl border border-border/70 bg-card/70 px-5 shadow-none transition-colors duration-200"
+              className="rounded-xl border border-border/70 bg-card/70 px-4 shadow-none transition-colors duration-200 sm:px-5"
             >
-              <AccordionTrigger className="py-4 text-left text-sm font-medium hover:no-underline">
+              <AccordionTrigger className="py-4 text-left text-xs font-medium hover:no-underline sm:text-sm">
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="pb-4 text-sm leading-6 text-muted-foreground">
+              <AccordionContent className="pb-4 text-xs leading-5 text-muted-foreground sm:text-sm sm:leading-6">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>
