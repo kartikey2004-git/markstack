@@ -119,28 +119,12 @@ model Canvas {
   data   Json
   userId String
 
-  isPublic   Boolean @default(false)
-  shareToken String? @unique
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  versions CanvasVersion[]
-  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
-  @@index([shareToken])
-}
-
-model CanvasVersion {
-  id        String   @id @default(cuid())
-  canvasId  String
-  data      Json
-  createdAt DateTime @default(now())
-
-  canvas Canvas @relation(fields: [canvasId], references: [id], onDelete: Cascade)
-
-  @@index([canvasId])
 }
 
 model Todo {

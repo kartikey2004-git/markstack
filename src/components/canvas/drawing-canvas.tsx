@@ -2,7 +2,6 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useCallback, useMemo } from "react";
-import debounce from "lodash.debounce";
 import "@excalidraw/excalidraw/index.css";
 
 const Excalidraw = dynamic(
@@ -96,22 +95,6 @@ export default function DrawingCanvas({
     return finalData;
   }, [initialData]); // Only recalculate when initialData changes
 
-  const debouncedSave = useCallback(
-    debounce((elements: readonly any[], appState: any, files: any) => {
-      if (onSave) {
-        // Double-check appState has collaborators before saving
-        const safeAppState = {
-          collaborators: Array.isArray(appState?.collaborators)
-            ? appState.collaborators
-            : [],
-          ...appState,
-        };
-        onSave({ elements, appState: safeAppState, files });
-      }
-    }, 5000),
-    [onSave],
-  );
-
   const handleChange = useCallback(
     (elements: readonly any[], appState: any, files: any) => {
       // Ensure appState has collaborators array before passing to callbacks
@@ -126,18 +109,10 @@ export default function DrawingCanvas({
         onChange(elements, safeAppState, files);
       }
 
-      if (!readOnly && onSave) {
-        debouncedSave(elements, safeAppState, files);
-      }
+      // Removed automatic debounced save - only manual saves allowed
     },
-    [onChange, onSave, readOnly, debouncedSave],
+    [onChange],
   );
-
-  useEffect(() => {
-    return () => {
-      debouncedSave.cancel();
-    };
-  }, [debouncedSave]);
 
   return (
     <div className={`h-full w-full ${className}`}>

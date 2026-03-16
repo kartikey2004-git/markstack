@@ -54,14 +54,11 @@ export async function GET(
       headers: request.headers,
     });
 
-    // Find canvas - user must own it or it must be public
+    // Find canvas - user must own it
     const canvas = await db.canvas.findFirst({
       where: {
         id: canvasId,
-        OR: [
-          { userId: session?.user?.id || "" }, // User owns it
-          { isPublic: true }, // Or it's public
-        ],
+        userId: session?.user?.id || "",
       },
     });
 

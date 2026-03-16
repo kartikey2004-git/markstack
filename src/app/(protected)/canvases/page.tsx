@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PageSkeleton } from "@/components/ui/page-skeleton";
 import { Plus, Eye, Share2, Trash2, Palette, FileText } from "lucide-react";
@@ -13,8 +12,6 @@ import { ProtectedPageWrapper } from "@/components/layout/protected-page-wrapper
 interface Canvas {
   id: string;
   title: string;
-  isPublic: boolean;
-  shareToken: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -130,14 +127,6 @@ export default function AllCanvasesPage() {
                     <CardTitle className="text-lg truncate">
                       {canvas.title || "Untitled Canvas"}
                     </CardTitle>
-                    <div className="flex gap-2">
-                      {canvas.isPublic && (
-                        <Badge variant="secondary" className="text-xs">
-                          <Share2 className="w-3 h-3 mr-1" />
-                          Public
-                        </Badge>
-                      )}
-                    </div>
                   </div>
                 </CardHeader>
                 <CardContent className="pt-0">

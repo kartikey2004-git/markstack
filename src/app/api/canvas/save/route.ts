@@ -34,14 +34,6 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Create a version snapshot on every save
-    await db.canvasVersion.create({
-      data: {
-        canvasId,
-        data: data,
-      },
-    });
-
     return NextResponse.json({ success: true, canvas });
   } catch (error) {
     console.error("Canvas save error:", error);

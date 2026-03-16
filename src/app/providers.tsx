@@ -13,7 +13,7 @@ export function Providers({ children }: ProvidersProps) {
     <ThemeProvider
       attribute="class"
       defaultTheme="light"
-      enableSystem={true}
+      enableSystem={false}
       enableColorScheme
     >
       <TooltipProvider delayDuration={250}>{children}</TooltipProvider>
