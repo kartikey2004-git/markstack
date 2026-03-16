@@ -6,9 +6,9 @@ import { HomeSectionScroller } from "@/components/layout/home-section-scroller";
 
 export default function Home() {
   return (
-    <div className="relative overflow-hidden py-8 sm:py-10 lg:py-12">
+    <div className="relative overflow-hidden py-6 sm:py-8 lg:py-12">
       <HomeSectionScroller />
-      <AppContainer className="relative space-y-16 sm:space-y-20">
+      <AppContainer className="relative space-y-12 sm:space-y-16 lg:space-y-20">
         <Hero />
         <Features />
         <FAQ />

@@ -32,10 +32,10 @@ export function Features() {
   return (
     <section id="features" className="space-y-8 py-8 sm:py-10">
       <div className="space-y-3 text-center">
-        <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+        <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
           Everything creators need
         </h2>
-        <p className="mx-auto max-w-2xl text-base text-muted-foreground sm:text-lg">
+        <p className="mx-auto max-w-2xl text-sm text-muted-foreground sm:text-base md:text-lg">
           A complete workspace with visual design, writing tools, and task
           planning.
         </p>
@@ -45,16 +45,16 @@ export function Features() {
         {features.map((feature) => (
           <Card
             key={feature.title}
-            className="group rounded-xl border border-border/70 bg-card/65 p-5 shadow-none transition-all duration-200 ease-in-out hover:border-border hover:bg-card hover:shadow-sm"
+            className="group rounded-xl border border-border/70 bg-card/65 p-4 shadow-none transition-all duration-200 ease-in-out hover:border-border hover:bg-card hover:shadow-sm sm:p-5"
           >
             <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-md border bg-muted/40">
               <feature.icon className="h-5 w-5 text-foreground" />
             </div>
             <div className="space-y-2">
-              <h3 className="text-base font-semibold tracking-tight">
+              <h3 className="text-sm font-semibold tracking-tight sm:text-base">
                 {feature.title}
               </h3>
-              <p className="text-sm leading-6 text-muted-foreground">
+              <p className="text-xs leading-5 text-muted-foreground sm:text-sm sm:leading-6">
                 {feature.description}
               </p>
             </div>
