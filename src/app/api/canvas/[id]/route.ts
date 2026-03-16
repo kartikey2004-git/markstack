@@ -147,3 +147,48 @@ export async function POST(
     );
   }
 }
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  try {
+    const { id: canvasId } = await params;
+
+    // Get the current user session using better-auth
+    const session = await auth.api.getSession({
+      headers: request.headers,
+    });
+
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Find canvas to verify ownership
+    const canvas = await db.canvas.findFirst({
+      where: {
+        id: canvasId,
+        userId: session.user.id,
+      },
+    });
+
+    if (!canvas) {
+      return NextResponse.json({ error: "Canvas not found" }, { status: 404 });
+    }
+
+    // Delete the canvas
+    await db.canvas.delete({
+      where: {
+        id: canvasId,
+      },
+    });
+
+    return NextResponse.json({ message: "Canvas deleted successfully" });
+  } catch (error) {
+    console.error("Canvas deletion error:", error);
+    return NextResponse.json(
+      { error: "Failed to delete canvas" },
+      { status: 500 },
+    );
+  }
+}

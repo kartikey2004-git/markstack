@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
+import { PageSkeleton } from "@/components/ui/page-skeleton";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,66 +20,45 @@ import { Badge } from "@/components/ui/badge";
 import { MoreHorizontal, Edit, Trash2, Eye, Plus, Clock3 } from "lucide-react";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
+import { ProtectedPageWrapper } from "@/components/layout/protected-page-wrapper";
 
 export default function DashboardBlogsPage() {
   const { blogs, loading, error, deleteBlog } = useBlogs();
 
   if (loading) {
     return (
-      <div className="space-y-6 py-2 sm:py-4">
-        <div className="space-y-2">
-          <Skeleton className="h-8 w-40" />
-          <Skeleton className="h-4 w-64" />
-        </div>
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, index) => (
-            <Card key={index} className="border-border/80 bg-card/70 shadow-sm">
-              <CardHeader className="space-y-3">
-                <Skeleton className="h-5 w-3/4" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-2/3" />
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Skeleton className="h-4 w-1/2" />
-                <Skeleton className="h-9 w-full" />
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
+      <ProtectedPageWrapper>
+        <PageSkeleton cardCount={6} gridCols="3" />
+      </ProtectedPageWrapper>
     );
   }
 
   if (error) {
     return (
-      <div className="py-4">
+      <ProtectedPageWrapper>
         <Card className="mx-auto max-w-xl border-destructive/30 bg-destructive/5">
           <CardHeader>
             <CardTitle>Unable to load your blogs</CardTitle>
             <CardDescription>{error}</CardDescription>
           </CardHeader>
         </Card>
-      </div>
+      </ProtectedPageWrapper>
     );
   }
 
   return (
-    <div className="space-y-6 py-2 sm:py-4">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-1">
-          <h1 className="text-3xl font-semibold tracking-tight">My blogs</h1>
-          <p className="text-sm text-muted-foreground sm:text-base">
-            Manage your posts in one place.
-          </p>
-        </div>
+    <ProtectedPageWrapper
+      title="My blogs"
+      description="Manage your posts in one place."
+      actions={
         <Link href="/editor" className="w-full sm:w-auto">
           <Button className="h-10 w-full gap-2 sm:w-auto">
             <Plus className="size-4" />
             New blog
           </Button>
         </Link>
-      </div>
-
+      }
+    >
       {blogs.length === 0 ? (
         <Card className="border-dashed border-border/80 bg-card/60">
           <CardContent className="py-14 text-center">
@@ -178,6 +157,6 @@ export default function DashboardBlogsPage() {
           ))}
         </div>
       )}
-    </div>
+    </ProtectedPageWrapper>
   );
 }
