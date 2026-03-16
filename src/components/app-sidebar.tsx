@@ -100,10 +100,7 @@ export function AppSidebar({ children }: AppSidebarProps) {
           </SidebarContent>
 
           <SidebarFooter>
-            <div className="flex items-center gap-2 p-1">
-              <ThemeToggle />
-              <UserMenu />
-            </div>
+            {/* Footer is now empty - items moved to header */}
           </SidebarFooter>
         </Sidebar>
 
@@ -111,6 +108,10 @@ export function AppSidebar({ children }: AppSidebarProps) {
           <header className="sticky top-0 z-20 flex h-14 items-center gap-4 border-b bg-background/85 backdrop-blur px-4">
             <SidebarTrigger />
             <div className="flex-1" />
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <UserMenu />
+            </div>
           </header>
 
           <main className="flex-1 overflow-auto">{children}</main>

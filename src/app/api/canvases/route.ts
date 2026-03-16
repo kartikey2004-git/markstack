@@ -24,8 +24,6 @@ export async function GET(request: NextRequest) {
       select: {
         id: true,
         title: true,
-        isPublic: true,
-        shareToken: true,
         createdAt: true,
         updatedAt: true,
       },
@@ -36,7 +34,7 @@ export async function GET(request: NextRequest) {
     console.error("Canvases fetch error:", error);
     return NextResponse.json(
       { error: "Failed to fetch canvases" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -48,7 +46,7 @@ export async function DELETE(request: NextRequest) {
     if (!canvasId) {
       return NextResponse.json(
         { error: "Canvas ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -61,7 +59,7 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Delete the canvas (and associated versions due to cascade delete)
+    // Delete the canvas
     const deleteResult = await db.canvas.deleteMany({
       where: {
         id: canvasId,
@@ -70,18 +68,18 @@ export async function DELETE(request: NextRequest) {
     });
 
     if (deleteResult.count === 0) {
-      return NextResponse.json(
-        { error: "Canvas not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Canvas not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ success: true, message: "Canvas deleted successfully" });
+    return NextResponse.json({
+      success: true,
+      message: "Canvas deleted successfully",
+    });
   } catch (error) {
     console.error("Canvas delete error:", error);
     return NextResponse.json(
       { error: "Failed to delete canvas" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

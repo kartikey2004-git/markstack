@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { Monitor, Moon, Sun } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import {
   ThemeAnimationType,
   useModeAnimation,
@@ -21,16 +21,15 @@ import { cn } from "@/lib/utils";
 const themeOptions = [
   { value: "light", label: "Light", icon: Sun },
   { value: "dark", label: "Dark", icon: Moon },
-  { value: "system", label: "System", icon: Monitor },
 ] as const;
 
 type ThemeOption = (typeof themeOptions)[number]["value"];
 
 export function ThemeToggle({ className }: { className?: string }) {
   const pendingThemeRef = useRef<ThemeOption | null>(null);
-  const { resolvedTheme, setTheme, systemTheme, theme } = useTheme();
-  const currentTheme = theme ?? "system";
-  const effectiveTheme = resolvedTheme ?? systemTheme ?? "light";
+  const { resolvedTheme, setTheme, theme } = useTheme();
+  const currentTheme = theme ?? "light";
+  const effectiveTheme = resolvedTheme ?? "light";
   const { ref, toggleSwitchTheme } = useModeAnimation({
     animationType: ThemeAnimationType.BLUR_CIRCLE,
     blurAmount: 3,
@@ -51,22 +50,12 @@ export function ThemeToggle({ className }: { className?: string }) {
     styleId: "markstack-theme-switch",
   });
 
-  const getEffectiveTheme = (nextTheme: ThemeOption) => {
-    if (nextTheme === "system") {
-      return systemTheme ?? effectiveTheme;
-    }
-
-    return nextTheme;
-  };
-
   const handleThemeChange = async (nextTheme: ThemeOption) => {
     if (nextTheme === currentTheme) {
       return;
     }
 
-    const nextEffectiveTheme = getEffectiveTheme(nextTheme);
-
-    if (nextEffectiveTheme === effectiveTheme) {
+    if (nextTheme === effectiveTheme) {
       pendingThemeRef.current = null;
       setTheme(nextTheme);
       return;

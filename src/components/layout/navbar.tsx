@@ -13,7 +13,6 @@ const navigation = [
   { href: "/editor", label: "Editor" },
   { href: "/canvases", label: "My Canvases" },
   { href: "/todos", label: "Todo Planner" },
-  { href: "/canvas/new", label: "New Canvas" },
 ];
 
 export function Navbar() {

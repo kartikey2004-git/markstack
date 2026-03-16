@@ -92,15 +92,6 @@ export function UserMenu() {
 
   return (
     <div className="flex items-center gap-2">
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => router.push("/editor")}
-        className="hidden sm:inline-flex"
-      >
-        <PenSquare className="mr-2 h-4 w-4" />
-        Write
-      </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
