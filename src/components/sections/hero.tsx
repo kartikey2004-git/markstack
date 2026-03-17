@@ -38,7 +38,7 @@ export function Hero() {
   };
 
   return (
-    <section className="relative overflow-hidden rounded-2xl border bg-card/50 px-4 py-12 shadow-sm sm:px-8 sm:py-16 md:px-10 md:py-20">
+    <section className="relative overflow-hidden rounded-2xl bg-card/50 px-4 py-12 sm:px-8 sm:py-16 md:px-10 md:py-20">
       <div className="mx-auto max-w-4xl text-center">
         <div className="mb-4 flex justify-center sm:mb-6">
           <Badge
@@ -96,7 +96,6 @@ export function Hero() {
             size="lg"
             className="h-10 w-full px-5 sm:w-auto"
             onClick={handleBrowseContent}
-            disabled={isAuthenticated === null}
           >
             Browse Content
           </Button>

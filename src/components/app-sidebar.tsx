@@ -19,35 +19,7 @@ import {
 } from "@/components/ui/sidebar";
 import { UserMenu } from "@/components/shared/user-menu";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
-
-const navigation = [
-  {
-    title: "Workspace",
-    items: [
-      {
-        title: "Editor",
-        url: "/editor",
-      },
-      {
-        title: "Blogs",
-        url: "/dashboard/blogs",
-      },
-    ],
-  },
-  {
-    title: "Productivity",
-    items: [
-      {
-        title: "Canvases",
-        url: "/canvases",
-      },
-      {
-        title: "Todo Planner",
-        url: "/todos",
-      },
-    ],
-  },
-];
+import { NAVIGATION_CONFIG } from "@/config/navigation";
 
 interface AppSidebarProps {
   children: React.ReactNode;
@@ -73,7 +45,7 @@ export function AppSidebar({ children }: AppSidebarProps) {
           </SidebarHeader>
 
           <SidebarContent>
-            {navigation.map((group) => (
+            {NAVIGATION_CONFIG.map((group) => (
               <SidebarGroup key={group.title}>
                 <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
                 <SidebarGroupContent>

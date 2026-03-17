@@ -86,7 +86,7 @@ model Blog {
   content     String
   htmlContent Json?
   coverImage  String?
-  published   Boolean   @default(false)
+  status      String    @default("draft")
   readTime    Int?
   authorId    String
   createdAt   DateTime  @default(now())

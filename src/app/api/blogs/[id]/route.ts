@@ -52,7 +52,7 @@ export async function PATCH(
     }
 
     const body = await request.json();
-    const { title, content, slug, description } = body;
+    const { title, content, slug, description, status } = body;
 
     const updateData: Prisma.BlogUpdateManyMutationInput = {};
     if (title !== undefined) updateData.title = title;
@@ -66,7 +66,7 @@ export async function PATCH(
     }
     if (slug !== undefined) updateData.slug = slug;
     if (description !== undefined) updateData.description = description || null;
-    updateData.published = true;
+    if (status !== undefined) updateData.status = status;
 
     const updateResult = await db.blog.updateMany({
       where: {

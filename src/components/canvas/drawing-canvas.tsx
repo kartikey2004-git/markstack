@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useCallback, useMemo } from "react";
+import { useEffect, useRef, useCallback, useMemo, useState } from "react";
 import "@excalidraw/excalidraw/index.css";
 
 const Excalidraw = dynamic(
@@ -25,6 +25,12 @@ interface DrawingCanvasProps {
   excalidrawAPI?: (api: any) => void;
 }
 
+interface UndoRedoState {
+  past: Array<{ elements: readonly any[]; appState: any }>;
+  present: { elements: readonly any[]; appState: any };
+  future: Array<{ elements: readonly any[]; appState: any }>;
+}
+
 export default function DrawingCanvas({
   initialData,
   onChange,
@@ -35,10 +41,15 @@ export default function DrawingCanvas({
   excalidrawAPI,
 }: DrawingCanvasProps) {
   const excalidrawRef = useRef<any>(null);
+  const initialDataRef = useRef<any>(null);
+  const hasInitialized = useRef(false);
+  const lastCanvasDataRef = useRef<any>(null);
 
-  // Ensure initialData has proper structure for Excalidraw - memoized to prevent infinite loops
-  const finalInitialData = useMemo(() => {
-    const safeInitialData = {
+  // Initialize canvas data once on mount
+  useEffect(() => {
+    if (!initialData || hasInitialized.current) return;
+
+    initialDataRef.current = {
       elements: initialData?.elements || [],
       appState: {
         collaborators: Array.isArray(initialData?.appState?.collaborators)
@@ -74,50 +85,92 @@ export default function DrawingCanvas({
         zenModeEnabled: initialData?.appState?.zenModeEnabled || false,
         gridModeEnabled: initialData?.appState?.gridModeEnabled || false,
       },
-      files: initialData?.files || {},
+      files: {},
     };
 
-    // Force collaborators to be an array no matter what
-    safeInitialData.appState.collaborators = Array.isArray(
-      safeInitialData.appState.collaborators,
-    )
-      ? safeInitialData.appState.collaborators
-      : [];
+    hasInitialized.current = true;
+  }, [initialData]);
 
-    // Create a completely new object to avoid any reference issues
-    const finalData = JSON.parse(JSON.stringify(safeInitialData));
-    finalData.appState.collaborators = Array.isArray(
-      finalData.appState.collaborators,
-    )
-      ? finalData.appState.collaborators
-      : [];
-
-    return finalData;
-  }, [initialData]); // Only recalculate when initialData changes
-
+  // Handle canvas changes with proper state management
   const handleChange = useCallback(
     (elements: readonly any[], appState: any, files: any) => {
-      // Ensure appState has collaborators array before passing to callbacks
-      const safeAppState = {
-        collaborators: Array.isArray(appState?.collaborators)
-          ? appState.collaborators
-          : [],
-        ...appState,
-      };
+      const newCanvasData = { elements, appState };
 
-      if (onChange) {
-        onChange(elements, safeAppState, files);
+      // Prevent unnecessary updates
+      if (
+        JSON.stringify(lastCanvasDataRef.current) ===
+        JSON.stringify(newCanvasData)
+      ) {
+        return;
       }
 
-      // Removed automatic debounced save - only manual saves allowed
+      lastCanvasDataRef.current = newCanvasData;
+
+      if (onChange) {
+        onChange(elements, appState, files);
+      }
     },
     [onChange],
   );
 
+  const undo = useCallback(() => {
+    if (!initialDataRef.current) return;
+
+    const currentData = lastCanvasDataRef.current;
+    if (!currentData) return;
+
+    // Create previous state from current elements (simplified)
+    const previousElements = currentData.elements.slice(0, -1);
+    if (previousElements.length === 0) return;
+
+    const newCanvasData = {
+      elements: previousElements,
+      appState: currentData.appState,
+    };
+
+    lastCanvasDataRef.current = newCanvasData;
+
+    if (excalidrawRef.current) {
+      excalidrawRef.current.updateScene({
+        elements: previousElements,
+        appState: currentData.appState,
+      });
+    }
+
+    if (onChange) {
+      onChange(previousElements, currentData.appState, {});
+    }
+  }, [onChange]);
+
+  const redo = useCallback(() => {
+    console.log("Redo functionality would need future state tracking");
+  }, [onChange]);
+
+  // Add keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (readOnly) return;
+
+      // Ctrl+Z for undo, Ctrl+Shift+Z for redo
+      if (event.ctrlKey || event.metaKey) {
+        if (event.shiftKey && event.key === "z") {
+          event.preventDefault();
+          redo();
+        } else if (event.key === "z") {
+          event.preventDefault();
+          undo();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [undo, redo, readOnly]);
+
   return (
     <div className={`h-full w-full ${className}`}>
       <Excalidraw
-        initialData={finalInitialData}
+        initialData={initialDataRef.current}
         onChange={handleChange}
         viewModeEnabled={readOnly}
         theme={theme}

@@ -8,6 +8,7 @@ import { Toolbar } from "@/components/editor/editor-toolbar";
 import { MarkdownEditor } from "@/components/editor/markdown-editor";
 import { MarkdownPreview } from "@/components/editor/preview-pane";
 import { ImageDropzone } from "@/components/editor/image-dropzone";
+import { MarkdownDropzone } from "@/components/editor/markdown-dropzone";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -85,6 +86,13 @@ export function EditorWrapper({ blog }: EditorWrapperProps) {
     [setEditorRef],
   );
 
+  const handleFileUpload = useCallback(
+    (content: string) => {
+      setContent(content);
+    },
+    [setContent],
+  );
+
   const handleSaveBlog = useCallback(async () => {
     const slug = await saveBlog(content, blog?.id);
     if (slug) {
@@ -126,6 +134,7 @@ export function EditorWrapper({ blog }: EditorWrapperProps) {
         <Toolbar
           onInsert={insertSyntax}
           onStructureMarkdown={handleStructureMarkdown}
+          onFileUpload={handleFileUpload}
         />
 
         <div className="h-[70vh] min-h-130">
@@ -138,6 +147,7 @@ export function EditorWrapper({ blog }: EditorWrapperProps) {
                 className={`relative h-full bg-background ${isMobile ? "border-b" : "border-r"}`}
               >
                 <ImageDropzone onImageUpload={handleImageUpload} />
+                <MarkdownDropzone onMarkdownUpload={handleFileUpload} />
                 <MarkdownEditor
                   value={content}
                   onChange={setContent}

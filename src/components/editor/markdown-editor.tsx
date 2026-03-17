@@ -48,6 +48,10 @@ export function MarkdownEditor({
       }
 
       editor.onDidChangeModelContent(() => {
+        // Force onChange callback to ensure preview updates
+        const currentValue = editor.getValue();
+        onChange(currentValue);
+
         const position = editor.getPosition();
         if (!position) {
           return;
@@ -87,6 +91,12 @@ export function MarkdownEditor({
         } else {
           closeMenu();
         }
+      });
+
+      // Add paste handler to ensure paste events trigger updates
+      editor.onDidPaste(() => {
+        const currentValue = editor.getValue();
+        onChange(currentValue);
       });
 
       editor.onDidBlurEditorText(() => {

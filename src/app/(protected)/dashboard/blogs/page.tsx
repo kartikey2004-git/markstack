@@ -17,13 +17,23 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
-import { MoreHorizontal, Edit, Trash2, Eye, Plus, Clock3 } from "lucide-react";
+import {
+  MoreHorizontal,
+  Edit,
+  Trash2,
+  Eye,
+  Plus,
+  Clock3,
+  Send,
+  FileX,
+} from "lucide-react";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { ProtectedPageWrapper } from "@/components/layout/protected-page-wrapper";
 
 export default function DashboardBlogsPage() {
-  const { blogs, loading, error, deleteBlog } = useBlogs();
+  const { blogs, loading, error, deleteBlog, publishBlog, unpublishBlog } =
+    useBlogs();
 
   if (loading) {
     return (
@@ -76,7 +86,7 @@ export default function DashboardBlogsPage() {
           {blogs.map((blog) => (
             <Card
               key={blog.id}
-              className="flex h-full flex-col border-border/80 bg-card/70 shadow-sm"
+              className="flex h-full flex-col border-border/80 bg-card/70 shadow-sm card-hover"
             >
               <CardHeader className="space-y-3">
                 <div className="flex items-start justify-between gap-3">
@@ -85,8 +95,12 @@ export default function DashboardBlogsPage() {
                       <CardTitle className="line-clamp-2 text-lg font-semibold tracking-tight">
                         {blog.title}
                       </CardTitle>
-                      <Badge variant={blog.published ? "default" : "secondary"}>
-                        {blog.published ? "Published" : "Draft"}
+                      <Badge
+                        variant={
+                          blog.status === "published" ? "default" : "secondary"
+                        }
+                      >
+                        {blog.status === "published" ? "Published" : "Draft"}
                       </Badge>
                     </div>
                     <CardDescription className="truncate text-xs">
@@ -110,12 +124,24 @@ export default function DashboardBlogsPage() {
                           Edit
                         </Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link href={`/blogs/${blog.slug}`} className="gap-2">
-                          <Eye className="size-4" />
-                          View
-                        </Link>
-                      </DropdownMenuItem>
+                      
+                      {blog.status === "draft" ? (
+                        <DropdownMenuItem
+                          className="gap-2"
+                          onClick={() => publishBlog(blog.id)}
+                        >
+                          <Send className="size-4" />
+                          Publish
+                        </DropdownMenuItem>
+                      ) : (
+                        <DropdownMenuItem
+                          className="gap-2"
+                          onClick={() => unpublishBlog(blog.id)}
+                        >
+                          <FileX className="size-4" />
+                          Unpublish
+                        </DropdownMenuItem>
+                      )}
                       <DropdownMenuItem
                         className="gap-2 text-destructive focus:text-destructive"
                         onClick={() => deleteBlog(blog.id)}

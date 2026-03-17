@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   Bold,
   Italic,
@@ -14,6 +14,8 @@ import {
   Heading3,
   Sparkles,
   Loader2,
+  Upload,
+  FileText,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -28,11 +30,17 @@ import {
 export interface ToolbarProps {
   onInsert: (syntax: string) => Promise<void>;
   onStructureMarkdown?: () => Promise<void>;
+  onFileUpload?: (content: string) => void;
 }
 
-export function Toolbar({ onInsert, onStructureMarkdown }: ToolbarProps) {
+export function Toolbar({
+  onInsert,
+  onStructureMarkdown,
+  onFileUpload,
+}: ToolbarProps) {
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
   const [isStructuring, setIsStructuring] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleInsert = async (syntax: string) => {
     setLoadingAction(syntax);
@@ -51,6 +59,34 @@ export function Toolbar({ onInsert, onStructureMarkdown }: ToolbarProps) {
       await onStructureMarkdown();
     } finally {
       setIsStructuring(false);
+    }
+  };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !onFileUpload) return;
+
+    if (file.type !== "text/markdown" && !file.name.endsWith(".md")) {
+      alert("Please select a markdown file (.md)");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target?.result as string;
+      onFileUpload(content);
+    };
+    reader.readAsText(file);
+
+    // Reset input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const handleUploadClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
     }
   };
 
@@ -97,6 +133,32 @@ export function Toolbar({ onInsert, onStructureMarkdown }: ToolbarProps) {
         ))}
 
         <div className="mx-1 h-6 w-px bg-border" />
+
+        {onFileUpload && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleUploadClick}
+                className="h-8 px-2 transition-all duration-200 ease-in-out"
+              >
+                <Upload className="h-4 w-4 mr-1" />
+                <span className="text-xs">Upload</span>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".md,text/markdown"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Upload Markdown File</p>
+            </TooltipContent>
+          </Tooltip>
+        )}
 
         <Tooltip>
           <TooltipTrigger asChild>

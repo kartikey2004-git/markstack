@@ -17,8 +17,8 @@ async function getBlogPost(slug: string, authorId?: string) {
     where: {
       slug,
       OR: [
-        { published: true },
-        ...(authorId ? [{ authorId, published: false }] : []),
+        { status: "published" },
+        ...(authorId ? [{ authorId, status: "draft" }] : []),
       ],
     },
     include: {
