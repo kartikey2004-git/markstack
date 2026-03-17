@@ -45,11 +45,11 @@ export default function DrawingCanvas({
   const hasInitialized = useRef(false);
   const lastCanvasDataRef = useRef<any>(null);
 
-  // Initialize canvas data once on mount
-  useEffect(() => {
-    if (!initialData || hasInitialized.current) return;
+  // Safe initial data creation with useMemo
+  const safeInitialData = useMemo(() => {
+    if (!initialData) return undefined;
 
-    initialDataRef.current = {
+    return {
       elements: initialData?.elements || [],
       appState: {
         collaborators: Array.isArray(initialData?.appState?.collaborators)
@@ -87,16 +87,25 @@ export default function DrawingCanvas({
       },
       files: {},
     };
+  }, [initialData?.id, initialData?.elements?.length]); // Only depend on stable values
 
+  // Initialize canvas data once on mount - CRITICAL FIX
+  useEffect(() => {
+    if (!safeInitialData) return;
+
+    // Only initialize if we haven't already
+    if (hasInitialized.current) {
+      return;
+    }
+
+    initialDataRef.current = safeInitialData;
     hasInitialized.current = true;
-  }, [initialData]);
+  }, [safeInitialData]);
 
   // Handle canvas changes with proper state management
   const handleChange = useCallback(
     (elements: readonly any[], appState: any, files: any) => {
       const newCanvasData = { elements, appState };
-
-      // Prevent unnecessary updates
       if (
         JSON.stringify(lastCanvasDataRef.current) ===
         JSON.stringify(newCanvasData)
@@ -143,7 +152,6 @@ export default function DrawingCanvas({
   }, [onChange]);
 
   const redo = useCallback(() => {
-    console.log("Redo functionality would need future state tracking");
   }, [onChange]);
 
   // Add keyboard shortcuts
@@ -170,7 +178,7 @@ export default function DrawingCanvas({
   return (
     <div className={`h-full w-full ${className}`}>
       <Excalidraw
-        initialData={initialDataRef.current}
+        initialData={safeInitialData}
         onChange={handleChange}
         viewModeEnabled={readOnly}
         theme={theme}
