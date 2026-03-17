@@ -11,13 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Badge } from "@/components/ui/badge";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { toast } from "sonner";
 import {
   Save,
@@ -38,6 +32,7 @@ export default function CanvasPage() {
   const params = useParams();
   const { theme } = useTheme();
   const [canvasData, setCanvasData] = useState<CanvasData | null>(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -73,14 +68,15 @@ export default function CanvasPage() {
   const fetchCanvas = useCallback(async () => {
     try {
       const response = await fetch(`/api/canvas/${canvasId}`);
+
       if (!response.ok) {
         if (response.status === 404) {
-          // Canvas doesn't exist, create it
           await createCanvas();
           return;
         }
         throw new Error("Canvas not found");
       }
+
       const data = await response.json();
       setCanvasData(data.canvas.data);
     } catch (err) {
@@ -134,13 +130,24 @@ export default function CanvasPage() {
     }
   };
 
+  const handleCanvasChange = useCallback(
+    (elements: readonly any[], appState: any, files: any) => {
+      const newCanvasData = {
+        elements,
+        appState,
+        files,
+      };
+      setCanvasData(newCanvasData);
+    },
+    [],
+  );
+
   const handleShare = async () => {
     try {
       const url = window.location.href;
       await navigator.clipboard.writeText(url);
       toast.success("Canvas link copied to clipboard!");
     } catch (clipboardError) {
-      // Fallback if clipboard API fails
       const textArea = document.createElement("textarea");
       textArea.value = window.location.href;
       document.body.appendChild(textArea);
@@ -156,12 +163,14 @@ export default function CanvasPage() {
 
     try {
       const elements = excalidrawAPIRef.current.getSceneElements();
+
       if (!elements || !elements.length) {
         toast.error("Canvas is empty");
         return;
       }
 
       const { exportToBlob } = await import("@excalidraw/excalidraw");
+
       const blob = await exportToBlob({
         elements,
         appState: excalidrawAPIRef.current.getAppState(),
@@ -187,12 +196,14 @@ export default function CanvasPage() {
 
     try {
       const elements = excalidrawAPIRef.current.getSceneElements();
+
       if (!elements || !elements.length) {
         toast.error("Canvas is empty");
         return;
       }
 
       const { exportToSvg } = await import("@excalidraw/excalidraw");
+
       const svg = await exportToSvg({
         elements,
         appState: excalidrawAPIRef.current.getAppState(),
@@ -218,6 +229,7 @@ export default function CanvasPage() {
 
     try {
       const elements = excalidrawAPIRef.current.getSceneElements();
+
       const appState = excalidrawAPIRef.current.getAppState();
       const files = excalidrawAPIRef.current.getFiles();
 
@@ -226,6 +238,7 @@ export default function CanvasPage() {
       const serialized = serializeAsJSON(elements, appState, files, "local");
 
       const blob = new Blob([serialized], { type: "application/json" });
+
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -239,29 +252,6 @@ export default function CanvasPage() {
     }
   };
 
-  const handleCanvasChange = useCallback(
-    (elements: readonly any[], appState: any, files: any) => {
-      // Only update state if the data has actually changed
-      if (
-        !canvasData ||
-        canvasData.elements !== elements ||
-        JSON.stringify(canvasData.appState) !== JSON.stringify(appState) ||
-        canvasData.files !== files
-      ) {
-        setCanvasData({ elements, appState, files });
-      }
-    },
-    [canvasData],
-  );
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-full w-full">
-        <div className="text-lg">Loading canvas...</div>
-      </div>
-    );
-  }
-
   if (error) {
     return (
       <div className="flex items-center justify-center h-full w-full">
@@ -270,10 +260,19 @@ export default function CanvasPage() {
     );
   }
 
+  if (loading || !canvasData) {
+    return (
+      <div className="flex items-center justify-center h-full w-full">
+        <div className="text-muted-foreground">Loading canvas...</div>
+      </div>
+    );
+  }
+
   return (
     <TooltipProvider>
       <div className="flex flex-col h-full w-full">
         {/* Editor Header */}
+
         <div className="border-b bg-background px-6 py-3 flex-shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
@@ -288,6 +287,7 @@ export default function CanvasPage() {
                 disabled={saving}
               >
                 <Save className="w-4 h-4 mr-2" />
+
                 {saving ? "Saving..." : "Save"}
               </Button>
 
@@ -303,15 +303,18 @@ export default function CanvasPage() {
                     Export
                   </Button>
                 </DropdownMenuTrigger>
+
                 <DropdownMenuContent className="w-48">
                   <DropdownMenuItem onClick={handleExportPNG}>
                     <FileImage className="w-4 h-4 mr-2" />
                     Export as PNG
                   </DropdownMenuItem>
+
                   <DropdownMenuItem onClick={handleExportSVG}>
                     <FileCode className="w-4 h-4 mr-2" />
                     Export as SVG
                   </DropdownMenuItem>
+
                   <DropdownMenuItem onClick={handleExportJSON}>
                     <FileJson className="w-4 h-4 mr-2" />
                     Export as JSON
