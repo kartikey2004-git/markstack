@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { requireAuth } from "@/lib/auth-utils";
 import db from "@/lib/database";
 import { EditorWrapper } from "@/components/editor/editor-wrapper";
+import type { Blog } from "@/types/blog";
 
 export default async function EditorPage({
   params,
@@ -22,5 +23,10 @@ export default async function EditorPage({
     notFound();
   }
 
-  return <EditorWrapper blog={blog} />;
+  const typedBlog: Blog = {
+    ...blog,
+    status: blog.status as "draft" | "published",
+  };
+
+  return <EditorWrapper blog={typedBlog} />;
 }
