@@ -27,7 +27,7 @@ export async function GET() {
         description: true,
         createdAt: true,
         updatedAt: true,
-        published: true,
+        status: true,
       },
     });
 
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, content, slug, description } = body;
+    const { title, content, slug, description, status = "draft" } = body;
 
     if (!title || !content || !slug) {
       return NextResponse.json(
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
         description: description || null,
         htmlContent,
         readTime,
-        published: true,
+        status,
         authorId: user.id,
       },
     });

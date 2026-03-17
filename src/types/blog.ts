@@ -6,9 +6,14 @@ export interface Blog {
   content: string;
   htmlContent?: unknown | null;
   readTime?: number | null;
-  published: boolean;
+  status: "draft" | "published";
   createdAt: string | Date;
   updatedAt: string | Date;
+  author?: {
+    name: string;
+    email: string;
+    image?: string;
+  };
 }
 
 export type BlogSummary = Omit<Blog, "content" | "htmlContent" | "readTime">;
@@ -18,6 +23,7 @@ export interface BlogMutationPayload {
   slug: string;
   content: string;
   description?: string;
+  status?: "draft" | "published";
 }
 
 export interface BlogDraft {

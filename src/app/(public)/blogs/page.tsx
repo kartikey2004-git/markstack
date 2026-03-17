@@ -15,7 +15,7 @@ import { AppContainer } from "@/components/layout/app-container";
 export default async function BlogsPage() {
   const blogs = await db.blog.findMany({
     where: {
-      published: true,
+      status: "published",
     },
     orderBy: {
       createdAt: "desc",
@@ -60,7 +60,7 @@ export default async function BlogsPage() {
           {blogs.map((blog) => (
             <Card
               key={blog.id}
-              className="flex h-full flex-col border-border/80 bg-card/70 shadow-sm"
+              className="flex h-full flex-col border-border/80 bg-card/70 shadow-sm card-hover"
             >
               <CardHeader className="space-y-3">
                 <div className="min-w-0 space-y-1">

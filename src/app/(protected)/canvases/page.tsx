@@ -8,6 +8,7 @@ import { PageSkeleton } from "@/components/ui/page-skeleton";
 import { Plus, Eye, Share2, Trash2, Palette, FileText } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ProtectedPageWrapper } from "@/components/layout/protected-page-wrapper";
+import { toast } from "sonner";
 
 interface Canvas {
   id: string;
@@ -121,50 +122,73 @@ export default function AllCanvasesPage() {
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
             {canvases.map((canvas) => (
-              <Card key={canvas.id}>
+              <Card
+                key={canvas.id}
+                className="
+    group
+    transition-all duration-200
+    hover:border-foreground/20
+    hover:shadow-sm
+    cursor-pointer
+  "
+              >
                 <CardHeader className="pb-3">
-                  <div className="flex items-start justify-between">
-                    <CardTitle className="text-lg truncate">
+                  {/* 🔥 Top row: Title (left) + Created (right) */}
+                  <div className="flex items-start justify-between gap-4">
+                    <CardTitle className="text-base font-semibold truncate group-hover:text-foreground">
                       {canvas.title || "Untitled Canvas"}
                     </CardTitle>
+
+                    <span className="text-xs text-muted-foreground whitespace-nowrap">
+                      {new Date(canvas.createdAt).toLocaleDateString()}
+                    </span>
                   </div>
+
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Updated{" "}
+                    {formatDistanceToNow(new Date(canvas.updatedAt), {
+                      addSuffix: true,
+                    })}
+                  </p>
                 </CardHeader>
+
                 <CardContent className="pt-0">
-                  <div className="space-y-4">
-                    <div className="text-sm text-muted-foreground">
-                      Created{" "}
-                      {formatDistanceToNow(new Date(canvas.createdAt), {
-                        addSuffix: true,
-                      })}{" "}
-                      ago
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      Updated{" "}
-                      {formatDistanceToNow(new Date(canvas.updatedAt), {
-                        addSuffix: true,
-                      })}{" "}
-                      ago
-                    </div>
+                  <div className="flex items-center justify-between pt-2">
+                    {/* Primary */}
+                    <Link
+                      href={`/canvas/${canvas.id}`}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Button variant="secondary" size="sm">
+                        <Eye className="w-4 h-4 mr-2" />
+                        View
+                      </Button>
+                    </Link>
 
-                    <div className="flex gap-2 pt-4">
-                      <Link href={`/canvas/${canvas.id}`}>
-                        <Button variant="outline" size="sm" className="flex-1">
-                          <Eye className="w-4 h-4 mr-2" />
-                          Open
-                        </Button>
-                      </Link>
-
-                      <Link href={`/canvas/${canvas.id}`}>
-                        <Button variant="outline" size="sm">
-                          <Share2 className="w-4 h-4" />
-                        </Button>
-                      </Link>
+                    <div className="flex items-center gap-1">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigator.clipboard.writeText(
+                            `${window.location.origin}/canvas/${canvas.id}`,
+                          );
+                          toast.success("Link copied to clipboard");
+                        }}
+                      >
+                        <Share2 className="w-4 h-4" />
+                      </Button>
 
                       <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleDeleteCanvas(canvas.id)}
-                        className="text-destructive hover:text-destructive"
+                        variant="ghost"
+                        size="icon"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteCanvas(canvas.id);
+                        }}
+                        className="text-destructive"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>

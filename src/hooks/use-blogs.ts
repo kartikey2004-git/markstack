@@ -90,6 +90,62 @@ export function useBlogs() {
     }
   }, []);
 
+  const updateBlogStatus = useCallback(
+    async (id: string, status: "draft" | "published"): Promise<boolean> => {
+      try {
+        const response = await fetch(`/api/blogs/${id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ status }),
+        });
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            throw new Error("Please sign in to update this blog");
+          }
+          if (response.status === 404) {
+            throw new Error("Blog not found");
+          }
+          throw new Error("Failed to update blog status");
+        }
+
+        // Update local state
+        setBlogs((prev) =>
+          prev.map((blog) => (blog.id === id ? { ...blog, status } : blog)),
+        );
+
+        const action = status === "published" ? "published" : "unpublished";
+        toast.success(`Blog ${action} successfully`);
+        return true;
+      } catch (error) {
+        console.error("Error updating blog status:", error);
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "Failed to update blog status";
+        toast.error(errorMessage);
+        return false;
+      }
+    },
+    [],
+  );
+
+  const publishBlog = useCallback(
+    async (id: string): Promise<boolean> => {
+      return updateBlogStatus(id, "published");
+    },
+    [updateBlogStatus],
+  );
+
+  const unpublishBlog = useCallback(
+    async (id: string): Promise<boolean> => {
+      return updateBlogStatus(id, "draft");
+    },
+    [updateBlogStatus],
+  );
+
   useEffect(() => {
     fetchBlogs();
   }, [fetchBlogs]);
@@ -101,6 +157,8 @@ export function useBlogs() {
     fetchBlogs,
     fetchBlog,
     deleteBlog,
+    publishBlog,
+    unpublishBlog,
     refetch: fetchBlogs,
   };
 }
