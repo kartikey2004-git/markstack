@@ -1,72 +1,106 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { toast } from "sonner";
 import {
   applyMarkdownFormat,
   FormatType,
 } from "@/lib/markdown/format-selection";
-import { serializeMDX } from "@/lib/markdown/mdx-renderer";
 import { uploadImage, createImageMarkdown } from "@/lib/markdown/image-upload";
 import type { SerializedMdx } from "@/lib/markdown/mdx-renderer";
 import type { EditorInstance } from "@/types/editor";
+
+async function fetchSerialized(
+  markdown: string,
+): Promise<SerializedMdx | null> {
+  try {
+    const res = await fetch("/api/serialize-mdx", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ markdown }),
+    });
+
+    if (!res.ok) {
+      console.error("Serialize API error:", res.status, res.statusText);
+      return null;
+    }
+
+    const { serialized } = (await res.json()) as {
+      serialized: SerializedMdx | null;
+    };
+    return serialized;
+  } catch (error) {
+    console.error("Fetch serialized error:", error);
+    return null;
+  }
+}
 
 export function useMarkdown(initialContent: string = "") {
   const [content, setContent] = useState(initialContent);
   const [serializedContent, setSerializedContent] =
     useState<SerializedMdx | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
   const editorRef = useRef<EditorInstance | null>(null);
+  const contentRef = useRef(initialContent);
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const requestIdRef = useRef(0);
 
   const updateContent = useCallback(async (newContent: string) => {
+    if (newContent === contentRef.current) return;
+    contentRef.current = newContent;
     setContent(newContent);
-    setIsLoading(true);
-    try {
-      const serialized = await serializeMDX(newContent);
-      setSerializedContent(serialized);
-    } catch (error) {
-      console.error("Error serializing MDX:", error);
-    } finally {
-      setIsLoading(false);
+
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
     }
+
+    debounceTimerRef.current = setTimeout(async () => {
+      const requestId = ++requestIdRef.current;
+      setIsLoading(true);
+
+      try {
+        const serialized = await fetchSerialized(newContent);
+        if (requestId !== requestIdRef.current) return;
+        setSerializedContent(serialized);
+      } catch {
+        if (requestId === requestIdRef.current) {
+          setSerializedContent(null);
+        }
+      } finally {
+        if (requestId === requestIdRef.current) {
+          setIsLoading(false);
+        }
+      }
+    }, 300);
   }, []);
 
   const insertSyntax = useCallback(
     async (syntaxKey: string) => {
-      if (!editorRef.current) return;
-
       const editor = editorRef.current;
+      if (!editor) return;
 
-      // Handle image separately since it's not in the formatting utility
       if (syntaxKey === "image") {
-        // This would open an image dialog - for now just insert placeholder
         const position = editor.getPosition();
         const model = editor.getModel();
-        if (!position || !model) {
-          return;
-        }
+        if (!position || !model) return;
 
         const offset = model.getOffsetAt(position);
+        const current = contentRef.current;
         const newContent =
-          content.slice(0, offset) +
+          current.slice(0, offset) +
           "\n![Alt text](url)\n" +
-          content.slice(offset);
+          current.slice(offset);
         editor.setValue(newContent);
         await updateContent(newContent);
         return;
       }
 
-      // Apply formatting using the new utility
       applyMarkdownFormat(editor, syntaxKey as FormatType);
-
-      // Update preview with new content
-      const newContent = editor.getValue();
-      await updateContent(newContent);
-
-      // Keep focus on editor
+      await updateContent(editor.getValue());
       editor.focus();
     },
-    [updateContent, content],
+    [updateContent],
   );
 
   const handleImageUpload = useCallback(
@@ -74,87 +108,85 @@ export function useMarkdown(initialContent: string = "") {
       try {
         const image = await uploadImage(file);
         const imageMarkdown = createImageMarkdown(image);
+        const editor = editorRef.current;
+        if (!editor) return;
 
-        if (editorRef.current) {
-          const editor = editorRef.current;
-          const position = editor.getPosition();
-          const model = editor.getModel();
-          if (!position || !model) {
-            return;
-          }
+        const position = editor.getPosition();
+        const model = editor.getModel();
+        if (!position || !model) return;
 
-          const offset = model.getOffsetAt(position);
-          const newContent =
-            content.slice(0, offset) +
-            "\n" +
-            imageMarkdown +
-            "\n" +
-            content.slice(offset);
-          editor.setValue(newContent);
-          await updateContent(newContent);
-        }
-      } catch (error) {
-        console.error("Error uploading image:", error);
+        const offset = model.getOffsetAt(position);
+        const current = contentRef.current;
+        const newContent =
+          current.slice(0, offset) +
+          "\n" +
+          imageMarkdown +
+          "\n" +
+          current.slice(offset);
+        editor.setValue(newContent);
+        await updateContent(newContent);
+      } catch {
+        toast.error("Failed to upload image");
       }
     },
-    [content, updateContent],
+    [updateContent],
   );
 
   const handleStructureMarkdown = useCallback(async () => {
-    if (!editorRef.current) return;
+    const editor = editorRef.current;
+    if (!editor) return;
 
-    let toastId: string | number | undefined;
+    const currentContent = editor.getValue();
+    if (!currentContent.trim()) {
+      toast.warning("No content to structure");
+      return;
+    }
+
+    const toastId = toast.loading("Structuring markdown...");
 
     try {
-      const currentContent = editorRef.current.getValue();
-
-      if (!currentContent.trim()) {
-        toast.warning("No content to structure");
-        return;
-      }
-
-      toastId = toast.loading("Structuring markdown...");
-
       const response = await fetch("/api/structure-markdown", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ markdown: currentContent }),
       });
 
       if (!response.ok) {
-        const errorData = await response
+        const { error } = await response
           .json()
           .catch(() => ({}) as { error?: string });
-        throw new Error(errorData.error || "Failed to structure markdown");
+        throw new Error(error ?? "Failed to structure markdown");
       }
 
-      const data = (await response.json()) as { markdown?: string };
-      const structuredContent = data.markdown;
+      const { markdown: structured } = (await response.json()) as {
+        markdown?: string;
+      };
 
-      if (structuredContent && structuredContent !== currentContent) {
-        editorRef.current.setValue(structuredContent);
-        await updateContent(structuredContent);
+      if (structured && structured !== currentContent) {
+        editor.setValue(structured);
+        await updateContent(structured);
         toast.success("Markdown structured successfully!", { id: toastId });
       } else {
         toast.info("No changes needed", { id: toastId });
       }
     } catch (error) {
-      console.error("Error structuring markdown:", error);
-      if (toastId) {
-        toast.error("Failed to structure markdown. Please try again.", {
-          id: toastId,
-        });
-      } else {
-        toast.error("Failed to structure markdown. Please try again.");
-      }
+      toast.error("Failed to structure markdown. Please try again.", {
+        id: toastId,
+      });
       throw error;
     }
   }, [updateContent]);
 
   const setEditorRef = useCallback((editor: EditorInstance) => {
     editorRef.current = editor;
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
   }, []);
 
   return {

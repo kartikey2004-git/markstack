@@ -1,74 +1,80 @@
-"use client";
-
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-
-const faqs = [
-  {
-    question: "What is MarkStack?",
-    answer:
-      "MarkStack is a creator workspace that combines visual canvases, blog publishing, and task planning in one organized platform.",
-  },
-  {
-    question: "What can I create with MarkStack?",
-    answer:
-      "You can design visual canvases for creative projects, write and publish markdown blogs, and organize tasks with our calendar-based todo planner.",
-  },
-  {
-    question: "Do I need an account to read blogs?",
-    answer:
-      "No, anyone can read published blogs without an account. You only need to sign up to create content, canvases, or manage todos.",
-  },
-  {
-    question: "How does the canvas editor work?",
-    answer:
-      "The canvas editor provides a visual workspace where you can create designs, sketches, and diagrams. Your work is automatically saved and organized.",
-  },
-  {
-    question: "Can I manage my own blog posts?",
-    answer:
-      "Yes, registered users can write, edit, and publish blog posts with markdown support, live preview, and automatic SEO optimization.",
-  },
-  {
-    question: "Is MarkStack free to use?",
-    answer:
-      "MarkStack offers a complete workspace for creators. Sign up to access all features including canvases, blogs, and task planning.",
-  },
-];
-
 export function FAQ() {
   return (
-    <section id="faq" className="space-y-8 py-8 sm:py-10">
-      <div className="space-y-3 text-center">
-        <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
-          Frequently asked questions
-        </h2>
-        <p className="mx-auto max-w-2xl text-sm text-muted-foreground sm:text-base md:text-lg">
-          Everything you need to know about MarkStack's creator workspace.
-        </p>
-      </div>
+    <section id="faq" className="py-24 px-6">
+      <div className="max-w-7xl mx-auto space-y-24">
+        <div className="bg-card border border-border rounded-xl p-8">
+          <div className="flex items-center gap-3 mb-8">
+            <h2 className="text-3xl font-bold">Frequently Asked Questions</h2>
+          </div>
 
-      <div className="mx-auto max-w-3xl px-2 sm:px-0">
-        <Accordion type="single" collapsible className="space-y-3">
-          {faqs.map((faq, index) => (
-            <AccordionItem
-              key={index}
-              value={`item-${index}`}
-              className="rounded-xl border border-border/70 bg-card/70 px-4 sm:px-5"
-            >
-              <AccordionTrigger className="py-4 text-left text-xs font-medium hover:no-underline sm:text-sm">
-                {faq.question}
-              </AccordionTrigger>
-              <AccordionContent className="pb-4 text-xs leading-5 text-muted-foreground sm:text-sm sm:leading-6">
-                {faq.answer}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+          <div className="space-y-6">
+            <div className="border-b border-border pb-6">
+              <h3 className="text-lg font-semibold mb-3">
+                How is MarkStack different from Notion?
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                MarkStack is specifically designed for developers and content
+                creators with built-in blog publishing, canvas integration, and
+                a focus on markdown-first workflows. While Notion is a
+                general-purpose productivity tool, MarkStack provides
+                specialized features like SEO-optimized blog deployment,
+                Excalidraw canvas integration, and developer-friendly markdown
+                editing with syntax highlighting.
+              </p>
+            </div>
+
+            <div className="border-b border-border pb-6">
+              <h3 className="text-lg font-semibold mb-3">
+                Can I publish blogs publicly?
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Yes! MarkStack includes built-in blog publishing with one-click
+                deployment. Your blogs are automatically optimized for SEO,
+                responsive design, and include features like table of contents
+                generation, syntax highlighting for code blocks, and social
+                media integration. You can publish under your custom domain or
+                use our hosted platform.
+              </p>
+            </div>
+
+            <div className="border-b border-border pb-6">
+              <h3 className="text-lg font-semibold mb-3">Is my data secure?</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Absolutely. We use industry-standard encryption for data at rest
+                and in transit. All data is backed up regularly, and you
+                maintain full ownership of your content. We offer export
+                functionality so you can always download your data in standard
+                formats like Markdown, JSON, or HTML.
+              </p>
+            </div>
+
+            <div className="border-b border-border pb-6">
+              <h3 className="text-lg font-semibold mb-3">
+                Does it support collaboration?
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Yes, MarkStack supports real-time collaboration on documents and
+                canvases. You can invite team members to edit documents, leave
+                comments, and work together on visual diagrams. We also provide
+                version history and conflict resolution to ensure smooth
+                teamwork.
+              </p>
+            </div>
+
+            <div className="pb-6">
+              <h3 className="text-lg font-semibold mb-3">
+                What integrations are available?
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                MarkStack integrates with popular developer tools including
+                GitHub for version control, Excalidraw for visual diagrams, and
+                various CMS platforms for content distribution. We also provide
+                REST APIs and webhooks for custom integrations with your
+                existing workflow.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

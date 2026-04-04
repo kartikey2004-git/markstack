@@ -41,7 +41,7 @@ const resourceLinks: FooterLink[] = [
   { label: "GitHub", href: "https://github.com/kartikey2004-git" },
   { label: "Support", href: "mailto:hello@markstack.app" },
   { label: "Instagram", href: "https://www.instagram.com/_k4rtik.exe/" },
-  { label: "Twitter", href: "https://x.com/Bh20291Kartikey" },
+  { label: "Twitter", href: "https://x.com/kartikeybuilds" },
 ];
 
 const socialLinks: SocialLink[] = [
@@ -61,7 +61,7 @@ const socialLinks: SocialLink[] = [
     icon: Instagram,
   },
   {
-    href: "https://x.com/Bh20291Kartikey",
+    href: "https://x.com/kartikeybuilds",
     label: "Twitter",
     icon: Twitter,
   },

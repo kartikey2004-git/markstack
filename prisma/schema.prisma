@@ -96,6 +96,8 @@ model Blog {
 
   @@index([slug])
   @@index([authorId])
+  @@index([authorId, status]) // Composite index for user's published blogs
+  @@index([createdAt]) // Time-based queries
 }
 
 model Tag {
@@ -125,6 +127,7 @@ model Canvas {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+  @@index([userId, updatedAt]) // User's recent canvases
 }
 
 model Todo {
@@ -141,4 +144,6 @@ model Todo {
 
   @@index([date])
   @@index([userId])
+  @@index([userId, date]) // User's todos by date
+  @@index([userId, completed]) // User's completed/pending todos
 }

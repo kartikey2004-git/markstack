@@ -1,66 +1,208 @@
-import { Card } from "@/components/ui/card";
-import { Edit3, Palette, Calendar, FileText } from "lucide-react";
-
-const features = [
-  {
-    icon: Palette,
-    title: "Visual Canvas",
-    description:
-      "Create and organize visual designs with our interactive canvas workspace. Perfect for sketches, diagrams, and creative projects.",
-  },
-  {
-    icon: FileText,
-    title: "Blog Publishing",
-    description:
-      "Write and publish markdown blogs with live preview, tags, and public sharing. Your content reaches readers instantly.",
-  },
-  {
-    icon: Calendar,
-    title: "Todo Planner",
-    description:
-      "Organize tasks with our calendar-based todo system. Plan, track, and complete your work with date-based organization.",
-  },
-  {
-    icon: Edit3,
-    title: "Markdown Editor",
-    description:
-      "Professional markdown editor with Monaco-powered syntax highlighting and real-time preview for perfect formatting.",
-  },
-];
+import { Calendar, FileText } from "lucide-react";
 
 export function Features() {
   return (
-    <section id="features" className="space-y-8 py-8 sm:py-10">
-      <div className="space-y-3 text-center">
-        <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
-          Everything creators need
-        </h2>
-        <p className="mx-auto max-w-2xl text-sm text-muted-foreground sm:text-base md:text-lg">
-          A complete workspace with visual design, writing tools, and task
-          planning.
-        </p>
-      </div>
+    <>
+      <section id="features" className="py-24 px-6">
+        <div className="max-w-7xl mx-auto space-y-24">
+          {/* FEATURES (BENTO STYLE) */}
+          <section className="px-6">
+            <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-6">
+              {/* card */}
+              <div className="md:col-span-4 p-10 rounded-xl border bg-card hover:bg-accent/50 transition">
+                <div className="flex items-center gap-2 mb-4">
+                  <FileText className="w-5 h-5 text-primary" />
+                  <h3 className="text-2xl font-bold">3 Creative tools</h3>
+                </div>
+                <p className="text-muted-foreground">
+                  Visual canvas, markdown editor, and task planner in one place.
+                </p>
+              </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {features.map((feature) => (
-          <Card
-            key={feature.title}
-            className="group rounded-xl border border-border/70 bg-card/65 p-4 shadow-none transition-all duration-200 ease-in-out hover:border-border hover:bg-card hover:shadow-sm sm:p-5"
-          >
-            <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-md border bg-muted/40">
-              <feature.icon className="h-5 w-5 text-foreground" />
+              {/* big feature */}
+              <div className="md:col-span-8 p-10 rounded-xl border bg-card flex flex-col md:flex-row gap-8">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-2 h-2 bg-primary rounded-full"></div>
+                    <span className="text-xs uppercase tracking-widest text-muted-foreground">
+                      Connected Ecosystem
+                    </span>
+                  </div>
+                  <h3 className="text-3xl font-bold mt-2 mb-4">
+                    Markdown to Blog Publishing
+                  </h3>
+                  <p className="text-muted-foreground mt-4 mb-6">
+                    Transform your markdown documents into beautiful,
+                    SEO-optimized blog posts with one click. Built-in syntax
+                    highlighting, responsive design, and automatic table of
+                    contents generation.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs">
+                      Live Preview
+                    </span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs">
+                      SEO Optimized
+                    </span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs">
+                      Code Highlighting
+                    </span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs">
+                      Responsive Design
+                    </span>
+                  </div>
+                </div>
+
+                <div className="relative w-full md:w-1/2">
+                  <div className="bg-muted rounded-lg p-4 font-mono text-sm">
+                    <div className="space-y-2">
+                      <div className="text-primary"># My Blog Post</div>
+                      <div className="text-muted-foreground">
+                        Welcome to my markdown...
+                      </div>
+                      <div className="text-primary">```javascript</div>
+                      <div className="text-accent-foreground">
+                        const hello = "world";
+                      </div>
+                      <div className="text-primary">```</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="space-y-2">
-              <h3 className="text-sm font-semibold tracking-tight sm:text-base">
-                {feature.title}
-              </h3>
-              <p className="text-xs leading-5 text-muted-foreground sm:text-sm sm:leading-6">
-                {feature.description}
+          </section>
+
+          {/* FEATURES */}
+          <section className="max-w-7xl mx-auto mb-32 grid md:grid-cols-12 gap-4 -mt-10">
+            {/* BIG */}
+            <div className="md:col-span-8 bg-card border border-border p-8 rounded-xl">
+              <h3 className="text-3xl font-bold mb-4">Unified Workspace</h3>
+              <p className="text-muted-foreground max-w-md">
+                Markdown + canvas in one environment.
               </p>
             </div>
-          </Card>
-        ))}
-      </div>
-    </section>
+
+            {/* SIDE */}
+            <div className="md:col-span-4 bg-card border border-border p-8 rounded-xl">
+              <h4 className="text-xl font-bold mb-2">Blog Publishing</h4>
+              <p className="text-sm text-muted-foreground">
+                One-click deployment with SEO optimization.
+              </p>
+            </div>
+          </section>
+
+          {/* TODO PLANNER WITH DATES */}
+          <div className="bg-card border border-border rounded-xl p-8">
+            <div className="flex items-center gap-3 mb-8">
+              <Calendar className="w-6 h-6 text-primary" />
+              <h2 className="text-3xl font-bold">Todo Planner with Dates</h2>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="space-y-4">
+                <div className="bg-muted rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium text-muted-foreground">
+                      Today
+                    </span>
+                    <span className="text-xs text-primary">Dec 15, 2024</span>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">Complete blog post draft</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm line-through text-muted-foreground">
+                        Team standup meeting
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">Review pull requests</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="bg-muted rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium text-muted-foreground">
+                      Tomorrow
+                    </span>
+                    <span className="text-xs text-primary">Dec 16, 2024</span>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">Start new project design</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">Client presentation prep</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">Update documentation</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="bg-muted rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium text-muted-foreground">
+                      This Week
+                    </span>
+                    <span className="text-xs text-primary">Dec 20, 2024</span>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">Sprint planning</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">Performance review</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">Deploy new features</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* CANVAS EXCALIDRAW */}
+          <div className="bg-card border border-border rounded-xl p-8">
+            <div className="flex items-center gap-3 mb-8">
+              <h2 className="text-3xl font-bold">
+                Visual Canvas - Excalidraw Integration
+              </h2>
+            </div>
+
+            <div className="bg-muted rounded-lg p-8 min-h-[400px] relative overflow-hidden">
+              <div className="flex items-center justify-center h-full mt-20">
+                <div className="text-center space-y-4">
+                  <h3 className="text-xl font-semibold">Interactive Canvas</h3>
+                  <p className="text-muted-foreground max-w-md">
+                    Draw diagrams, flowcharts, and mind maps with our integrated
+                    Excalidraw canvas. Perfect for visual thinking and
+                    collaborative design.
+                  </p>
+                  <div className="flex gap-2 justify-center">
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs">
+                      Real-time Collaboration
+                    </span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs">
+                      Export Options
+                    </span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs">
+                      Excalidraw Support
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

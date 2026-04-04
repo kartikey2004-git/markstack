@@ -57,8 +57,7 @@ export function AddTaskCard({
           />
           <Button
             onClick={handleSubmit}
-            disabled={!title.trim()}
-            className="w-full transition-all duration-200 bg-black text-white hover:bg-black/90 disabled:bg-black/50 disabled:text-white disabled:cursor-not-allowed"
+            className="w-full transition-all duration-200 bg-black text-white hover:bg-black/90"
             size="lg"
           >
             Add Task
