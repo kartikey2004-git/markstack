@@ -12,6 +12,8 @@ import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { AppContainer } from "@/components/layout/app-container";
 
+export const dynamic = "force-dynamic";
+
 export default async function BlogsPage() {
   const blogs = await db.blog.findMany({
     where: {
