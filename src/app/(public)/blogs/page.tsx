@@ -36,7 +36,7 @@ export default async function BlogsPage() {
   });
 
   return (
-    <AppContainer className="space-y-6 py-8 sm:py-10">
+    <AppContainer className="space-y-6 pt-20 pb-8 sm:pt-24 sm:pb-10">
       <div className="space-y-1">
         <div className="space-y-1">
           <h1 className="text-3xl font-semibold tracking-tight">Blogs</h1>

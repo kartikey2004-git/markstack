@@ -95,8 +95,11 @@ export function MarkdownEditor({
 
       // Add paste handler to ensure paste events trigger updates
       editor.onDidPaste(() => {
-        const currentValue = editor.getValue();
-        onChange(currentValue);
+        // Use a small timeout to ensure the content is fully pasted
+        setTimeout(() => {
+          const currentValue = editor.getValue();
+          onChange(currentValue);
+        }, 10);
       });
 
       editor.onDidBlurEditorText(() => {

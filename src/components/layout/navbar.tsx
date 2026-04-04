@@ -1,46 +1,39 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { UserMenu } from "@/components/shared/user-menu";
-import { AppContainer } from "@/components/layout/app-container";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
-import { cn } from "@/lib/utils";
 import { PUBLIC_NAV_LINKS } from "@/config/navigation";
 
 export function Navbar() {
-  const pathname = usePathname();
-
   return (
-    <nav className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur">
-      <AppContainer className="flex h-14 items-center justify-between gap-4">
-        <div className="flex min-w-0 items-center gap-6">
-          <Link href="/" className="text-sm font-semibold tracking-tight">
-            MarkStack
-          </Link>
-          <div className="hidden items-center gap-1 md:flex">
-            {PUBLIC_NAV_LINKS.map((item) => (
-              <Link
-                key={item.url}
-                href={item.url}
-                className={cn(
-                  "rounded-md px-3 py-1.5 text-sm transition-all duration-200 ease-in-out",
-                  pathname === item.url
-                    ? "bg-muted text-foreground"
-                    : "text-muted-foreground hover:bg-muted/70 hover:text-foreground",
-                )}
-              >
-                {item.title}
-              </Link>
-            ))}
-          </div>
-        </div>
+    <header className="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl bg-card/95 backdrop-blur-lg border border-border rounded-md px-6 py-3 flex justify-between items-center z-50 shadow-lg">
+      <div className="flex items-center gap-8">
+        <Link href="/" className="text-lg font-semibold text-foreground">
+          MarkStack
+        </Link>
 
-        <div className="flex items-center gap-2">
-          <ThemeToggle className="hidden sm:inline-flex" />
-          <UserMenu />
-        </div>
-      </AppContainer>
-    </nav>
+        <nav className="hidden md:flex gap-6 text-sm">
+          {PUBLIC_NAV_LINKS.slice(0, 4).map((item, i) => (
+            <Link
+              key={item.url}
+              href={item.url}
+              className={`transition ${
+                i === 0
+                  ? "text-foreground font-semibold"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {item.title}
+            </Link>
+          ))}
+        </nav>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <ThemeToggle />
+        <UserMenu />
+      </div>
+    </header>
   );
 }

@@ -3,7 +3,7 @@ import { requireApiAuth } from "@/lib/auth-utils";
 import db from "@/lib/database";
 import { serializeMDX } from "@/lib/markdown/mdx-renderer";
 import { calculateReadTime } from "@/lib/markdown/read-time";
-import { getErrorCode } from "@/lib/server/error-utils";
+import { handleDatabaseError } from "@/lib/server/error-handler";
 import type { Prisma } from "@prisma/client";
 
 export async function GET() {
@@ -80,17 +80,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(blog, { status: 201 });
   } catch (error: unknown) {
     console.error("Error creating blog:", error);
-
-    if (getErrorCode(error) === "P2002") {
-      return NextResponse.json(
-        { error: "A blog with this slug already exists" },
-        { status: 409 },
-      );
-    }
-
-    return NextResponse.json(
-      { error: "Failed to create blog" },
-      { status: 500 },
-    );
+    return handleDatabaseError(error);
   }
 }

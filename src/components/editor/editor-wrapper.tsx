@@ -6,7 +6,6 @@ import { useBlogSave } from "@/hooks/use-blog-save";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Toolbar } from "@/components/editor/editor-toolbar";
 import { MarkdownEditor } from "@/components/editor/markdown-editor";
-import { MarkdownPreview } from "@/components/editor/preview-pane";
 import { ImageDropzone } from "@/components/editor/image-dropzone";
 import { MarkdownDropzone } from "@/components/editor/markdown-dropzone";
 import { Button } from "@/components/ui/button";
@@ -21,6 +20,7 @@ import {
 import { Save } from "lucide-react";
 import type { Blog } from "@/types/blog";
 import type { EditorInstance } from "@/types/editor";
+import { MarkdownPreview } from "./preview-pane";
 
 interface EditorWrapperProps {
   blog?: Blog;
@@ -29,6 +29,7 @@ interface EditorWrapperProps {
 export function EditorWrapper({ blog }: EditorWrapperProps) {
   const editorRef = useRef<EditorInstance | null>(null);
   const isMobile = useIsMobile();
+
   const {
     content,
     setContent,
@@ -54,29 +55,22 @@ export function EditorWrapper({ blog }: EditorWrapperProps) {
   // Load existing blog data or draft on mount
   useEffect(() => {
     if (blog) {
-      // Load existing blog data
       setTitle(blog.title);
-      setDescription(blog.description || "");
-      setContent(blog.content || "");
+      setDescription(blog.description ?? "");
+      setContent(blog.content ?? "");
     } else {
-      // Load draft for new blog
       const draftContent = loadDraft();
-      if (draftContent) {
-        setContent(draftContent);
-      }
+      if (draftContent) setContent(draftContent);
     }
-  }, [blog, loadDraft, setContent, setTitle, setDescription]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Auto-save draft when content changes
   useEffect(() => {
-    if (content) {
-      const timer = setTimeout(() => {
-        saveDraft(content);
-      }, 1000); // Debounce for 1 second
-
-      return () => clearTimeout(timer);
-    }
-  }, [content, title, description, saveDraft]);
+    if (!content) return;
+    const timer = setTimeout(() => saveDraft(content), 1000);
+    return () => clearTimeout(timer);
+  }, [content, saveDraft]);
 
   const handleEditorReady = useCallback(
     (editor: EditorInstance) => {
@@ -84,13 +78,6 @@ export function EditorWrapper({ blog }: EditorWrapperProps) {
       setEditorRef(editor);
     },
     [setEditorRef],
-  );
-
-  const handleFileUpload = useCallback(
-    (content: string) => {
-      setContent(content);
-    },
-    [setContent],
   );
 
   const handleSaveBlog = useCallback(async () => {
@@ -134,7 +121,7 @@ export function EditorWrapper({ blog }: EditorWrapperProps) {
         <Toolbar
           onInsert={insertSyntax}
           onStructureMarkdown={handleStructureMarkdown}
-          onFileUpload={handleFileUpload}
+          onFileUpload={setContent}
         />
 
         <div className="h-[70vh] min-h-130">
@@ -147,7 +134,7 @@ export function EditorWrapper({ blog }: EditorWrapperProps) {
                 className={`relative h-full bg-background ${isMobile ? "border-b" : "border-r"}`}
               >
                 <ImageDropzone onImageUpload={handleImageUpload} />
-                <MarkdownDropzone onMarkdownUpload={handleFileUpload} />
+                <MarkdownDropzone onMarkdownUpload={setContent} />
                 <MarkdownEditor
                   value={content}
                   onChange={setContent}
@@ -160,15 +147,10 @@ export function EditorWrapper({ blog }: EditorWrapperProps) {
 
             <ResizablePanel defaultSize={50} minSize={30}>
               <div className="h-full bg-background font-sans overflow-auto">
-                {isLoading ? (
-                  <div className="flex h-full items-center justify-center">
-                    <div className="text-sm text-muted-foreground">
-                      Loading preview...
-                    </div>
-                  </div>
-                ) : (
-                  <MarkdownPreview content={serializedContent} />
-                )}
+                <MarkdownPreview
+                  content={serializedContent}
+                  isLoading={isLoading}
+                />
               </div>
             </ResizablePanel>
           </ResizablePanelGroup>
