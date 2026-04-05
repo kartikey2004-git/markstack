@@ -9,7 +9,8 @@ export type FormatType =
   | "numbered"
   | "quote"
   | "codeblock"
-  | "divider";
+  | "divider"
+  | "mermaid";
 
 import type {
   EditorEdit,
@@ -37,6 +38,11 @@ const FORMAT_CONFIGS: Record<FormatType, FormatConfig> = {
   quote: { prefix: "> ", toggleable: true },
   codeblock: { prefix: "```\n", suffix: "\n```", toggleable: true },
   divider: { prefix: "---\n" },
+  mermaid: {
+    prefix: "```mermaid\ngraph TD\n    A[Start] --> B[End]\n",
+    suffix: "\n```",
+    toggleable: true,
+  },
 };
 
 export function applyMarkdownFormat(
@@ -106,6 +112,8 @@ function isAlreadyFormatted(text: string, formatType: FormatType): boolean {
       return /^\d+\.\s/.test(text);
     case "codeblock":
       return text.startsWith("```") && text.endsWith("```");
+    case "mermaid":
+      return text.includes("```mermaid") && text.endsWith("```");
     case "divider":
       return text.trim() === "---";
     default:
@@ -156,6 +164,9 @@ function removeFormatting(
       break;
     case "codeblock":
       newText = text.replace(/^```[\w]*\n([\s\S]*?)\n```$/, "$1");
+      break;
+    case "mermaid":
+      newText = text.replace(/^```mermaid\n([\s\S]*?)\n```$/, "$1");
       break;
     case "divider":
       newText = "";
