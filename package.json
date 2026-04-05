@@ -16,6 +16,7 @@
     "@prisma/adapter-pg": "^7.5.0",
     "@prisma/client": "^7.5.0",
     "@types/lodash.debounce": "^4.0.9",
+    "@vercel/analytics": "^2.0.1",
     "ai": "^6.0.116",
     "better-auth": "^1.5.5",
     "class-variance-authority": "^0.7.1",

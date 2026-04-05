@@ -41,7 +41,7 @@ export function Navbar() {
 
   return (
     <>
-      <header className="fixed top-4 left-1/2 -translate-x-1/2 w-[90%] sm:w-[95%] max-w-7xl bg-card/95 backdrop-blur-lg border border-border rounded-md px-4 sm:px-6 py-3 flex justify-between items-center z-50 shadow-lg">
+      <header className="fixed top-12 left-1/2 -translate-x-1/2 w-[90%] sm:w-[95%] max-w-7xl bg-card/95 backdrop-blur-lg border border-border rounded-md px-4 sm:px-6 py-3 flex justify-between items-center z-50 shadow-lg">
         <div className="flex items-center gap-4 sm:gap-8">
           <Link href="/" className="text-lg font-semibold text-foreground">
             MarkStack
@@ -86,7 +86,7 @@ export function Navbar() {
 
       {/* Mobile menu overlay */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 top-20 z-40 md:hidden">
+        <div className="fixed inset-0 top-28 z-40 md:hidden">
           <div
             className="fixed inset-0 bg-background/80 backdrop-blur-sm"
             onClick={() => setIsMobileMenuOpen(false)}
