@@ -17,9 +17,9 @@ export function ProtectedPageWrapper({
   actions,
 }: ProtectedPageWrapperProps) {
   return (
-    <div className={cn("px-6 py-6 max-w-screen-xl mx-auto", className)}>
+    <div className={cn("px-4 sm:px-6 py-6 max-w-screen-xl mx-auto", className)}>
       {(title || description || actions) && (
-        <div className="mb-6 flex items-start justify-between gap-4">
+        <div className="mb-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="min-w-0 flex-1">
             {title && (
               <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
@@ -30,7 +30,7 @@ export function ProtectedPageWrapper({
               </p>
             )}
           </div>
-          {actions && <div className="flex-shrink-0">{actions}</div>}
+          {actions && <div className="flex-shrink-0 sm:ml-4">{actions}</div>}
         </div>
       )}
       <div className="space-y-6">{children}</div>
