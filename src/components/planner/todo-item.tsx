@@ -25,17 +25,17 @@ export function TodoItem({
       <Checkbox
         checked={todo.completed}
         onCheckedChange={(checked) => onToggleTodo(todo.id, checked as boolean)}
-        className="mt-1"
+        className="mt-1 shrink-0"
       />
       <div className="flex-1 min-w-0">
         <div
-          className={`font-medium ${todo.completed ? "line-through text-muted-foreground" : ""}`}
+          className={`font-medium break-words ${todo.completed ? "line-through text-muted-foreground" : ""}`}
         >
           {todo.title}
         </div>
         {todo.description && (
           <div
-            className={`text-sm text-muted-foreground mt-1 ${todo.completed ? "line-through" : ""}`}
+            className={`text-sm text-muted-foreground mt-1 break-words ${todo.completed ? "line-through" : ""}`}
           >
             {todo.description}
           </div>
@@ -45,7 +45,7 @@ export function TodoItem({
         variant="ghost"
         size="sm"
         onClick={() => onDeleteTodo(todo.id)}
-        className="text-destructive hover:text-destructive"
+        className="text-destructive hover:text-destructive shrink-0"
       >
         <Trash2 className="w-4 h-4" />
       </Button>

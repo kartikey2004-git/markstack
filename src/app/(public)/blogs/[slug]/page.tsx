@@ -87,7 +87,7 @@ export default async function BlogPostPage({
     <div className="bg-background">
       <AppContainer className="max-w-4xl py-8 sm:py-12">
         {/* Blog Header */}
-        <header className="mb-10 space-y-6 sm:mb-12">
+        <header className="mb-10 space-y-6 sm:mb-12 mt-10">
           <div className="space-y-4">
             <div className="flex flex-wrap items-center gap-2.5">
               <Badge variant="secondary" className="rounded-md text-xs">

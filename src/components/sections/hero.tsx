@@ -37,7 +37,7 @@ export function Hero() {
   };
 
   return (
-    <section className="pt-32 pb-24 ml-28 px-6 relative">
+    <section className="pt-32 pb-24 px-6 sm:px-8 lg:px-12 relative">
       <div className="max-w-[1440px] mx-auto">
         <div className="max-w-4xl">
           <div className="flex items-center gap-3 mb-6">
@@ -54,7 +54,7 @@ export function Hero() {
             A unified environment for writing, visual thinking, and structured
             planning.
           </p>
-          <div className="">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <Button
               size="lg"
               className="h-10 w-full gap-2 px-5 transition-all duration-200 ease-in-out sm:w-auto"

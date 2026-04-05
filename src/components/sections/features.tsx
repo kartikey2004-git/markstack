@@ -3,13 +3,13 @@ import { Calendar, FileText } from "lucide-react";
 export function Features() {
   return (
     <>
-      <section id="features" className="py-24 px-6">
+      <section id="features" className="py-24 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto space-y-24">
           {/* FEATURES (BENTO STYLE) */}
-          <section className="px-6">
+          <section className="px-4 sm:px-6">
             <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-6">
               {/* card */}
-              <div className="md:col-span-4 p-10 rounded-xl border bg-card hover:bg-accent/50 transition">
+              <div className="md:col-span-4 p-6 sm:p-10 rounded-xl border bg-card hover:bg-accent/50 transition">
                 <div className="flex items-center gap-2 mb-4">
                   <FileText className="w-5 h-5 text-primary" />
                   <h3 className="text-2xl font-bold">3 Creative tools</h3>
@@ -20,7 +20,7 @@ export function Features() {
               </div>
 
               {/* big feature */}
-              <div className="md:col-span-8 p-10 rounded-xl border bg-card flex flex-col md:flex-row gap-8">
+              <div className="md:col-span-8 p-6 sm:p-10 rounded-xl border bg-card flex flex-col gap-8">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-3">
                     <div className="w-2 h-2 bg-primary rounded-full"></div>
@@ -28,7 +28,7 @@ export function Features() {
                       Connected Ecosystem
                     </span>
                   </div>
-                  <h3 className="text-3xl font-bold mt-2 mb-4">
+                  <h3 className="text-2xl sm:text-3xl font-bold mt-2 mb-4">
                     Markdown to Blog Publishing
                   </h3>
                   <p className="text-muted-foreground mt-4 mb-6">
@@ -53,7 +53,7 @@ export function Features() {
                   </div>
                 </div>
 
-                <div className="relative w-full md:w-1/2">
+                <div className="w-full">
                   <div className="bg-muted rounded-lg p-4 font-mono text-sm">
                     <div className="space-y-2">
                       <div className="text-primary"># My Blog Post</div>
@@ -75,16 +75,20 @@ export function Features() {
           {/* FEATURES */}
           <section className="max-w-7xl mx-auto mb-32 grid md:grid-cols-12 gap-4 -mt-10">
             {/* BIG */}
-            <div className="md:col-span-8 bg-card border border-border p-8 rounded-xl">
-              <h3 className="text-3xl font-bold mb-4">Unified Workspace</h3>
+            <div className="md:col-span-8 bg-card border border-border p-6 sm:p-8 rounded-xl">
+              <h3 className="text-2xl sm:text-3xl font-bold mb-4">
+                Unified Workspace
+              </h3>
               <p className="text-muted-foreground max-w-md">
                 Markdown + canvas in one environment.
               </p>
             </div>
 
             {/* SIDE */}
-            <div className="md:col-span-4 bg-card border border-border p-8 rounded-xl">
-              <h4 className="text-xl font-bold mb-2">Blog Publishing</h4>
+            <div className="md:col-span-4 bg-card border border-border p-6 sm:p-8 rounded-xl">
+              <h4 className="text-lg sm:text-xl font-bold mb-2">
+                Blog Publishing
+              </h4>
               <p className="text-sm text-muted-foreground">
                 One-click deployment with SEO optimization.
               </p>
@@ -92,13 +96,13 @@ export function Features() {
           </section>
 
           {/* TODO PLANNER WITH DATES */}
-          <div className="bg-card border border-border rounded-xl p-8">
+          <div className="bg-card border border-border rounded-xl p-6 sm:p-8">
             <div className="flex items-center gap-3 mb-8">
               <Calendar className="w-6 h-6 text-primary" />
               <h2 className="text-3xl font-bold">Todo Planner with Dates</h2>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-6">
               <div className="space-y-4">
                 <div className="bg-muted rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -170,14 +174,14 @@ export function Features() {
           </div>
 
           {/* CANVAS EXCALIDRAW */}
-          <div className="bg-card border border-border rounded-xl p-8">
+          <div className="bg-card border border-border rounded-xl p-6 sm:p-8">
             <div className="flex items-center gap-3 mb-8">
               <h2 className="text-3xl font-bold">
                 Visual Canvas - Excalidraw Integration
               </h2>
             </div>
 
-            <div className="bg-muted rounded-lg p-8 min-h-[400px] relative overflow-hidden">
+            <div className="bg-muted rounded-lg p-6 sm:p-8 min-h-[300px] sm:min-h-[400px] relative overflow-hidden">
               <div className="flex items-center justify-center h-full mt-20">
                 <div className="text-center space-y-4">
                   <h3 className="text-xl font-semibold">Interactive Canvas</h3>

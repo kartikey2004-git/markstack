@@ -91,7 +91,7 @@ export function EditorWrapper({ blog }: EditorWrapperProps) {
     <div className="space-y-4">
       <Card className="border-border/80 bg-card/70 shadow-sm">
         <CardContent className="p-4">
-          <div className="grid gap-3 lg:grid-cols-[1.8fr_2fr_auto]">
+          <div className="grid gap-3 lg:grid-cols-[1.8fr_2fr_auto] sm:grid-cols-1 auto-cols-fr">
             <Input
               placeholder="Blog title..."
               value={title}

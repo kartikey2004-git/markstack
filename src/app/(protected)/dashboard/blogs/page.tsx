@@ -124,7 +124,7 @@ export default function DashboardBlogsPage() {
                           Edit
                         </Link>
                       </DropdownMenuItem>
-                      
+
                       {blog.status === "draft" ? (
                         <DropdownMenuItem
                           className="gap-2"
