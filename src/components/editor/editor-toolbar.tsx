@@ -16,6 +16,7 @@ import {
   Loader2,
   Upload,
   FileText,
+  GitBranch,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -102,6 +103,7 @@ export function Toolbar({
     quote: Quote,
     codeblock: Code,
     divider: Minus,
+    mermaid: GitBranch,
   };
 
   const toolbarButtons = toolbarCommandDefinitions.map(({ label, syntax }) => ({

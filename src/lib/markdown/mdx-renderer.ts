@@ -2,6 +2,7 @@ import { serialize } from "next-mdx-remote/serialize";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeHighlight from "rehype-highlight";
+import { rehypeMermaid } from "./rehype-mermaid";
 
 export type SerializedMdx = {
   compiledSource: string;
@@ -27,7 +28,7 @@ function preprocessMarkdown(content: string): string {
 const SERIALIZE_OPTIONS = {
   mdxOptions: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [rehypeSlug, rehypeHighlight],
+    rehypePlugins: [rehypeSlug, rehypeHighlight, rehypeMermaid],
     development: process.env.NODE_ENV === "development",
     // "md" format uses a standard markdown parser — no JSX layer.
     // "mdx" format chokes on pasted content that contains {}, <>, import/export, etc.

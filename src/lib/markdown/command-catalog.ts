@@ -67,6 +67,13 @@ const COMMAND_DEFINITIONS: readonly MarkdownCommandDefinition[] = [
     slashSyntax: "```\ncode\n```",
   },
   {
+    label: "Mermaid Diagram",
+    description: "Add a Mermaid diagram",
+    toolbarSyntax: "mermaid",
+    slashId: "mermaid",
+    slashSyntax: "```mermaid\ngraph TD\n    A[Start] --> B[End]\n```",
+  },
+  {
     label: "Bullet List",
     description: "Create a bullet list",
     toolbarSyntax: "bullet",
