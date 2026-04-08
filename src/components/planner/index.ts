@@ -12,7 +12,7 @@ export type Todo = {
   title: string;
   description?: string;
   completed: boolean;
-  date: Date;
+  date: string; // Store as YYYY-MM-DD string
   createdAt: Date;
   updatedAt: Date;
 };

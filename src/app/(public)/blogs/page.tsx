@@ -63,7 +63,7 @@ export default async function BlogsPage() {
           {blogs.map((blog) => (
             <Card
               key={blog.id}
-              className="flex h-full flex-col border-border/80 bg-card/70 shadow-sm card-hover"
+              className="flex h-full flex-col border-border/80 bg-card/70 shadow-sm hover:shadow-md transition-shadow duration-200"
             >
               <CardHeader className="space-y-3">
                 <div className="min-w-0 space-y-1">

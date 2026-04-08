@@ -1,81 +1,79 @@
+import { AppContainer } from "@/components/layout/app-container";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
 export function FAQ() {
   return (
-    <section id="faq" className="py-24 px-6">
-      <div className="max-w-7xl mx-auto space-y-24">
+    <section id="faq" className="py-16">
+      <AppContainer>
         <div className="bg-card border border-border rounded-xl p-8">
           <div className="flex items-center gap-3 mb-8">
             <h2 className="text-3xl font-bold">Frequently Asked Questions</h2>
           </div>
 
-          <div className="space-y-6">
-            <div className="border-b border-border pb-6">
-              <h3 className="text-lg font-semibold mb-3">
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="item-1">
+              <AccordionTrigger>
                 How is MarkStack different from Notion?
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                MarkStack is specifically designed for developers and content
-                creators with built-in blog publishing, canvas integration, and
-                a focus on markdown-first workflows. While Notion is a
-                general-purpose productivity tool, MarkStack provides
-                specialized features like SEO-optimized blog deployment,
-                Excalidraw canvas integration, and developer-friendly markdown
-                editing with syntax highlighting.
-              </p>
-            </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <p className="text-muted-foreground leading-relaxed">
+                  MarkStack is specifically designed for developers and content
+                  creators with built-in blog publishing, canvas integration,
+                  and a focus on markdown-first workflows. While Notion is a
+                  general-purpose productivity tool, MarkStack provides
+                  specialized features like SEO-optimized blog deployment,
+                  Excalidraw canvas integration, and developer-friendly markdown
+                  editing with syntax highlighting.
+                </p>
+              </AccordionContent>
+            </AccordionItem>
 
-            <div className="border-b border-border pb-6">
-              <h3 className="text-lg font-semibold mb-3">
-                Can I publish blogs publicly?
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Yes! MarkStack includes built-in blog publishing with one-click
-                deployment. Your blogs are automatically optimized for SEO,
-                responsive design, and include features like table of contents
-                generation, syntax highlighting for code blocks, and social
-                media integration. You can publish under your custom domain or
-                use our hosted platform.
-              </p>
-            </div>
+            <AccordionItem value="item-2">
+              <AccordionTrigger>Can I publish blogs publicly?</AccordionTrigger>
+              <AccordionContent>
+                <p className="text-muted-foreground leading-relaxed">
+                  Yes! MarkStack includes built-in blog publishing with SEO
+                  optimization, custom domains, and analytics. You can publish
+                  your content publicly and share it with your audience while
+                  maintaining full control over your content.
+                </p>
+              </AccordionContent>
+            </AccordionItem>
 
-            <div className="border-b border-border pb-6">
-              <h3 className="text-lg font-semibold mb-3">Is my data secure?</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Absolutely. We use industry-standard encryption for data at rest
-                and in transit. All data is backed up regularly, and you
-                maintain full ownership of your content. We offer export
-                functionality so you can always download your data in standard
-                formats like Markdown, JSON, or HTML.
-              </p>
-            </div>
+            <AccordionItem value="item-3">
+              <AccordionTrigger>Is my data secure?</AccordionTrigger>
+              <AccordionContent>
+                <p className="text-muted-foreground leading-relaxed">
+                  Absolutely. MarkStack uses industry-standard encryption for
+                  data storage and transmission. Your content is stored securely
+                  and backed up regularly. We also support self-hosting options
+                  for organizations that require on-premises deployment.
+                </p>
+              </AccordionContent>
+            </AccordionItem>
 
-            <div className="border-b border-border pb-6">
-              <h3 className="text-lg font-semibold mb-3">
-                Does it support collaboration?
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Yes, MarkStack supports real-time collaboration on documents and
-                canvases. You can invite team members to edit documents, leave
-                comments, and work together on visual diagrams. We also provide
-                version history and conflict resolution to ensure smooth
-                teamwork.
-              </p>
-            </div>
-
-            <div className="pb-6">
-              <h3 className="text-lg font-semibold mb-3">
+            <AccordionItem value="item-4">
+              <AccordionTrigger>
                 What integrations are available?
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                MarkStack integrates with popular developer tools including
-                GitHub for version control, Excalidraw for visual diagrams, and
-                various CMS platforms for content distribution. We also provide
-                REST APIs and webhooks for custom integrations with your
-                existing workflow.
-              </p>
-            </div>
-          </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <p className="text-muted-foreground leading-relaxed">
+                  MarkStack integrates with popular developer tools including
+                  GitHub for version control, Excalidraw for visual diagrams,
+                  and various CMS platforms for content distribution. We also
+                  provide REST APIs and webhooks for custom integrations with
+                  your existing workflow.
+                </p>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
-      </div>
+      </AppContainer>
     </section>
   );
 }

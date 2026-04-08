@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { FileText } from "lucide-react";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { AppContainer } from "@/components/layout/app-container";
 
@@ -13,7 +12,6 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
             href="/"
             className="flex items-center gap-2 text-sm font-semibold"
           >
-            <FileText className="size-4" />
             MarkStack
           </Link>
           <ThemeToggle />

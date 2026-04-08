@@ -124,7 +124,7 @@ export function EditorWrapper({ blog }: EditorWrapperProps) {
           onFileUpload={setContent}
         />
 
-        <div className="h-[70vh] min-h-130">
+        <div className="h-[70vh] min-h-[130px]">
           <ResizablePanelGroup
             orientation={isMobile ? "vertical" : "horizontal"}
             className="h-full"

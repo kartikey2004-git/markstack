@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import db from "@/lib/database";
-import { startOfDay, format } from "date-fns";
+import { format, isValid, parseISO } from "date-fns";
 
 export async function GET(request: NextRequest) {
   try {
@@ -17,22 +17,35 @@ export async function GET(request: NextRequest) {
     const dateParam = searchParams.get("date");
 
     if (!dateParam) {
-      return NextResponse.json({ error: "Date parameter is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Date parameter is required" },
+        { status: 400 },
+      );
     }
 
-    // Parse and normalize date to start of day
-    const selectedDate = new Date(dateParam);
-    if (isNaN(selectedDate.getTime())) {
-      return NextResponse.json({ error: "Invalid date format" }, { status: 400 });
+    // Validate date format (YYYY-MM-DD)
+    const parsedDate = parseISO(dateParam);
+    if (!isValid(parsedDate)) {
+      return NextResponse.json(
+        { error: "Invalid date format" },
+        { status: 400 },
+      );
     }
 
-    const normalizedDate = startOfDay(selectedDate);
+    // Ensure date is in YYYY-MM-DD format
+    const formattedDate = format(parsedDate, "yyyy-MM-dd");
+    if (formattedDate !== dateParam) {
+      return NextResponse.json(
+        { error: "Date must be in YYYY-MM-DD format" },
+        { status: 400 },
+      );
+    }
 
     // Fetch todos for the specific date
     const todos = await db.todo.findMany({
       where: {
         userId: session.user.id,
-        date: normalizedDate,
+        date: dateParam, // Direct string comparison
       },
       orderBy: {
         createdAt: "asc",
@@ -44,7 +57,7 @@ export async function GET(request: NextRequest) {
     console.error("Todos fetch error:", error);
     return NextResponse.json(
       { error: "Failed to fetch todos" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -64,24 +77,34 @@ export async function POST(request: NextRequest) {
     if (!title || !date) {
       return NextResponse.json(
         { error: "Title and date are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    // Parse and normalize date to start of day
-    const selectedDate = new Date(date);
-    if (isNaN(selectedDate.getTime())) {
-      return NextResponse.json({ error: "Invalid date format" }, { status: 400 });
+    // Validate date format (YYYY-MM-DD)
+    const parsedDate = parseISO(date);
+    if (!isValid(parsedDate)) {
+      return NextResponse.json(
+        { error: "Invalid date format" },
+        { status: 400 },
+      );
     }
 
-    const normalizedDate = startOfDay(selectedDate);
+    // Ensure date is in YYYY-MM-DD format
+    const formattedDate = format(parsedDate, "yyyy-MM-dd");
+    if (formattedDate !== date) {
+      return NextResponse.json(
+        { error: "Date must be in YYYY-MM-DD format" },
+        { status: 400 },
+      );
+    }
 
     // Create todo
     const todo = await db.todo.create({
       data: {
         title,
         description: description || null,
-        date: normalizedDate,
+        date: date, // Store as string
         userId: session.user.id,
       },
     });
@@ -91,7 +114,7 @@ export async function POST(request: NextRequest) {
     console.error("Todo creation error:", error);
     return NextResponse.json(
       { error: "Failed to create todo" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

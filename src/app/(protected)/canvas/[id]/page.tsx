@@ -273,13 +273,13 @@ export default function CanvasPage() {
       <div className="flex flex-col h-full w-full">
         {/* Editor Header */}
 
-        <div className="border-b bg-background px-6 py-3 flex-shrink-0">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <h1 className="text-lg font-semibold">Canvas</h1>
+        <div className="border-b bg-background px-4 sm:px-6 py-3 flex-shrink-0">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex items-center space-x-2 min-w-0">
+              <h1 className="text-lg font-semibold truncate">Canvas</h1>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex flex-wrap items-center gap-2 justify-end sm:justify-start">
               <Button
                 variant="outline"
                 size="sm"

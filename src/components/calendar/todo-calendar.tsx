@@ -31,7 +31,7 @@ export function TodoCalendar({ className }: TodoCalendarProps) {
       setTodos(
         data.todos.map((todo: any) => ({
           ...todo,
-          date: new Date(todo.date),
+          date: todo.date, // Keep as string
           createdAt: new Date(todo.createdAt),
           updatedAt: new Date(todo.updatedAt),
         })),
@@ -75,6 +75,7 @@ export function TodoCalendar({ className }: TodoCalendarProps) {
   // Add new todo
   const handleAddTodo = async (title: string, description?: string) => {
     try {
+      const dateStr = format(selectedDate, "yyyy-MM-dd");
       const response = await fetch("/api/todos", {
         method: "POST",
         headers: {
@@ -83,7 +84,7 @@ export function TodoCalendar({ className }: TodoCalendarProps) {
         body: JSON.stringify({
           title,
           description: description || undefined,
-          date: selectedDate.toISOString(),
+          date: dateStr, // Send as YYYY-MM-DD string
         }),
       });
 
@@ -94,14 +95,13 @@ export function TodoCalendar({ className }: TodoCalendarProps) {
         ...prev,
         {
           ...newTodo.todo,
-          date: new Date(newTodo.todo.date),
+          date: newTodo.todo.date, // Keep as string
           createdAt: new Date(newTodo.todo.createdAt),
           updatedAt: new Date(newTodo.todo.updatedAt),
         },
       ]);
 
       // Update dates with todos
-      const dateStr = format(selectedDate, "yyyy-MM-dd");
       setDatesWithTodos((prev) => new Set([...prev, dateStr]));
     } catch (error) {
       console.error("Error creating todo:", error);
@@ -121,11 +121,8 @@ export function TodoCalendar({ className }: TodoCalendarProps) {
 
       if (!response.ok) throw new Error("Failed to update todo");
 
-      setTodos((prev) =>
-        prev.map((todo) =>
-          todo.id === todoId ? { ...todo, completed } : todo,
-        ),
-      );
+      // Refetch todos to ensure UI is in sync
+      await fetchTodosForDate(selectedDate);
     } catch (error) {
       console.error("Error updating todo:", error);
     }
@@ -140,25 +137,18 @@ export function TodoCalendar({ className }: TodoCalendarProps) {
 
       if (!response.ok) throw new Error("Failed to delete todo");
 
-      setTodos((prev) => prev.filter((todo) => todo.id !== todoId));
-
-      // Update dates with todos if this was the last todo for this date
-      const remainingTodos = todos.filter((todo) => todo.id !== todoId);
-      if (remainingTodos.length === 0) {
-        const dateStr = format(selectedDate, "yyyy-MM-dd");
-        setDatesWithTodos((prev) => {
-          const newSet = new Set(prev);
-          newSet.delete(dateStr);
-          return newSet;
-        });
-      }
+      // Refetch todos and month data to ensure UI is in sync
+      await fetchTodosForDate(selectedDate);
+      await fetchMonthTodos(selectedDate);
     } catch (error) {
       console.error("Error deleting todo:", error);
     }
   };
 
   return (
-    <div className={`flex flex-col gap-6 h-full p-2 ${className}`}>
+    <div
+      className={`flex flex-col gap-4 sm:gap-6 h-full p-2 sm:p-4 ${className}`}
+    >
       {/* Top Controls Section */}
       <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-6">
         {/* Calendar Card */}

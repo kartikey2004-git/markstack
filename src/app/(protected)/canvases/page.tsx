@@ -85,112 +85,115 @@ export default function AllCanvasesPage() {
 
   return (
     <AuthGuard>
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Your Canvases</h1>
+      <div className="px-4 sm:px-6 py-6 max-w-screen-2xl mx-auto space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
+            Your Canvases
+          </h1>
           <Link href="/canvas/new">
-            <Button className="bg-black text-white hover:bg-black/90">
+            <Button className="w-full sm:w-auto bg-black text-white hover:bg-black/90">
               <Plus className="w-4 h-4 mr-2" />
               New Canvas
             </Button>
           </Link>
         </div>
         {canvases.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16">
-            <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6">
-              <Palette className="w-12 h-12 text-muted-foreground" />
+          <div className="flex flex-col items-center justify-center py-12 sm:py-16">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-muted rounded-full flex items-center justify-center mb-6">
+              <Palette className="w-10 h-10 sm:w-12 sm:h-12 text-muted-foreground" />
             </div>
-            <h3 className="text-2xl font-semibold mb-2">No canvases yet</h3>
-            <p className="text-muted-foreground text-center max-w-md mb-8">
+            <h3 className="text-xl sm:text-2xl font-semibold mb-2 text-center">
+              No canvases yet
+            </h3>
+            <p className="text-muted-foreground text-center max-w-md mb-8 text-sm sm:text-base">
               Start creating by setting up your first design canvas. Organize
               your ideas, sketches, and projects in one place.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/canvas/new">
-                <Button
-                  size="lg"
-                  className="bg-black text-white hover:bg-black/90"
-                >
-                  <Plus className="w-5 h-5 mr-2" />
-                  Create Your First Canvas
-                </Button>
-              </Link>
-            </div>
+            <Link href="/canvas/new">
+              <Button
+                size="lg"
+                className="w-full sm:w-auto bg-black text-white hover:bg-black/90"
+              >
+                <Plus className="w-5 h-5 mr-2" />
+                Create Your First Canvas
+              </Button>
+            </Link>
           </div>
         ) : (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-              {canvases.map((canvas) => (
-                <Card
-                  key={canvas.id}
-                  className="group transition-all duration-200 hover:border-foreground/20 hover:shadow-sm cursor-pointer"
-                >
-                  <CardHeader className="pb-3">
-                    {/* 🔥 Top row: Title (left) + Created (right) */}
-                    <div className="flex items-start justify-between gap-4">
-                      <CardTitle className="text-base font-semibold truncate group-hover:text-foreground">
-                        {canvas.title || "Untitled Canvas"}
-                      </CardTitle>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {canvases.map((canvas) => (
+              <Card
+                key={canvas.id}
+                className="group transition-all duration-200 hover:border-foreground/20 hover:shadow-md cursor-pointer h-full"
+              >
+                <CardHeader className="pb-3">
+                  <div className="flex items-start justify-between gap-2 sm:gap-4">
+                    <CardTitle className="text-base font-semibold truncate group-hover:text-foreground flex-1">
+                      {canvas.title || "Untitled Canvas"}
+                    </CardTitle>
 
-                      <span className="text-xs text-muted-foreground whitespace-nowrap">
-                        {new Date(canvas.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
+                    <span className="text-xs text-muted-foreground whitespace-nowrap flex-shrink-0">
+                      {new Date(canvas.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
 
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Updated{" "}
-                      {formatDistanceToNow(new Date(canvas.updatedAt), {
-                        addSuffix: true,
-                      })}
-                    </p>
-                  </CardHeader>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Updated{" "}
+                    {formatDistanceToNow(new Date(canvas.updatedAt), {
+                      addSuffix: true,
+                    })}
+                  </p>
+                </CardHeader>
 
-                  <CardContent className="pt-0">
-                    <div className="flex items-center justify-between pt-2">
-                      {/* Primary */}
-                      <Link
-                        href={`/canvas/${canvas.id}`}
-                        onClick={(e) => e.stopPropagation()}
+                <CardContent className="pt-0">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-2">
+                    <Link
+                      href={`/canvas/${canvas.id}`}
+                      onClick={(e) => e.stopPropagation()}
+                      className="w-full sm:w-auto"
+                    >
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        className="w-full sm:w-auto"
                       >
-                        <Button variant="secondary" size="sm">
-                          <Eye className="w-4 h-4 mr-2" />
-                          View
-                        </Button>
-                      </Link>
+                        <Eye className="w-4 h-4 mr-2" />
+                        View
+                      </Button>
+                    </Link>
 
-                      <div className="flex items-center gap-1">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="cursor-pointer"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigator.clipboard.writeText(
-                              `${window.location.origin}/canvas/${canvas.id}`,
-                            );
-                            toast.success("Link copied to clipboard");
-                          }}
-                        >
-                          <Share2 className="w-4 h-4" />
-                        </Button>
+                    <div className="flex items-center gap-1 flex-shrink-0">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigator.clipboard.writeText(
+                            `${window.location.origin}/canvas/${canvas.id}`,
+                          );
+                          toast.success("Link copied to clipboard");
+                        }}
+                      >
+                        <Share2 className="w-4 h-4" />
+                      </Button>
 
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteCanvas(canvas.id);
-                          }}
-                          className="text-destructive"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteCanvas(canvas.id);
+                        }}
+                        className="text-destructive"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         )}
       </div>
