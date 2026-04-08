@@ -8,10 +8,16 @@ import { Textarea } from "@/components/ui/textarea";
 interface TodoFormProps {
   onSubmit: (title: string, description?: string) => void;
   onCancel: () => void;
+  selectedDate?: Date;
   className?: string;
 }
 
-export function TodoForm({ onSubmit, onCancel, className }: TodoFormProps) {
+export function TodoForm({
+  onSubmit,
+  onCancel,
+  selectedDate,
+  className,
+}: TodoFormProps) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
@@ -28,7 +34,9 @@ export function TodoForm({ onSubmit, onCancel, className }: TodoFormProps) {
   };
 
   return (
-    <div className={`space-y-3 p-4 border rounded-lg bg-muted/50 animate-in slide-in-from-top-2 ${className}`}>
+    <div
+      className={`space-y-3 p-4 border rounded-lg bg-muted/50 animate-in slide-in-from-top-2 ${className}`}
+    >
       <Input
         placeholder="Task title..."
         value={title}
