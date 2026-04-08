@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import db from "@/lib/database";
-import { startOfMonth, endOfMonth, startOfDay, format } from "date-fns";
+import { startOfMonth, endOfMonth, format, isValid, parseISO } from "date-fns";
 
 export async function GET(request: NextRequest) {
   try {
@@ -17,25 +17,35 @@ export async function GET(request: NextRequest) {
     const monthParam = searchParams.get("month");
 
     if (!monthParam) {
-      return NextResponse.json({ error: "Month parameter is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Month parameter is required" },
+        { status: 400 },
+      );
     }
 
     // Parse month (YYYY-MM format)
-    const monthDate = new Date(monthParam + "-01"); // Add day 1 to make it a valid date
-    if (isNaN(monthDate.getTime())) {
-      return NextResponse.json({ error: "Invalid month format" }, { status: 400 });
+    const monthDate = parseISO(monthParam + "-01"); // Add day 1 to make it a valid date
+    if (!isValid(monthDate)) {
+      return NextResponse.json(
+        { error: "Invalid month format" },
+        { status: 400 },
+      );
     }
 
     const monthStart = startOfMonth(monthDate);
     const monthEnd = endOfMonth(monthDate);
 
-    // Fetch all todos for the month
+    // Get date range as strings
+    const startDateStr = format(monthStart, "yyyy-MM-dd");
+    const endDateStr = format(monthEnd, "yyyy-MM-dd");
+
+    // Fetch all todos for the month using string comparison
     const todos = await db.todo.findMany({
       where: {
         userId: session.user.id,
         date: {
-          gte: monthStart,
-          lte: monthEnd,
+          gte: startDateStr,
+          lte: endDateStr,
         },
       },
       select: {
@@ -44,17 +54,15 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    // Create a Set of dates that have todos (normalized to YYYY-MM-DD format)
-    const datesWithTodos = new Set(
-      todos.map(todo => format(startOfDay(todo.date), "yyyy-MM-dd"))
-    );
+    // Create a Set of dates that have todos (already stored as YYYY-MM-DD strings)
+    const datesWithTodos = new Set(todos.map((todo) => todo.date));
 
     return NextResponse.json({ datesWithTodos: Array.from(datesWithTodos) });
   } catch (error) {
     console.error("Month todos fetch error:", error);
     return NextResponse.json(
       { error: "Failed to fetch month todos" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

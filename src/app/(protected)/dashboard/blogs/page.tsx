@@ -86,7 +86,7 @@ export default function DashboardBlogsPage() {
           {blogs.map((blog) => (
             <Card
               key={blog.id}
-              className="flex h-full flex-col border-border/80 bg-card/70 shadow-sm card-hover"
+              className="flex h-full flex-col border-border/80 bg-card/70 shadow-sm hover:shadow-md transition-shadow duration-200"
             >
               <CardHeader className="space-y-3">
                 <div className="flex items-start justify-between gap-3">

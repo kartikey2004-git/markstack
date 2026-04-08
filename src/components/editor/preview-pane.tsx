@@ -81,8 +81,8 @@ export function MarkdownPreview({ content, isLoading }: MarkdownPreviewProps) {
           prose-p:leading-relaxed
           prose-code:font-mono
           prose-pre:overflow-x-auto
-          prose-pre:rounded-lg prose-pre:bg-muted prose-pre:p-4"
-        style={{ fontSize: "15px", lineHeight: "1.7" }}
+          prose-pre:rounded-lg prose-pre:bg-muted prose-pre:p-4
+          text-[15px] leading-[1.7]"
       >
         <MDXRemote {...content} components={components} />
       </div>

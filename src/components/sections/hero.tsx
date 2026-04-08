@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { AppContainer } from "@/components/layout/app-container";
 
 export function Hero() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
@@ -37,8 +38,8 @@ export function Hero() {
   };
 
   return (
-    <section className="pt-32 pb-24 px-6 sm:px-8 lg:px-12 relative">
-      <div className="max-w-[1440px] mx-auto">
+    <section className="pt-20 pb-16 relative">
+      <AppContainer>
         <div className="max-w-4xl">
           <div className="flex items-center gap-3 mb-6">
             <span className="bg-secondary px-3 py-1 rounded-full text-[10px] uppercase tracking-widest text-secondary-foreground border border-border">
@@ -75,7 +76,7 @@ export function Hero() {
             </Button>
           </div>
         </div>
-      </div>
+      </AppContainer>
     </section>
   );
 }
