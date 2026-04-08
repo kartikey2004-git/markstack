@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { Eye, Clock3, User } from "lucide-react";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
-import { AppContainer } from "@/components/layout/app-container";
 
 export const dynamic = "force-dynamic";
 
@@ -38,27 +37,29 @@ export default async function BlogsPage() {
   });
 
   return (
-    <AppContainer className="space-y-6 pt-20 pb-8 sm:pt-24 sm:pb-10">
-      <div className="space-y-1">
-        <div className="space-y-1">
-          <h1 className="text-3xl font-semibold tracking-tight">Blogs</h1>
-          <p className="text-sm text-muted-foreground sm:text-base">
-            Read published articles from MarkStack writers.
-          </p>
-        </div>
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+      <div className="mb-6 space-y-1 sm:mb-8">
+        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+          Blogs
+        </h1>
+        <p className="text-sm text-muted-foreground sm:text-base">
+          Read published articles from MarkStack writers.
+        </p>
       </div>
 
       {blogs.length === 0 ? (
         <Card className="border-dashed border-border/80 bg-card/60">
-          <CardContent className="py-14 text-center">
-            <h3 className="text-lg font-medium">No published blogs yet</h3>
+          <CardContent className="py-12 text-center sm:py-14">
+            <h3 className="text-base font-medium sm:text-lg">
+              No published blogs yet
+            </h3>
             <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
               Check back soon for new articles.
             </p>
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-3">
           {blogs.map((blog) => (
             <Card
               key={blog.id}
@@ -77,11 +78,13 @@ export default async function BlogsPage() {
                   {blog.description || "No description added yet."}
                 </p>
               </CardHeader>
+
               <CardContent className="mt-auto space-y-4">
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <User className="size-3.5" />
                   {blog.author.name || blog.author.email}
                 </div>
+
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Clock3 className="size-3.5" />
                   Updated{" "}
@@ -89,19 +92,18 @@ export default async function BlogsPage() {
                     addSuffix: true,
                   })}
                 </div>
-                <div>
-                  <Link href={`/blogs/${blog.slug}`}>
-                    <Button className="w-full gap-2">
-                      <Eye className="size-4" />
-                      View
-                    </Button>
-                  </Link>
-                </div>
+
+                <Link href={`/blogs/${blog.slug}`}>
+                  <Button className="w-full gap-2">
+                    <Eye className="size-4" />
+                    View
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           ))}
         </div>
       )}
-    </AppContainer>
+    </div>
   );
 }
