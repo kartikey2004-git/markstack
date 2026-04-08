@@ -63,7 +63,6 @@ export function MarkdownPreview({ content, isLoading }: MarkdownPreviewProps) {
     return (
       <div className="flex h-full items-center justify-center p-6">
         <div className="text-center max-w-md">
-          <div className="text-4xl mb-4">📝</div>
           <h3 className="text-lg font-medium mb-2">Start writing</h3>
           <p className="text-sm text-muted-foreground">
             Type or paste markdown content to see a live preview
