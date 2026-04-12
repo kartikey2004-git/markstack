@@ -86,26 +86,27 @@ export default function DashboardBlogsPage() {
           {blogs.map((blog) => (
             <Card
               key={blog.id}
-              className="flex h-full flex-col border-border/80 bg-card/70 shadow-sm hover:shadow-md transition-shadow duration-200"
+              className="flex h-full flex-col overflow-hidden border-border/80 bg-card/70 shadow-sm transition-shadow duration-200 hover:shadow-md"
             >
               <CardHeader className="space-y-3">
                 <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0 space-y-2">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <CardTitle className="line-clamp-2 text-lg font-semibold tracking-tight">
-                        {blog.title}
-                      </CardTitle>
+                  <div className="min-w-0 flex-1 space-y-2">
+                    <CardTitle className="line-clamp-2 text-lg font-semibold tracking-tight">
+                      {blog.title}
+                    </CardTitle>
+                    <div className="flex min-w-0 items-center gap-2">
                       <Badge
+                        className="shrink-0"
                         variant={
                           blog.status === "published" ? "default" : "secondary"
                         }
                       >
                         {blog.status === "published" ? "Published" : "Draft"}
                       </Badge>
+                      <CardDescription className="min-w-0 flex-1 break-all text-xs">
+                        /{blog.slug}
+                      </CardDescription>
                     </div>
-                    <CardDescription className="truncate text-xs">
-                      /{blog.slug}
-                    </CardDescription>
                   </div>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -158,7 +159,7 @@ export default function DashboardBlogsPage() {
               </CardHeader>
               <CardContent className="mt-auto space-y-4">
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Clock3 className="size-3.5" />
+                  <Clock3 className="size-3.5 shrink-0" />
                   Updated{" "}
                   {formatDistanceToNow(new Date(blog.updatedAt), {
                     addSuffix: true,
