@@ -81,24 +81,8 @@ export default async function BlogPostPage({
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Draft preview banner – full-width, sits above everything */}
-      {isDraftPreview && (
-        <div className="sticky top-0 z-50 w-full bg-amber-500/10 px-4 py-2 text-center text-xs font-medium text-amber-700 dark:text-amber-400 border-b border-amber-500/20">
-          Draft preview — not publicly visible
-        </div>
-      )}
-
-      {/*
-        ─── Layout strategy ───────────────────────────────────────────────
-        • Mobile  (< sm):  px-4  py-6   — tight gutters, breathing room
-        • Tablet  (sm–lg): px-6  py-8   — standard gutters
-        • Desktop (lg+):   px-8  py-12  — generous but not p-20 extreme
-        • Reading column capped at ~72ch for readability
-        ────────────────────────────────────────────────────────────────── */}
       <div className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
-        {/* ── HEADER ──────────────────────────────────────────────────── */}
         <header className="mb-8 space-y-4 sm:mb-10 sm:space-y-5">
-          {/* Badges row — wraps naturally on narrow screens */}
           <div className="flex flex-wrap items-center gap-2">
             <Badge
               variant="secondary"
@@ -116,28 +100,23 @@ export default async function BlogPostPage({
               </Badge>
             )}
 
-            {/* Reading time pill */}
             <div className="flex items-center gap-1 rounded-md border bg-muted/40 px-2 py-1 text-xs text-muted-foreground">
               <Clock className="size-3.5 shrink-0" />
               <span>{readingTime} min read</span>
             </div>
           </div>
 
-          {/* Title — fluid type scale, no line-height collapse on mobile */}
           <h1 className="text-2xl font-semibold leading-tight tracking-tight sm:text-3xl lg:text-4xl">
             {post.title}
           </h1>
 
-          {/* Description */}
           {post.description && (
             <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
               {post.description}
             </p>
           )}
 
-          {/* Meta row — stacks vertically below 360 px, inline above */}
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-muted-foreground sm:text-sm">
-            {/* Author */}
             <span className="flex items-center gap-1.5">
               <User className="size-3.5 shrink-0" />
               <span className="max-w-[160px] truncate sm:max-w-none">
@@ -145,7 +124,6 @@ export default async function BlogPostPage({
               </span>
             </span>
 
-            {/* Dot separator — hidden when items wrap */}
             <span
               className="text-muted-foreground/40 hidden sm:inline"
               aria-hidden
@@ -153,7 +131,6 @@ export default async function BlogPostPage({
               ·
             </span>
 
-            {/* Publish date */}
             <span className="flex items-center gap-1.5">
               <Calendar className="size-3.5 shrink-0" />
               <time dateTime={post.createdAt.toString()}>
@@ -183,19 +160,6 @@ export default async function BlogPostPage({
           <Separator />
         </header>
 
-        {/* ── CONTENT ─────────────────────────────────────────────────── */}
-        {/*
-          Prose tuning for mobile:
-          • prose-sm on mobile keeps body text ~14 px — readable without
-            overflowing the viewport.
-          • prose-base at sm gives comfortable 16 px on tablets/desktop.
-          • prose-img:w-full + prose-img:h-auto prevent images from
-            overflowing on narrow viewports.
-          • prose-pre:text-[13px] keeps code blocks legible without
-            horizontal overflow — combined with overflow-x-auto.
-          • Heading sizes are tamed so an H1 in MDX doesn't tower over
-            the article title on small screens.
-        */}
         <main
           className={[
             "prose prose-gray dark:prose-invert",
