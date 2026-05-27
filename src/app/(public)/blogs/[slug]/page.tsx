@@ -6,6 +6,7 @@ import { Calendar, Clock, User, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { MDXContent } from "@/components/shared/mdx-content";
 import { BlogShareButtons } from "@/components/shared/blog-share-buttons";
+import { BlogExportMenu } from "@/components/blog/blog-export-menu";
 import db from "@/lib/database";
 import { getCurrentUser } from "@/lib/auth-utils";
 import { serializeMDX } from "@/lib/markdown/mdx-renderer";
@@ -20,7 +21,18 @@ async function getBlogPost(slug: string, authorId?: string) {
         ...(authorId ? [{ authorId, status: "draft" }] : []),
       ],
     },
-    include: {
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      description: true,
+      content: true,
+      coverImage: true,
+      readTime: true,
+      status: true,
+      createdAt: true,
+      updatedAt: true,
+      authorId: true,
       author: {
         select: {
           name: true,
@@ -83,77 +95,88 @@ export default async function BlogPostPage({
     <div className="min-h-screen bg-background">
       <div className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
         <header className="mb-8 space-y-4 sm:mb-10 sm:space-y-5">
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge
-              variant="secondary"
-              className="rounded-md px-2 py-0.5 text-xs"
-            >
-              Blog Post
-            </Badge>
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+            <div className="min-w-0 flex-1 space-y-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge
+                  variant="secondary"
+                  className="rounded-md px-2 py-0.5 text-xs"
+                >
+                  Blog Post
+                </Badge>
 
-            {isDraftPreview && (
-              <Badge
-                variant="outline"
-                className="rounded-md border-amber-500/40 px-2 py-0.5 text-xs text-amber-600 dark:text-amber-400"
-              >
-                Draft
-              </Badge>
-            )}
+                {isDraftPreview && (
+                  <Badge
+                    variant="outline"
+                    className="rounded-md border-amber-500/40 px-2 py-0.5 text-xs text-amber-600 dark:text-amber-400"
+                  >
+                    Draft
+                  </Badge>
+                )}
 
-            <div className="flex items-center gap-1 rounded-md border bg-muted/40 px-2 py-1 text-xs text-muted-foreground">
-              <Clock className="size-3.5 shrink-0" />
-              <span>{readingTime} min read</span>
-            </div>
-          </div>
+                <div className="flex items-center gap-1 rounded-md border bg-muted/40 px-2 py-1 text-xs text-muted-foreground">
+                  <Clock className="size-3.5 shrink-0" />
+                  <span>{readingTime} min read</span>
+                </div>
+              </div>
 
-          <h1 className="text-2xl font-semibold leading-tight tracking-tight sm:text-3xl lg:text-4xl">
-            {post.title}
-          </h1>
+              <div className="space-y-3">
+                <h1 className="text-2xl font-semibold leading-tight tracking-tight sm:text-3xl lg:text-4xl">
+                  {post.title}
+                </h1>
 
-          {post.description && (
-            <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-              {post.description}
-            </p>
-          )}
+                {post.description && (
+                  <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+                    {post.description}
+                  </p>
+                )}
+              </div>
 
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-muted-foreground sm:text-sm">
-            <span className="flex items-center gap-1.5">
-              <User className="size-3.5 shrink-0" />
-              <span className="max-w-[160px] truncate sm:max-w-none">
-                {post.author.name || post.author.email}
-              </span>
-            </span>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-muted-foreground sm:text-sm">
+                <span className="flex items-center gap-1.5">
+                  <User className="size-3.5 shrink-0" />
+                  <span className="max-w-[160px] truncate sm:max-w-none">
+                    {post.author.name || post.author.email}
+                  </span>
+                </span>
 
-            <span
-              className="text-muted-foreground/40 hidden sm:inline"
-              aria-hidden
-            >
-              ·
-            </span>
-
-            <span className="flex items-center gap-1.5">
-              <Calendar className="size-3.5 shrink-0" />
-              <time dateTime={post.createdAt.toString()}>
-                {formatDate(post.createdAt.toString())}
-              </time>
-            </span>
-
-            {/* Updated date — only when genuinely different */}
-            {post.updatedAt.getTime() !== post.createdAt.getTime() && (
-              <>
                 <span
                   className="text-muted-foreground/40 hidden sm:inline"
                   aria-hidden
                 >
                   ·
                 </span>
-                <span className="flex items-center gap-1">
-                  <span>Updated</span>
-                  <time dateTime={post.updatedAt.toString()}>
-                    {formatDate(post.updatedAt.toString())}
+
+                <span className="flex items-center gap-1.5">
+                  <Calendar className="size-3.5 shrink-0" />
+                  <time dateTime={post.createdAt.toString()}>
+                    {formatDate(post.createdAt.toString())}
                   </time>
                 </span>
-              </>
+
+                {post.updatedAt.getTime() !== post.createdAt.getTime() && (
+                  <>
+                    <span
+                      className="text-muted-foreground/40 hidden sm:inline"
+                      aria-hidden
+                    >
+                      ·
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span>Updated</span>
+                      <time dateTime={post.updatedAt.toString()}>
+                        {formatDate(post.updatedAt.toString())}
+                      </time>
+                    </span>
+                  </>
+                )}
+              </div>
+            </div>
+
+            {currentUser?.id === post.authorId && (
+              <div className="flex shrink-0 items-start sm:pt-1">
+                <BlogExportMenu blogId={post.id} slug={post.slug} />
+              </div>
             )}
           </div>
 
