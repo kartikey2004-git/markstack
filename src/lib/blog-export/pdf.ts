@@ -94,7 +94,7 @@ async function resolveBrowserExecutablePath() {
     process.env.CHROME_PATH ||
     process.env.CHROMIUM_PATH;
 
-  if (envExecutablePath && existsSync(envExecutablePath)) {
+  if (envExecutablePath) {
     return envExecutablePath;
   }
 
@@ -109,7 +109,7 @@ async function resolveBrowserExecutablePath() {
 
   try {
     const chromiumExecutablePath = await chromium.executablePath();
-    if (chromiumExecutablePath && existsSync(chromiumExecutablePath)) {
+    if (chromiumExecutablePath) {
       return chromiumExecutablePath;
     }
   } catch {
