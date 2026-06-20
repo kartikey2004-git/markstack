@@ -1,16 +1,21 @@
-import { Hero } from "@/components/sections/hero";
-import { Features } from "@/components/sections/features";
-import { FAQ } from "@/components/sections/faq";
-
-import { HomeSectionScroller } from "@/components/layout/home-section-scroller";
+import { HeroNew } from "@/components/sections/hero-new";
+import { MechanismPipeline } from "@/components/sections/mechanism-pipeline";
+import ProcessSection from "@/components/sections/dark-features";
+import ReplyRateSection from "@/components/sections/real-message-proof";
+import  FaqSection  from "@/components/sections/faq-section";
+import CaseStudySection from "@/components/sections/case-study-section";
 
 export default function Home() {
   return (
-    <div className="relative overflow-hidden py-4 sm:py-6 lg:py-8">
-      <HomeSectionScroller />
-      <Hero />
-      <Features />
-      <FAQ />
-    </div>
+    <>
+      <main>
+        <HeroNew />
+        <MechanismPipeline />
+        <ProcessSection />
+        <ReplyRateSection />
+        <CaseStudySection />
+        <FaqSection />
+      </main>
+    </>
   );
 }

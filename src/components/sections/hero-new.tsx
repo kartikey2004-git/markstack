@@ -1,0 +1,190 @@
+"use client";
+
+import { ArrowRight } from "lucide-react";
+import { AppContainer } from "@/components/layout/app-container";
+import { authClient } from "@/lib/auth-client";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Lightbulb, GitBranch, Brain, FileText, Rocket } from "lucide-react";
+import { Workflow } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { AnimationContainer } from "./two";
+
+export function HeroNew() {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const session = await authClient.getSession();
+        setIsAuthenticated(!!session.data);
+      } catch (error) {
+        setIsAuthenticated(false);
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  const handleStartWriting = () => {
+    if (isAuthenticated) {
+      router.push("/editor");
+    } else {
+      router.push("/auth?callbackUrl=/editor");
+    }
+  };
+
+  const handleBrowseContent = () => {
+    router.push("/blogs");
+  };
+
+  return (
+    <section className="relative overflow-hidden">
+      <AppContainer className="relative z-10">
+        <div className="mx-auto max-w-215 scale-[0.88] origin-top text-center">
+          <div className="mb-7">
+            <span className="inline-flex items-center bg-[#dfeaf5] px-5 py-2 text-[12px] font-medium uppercase tracking-[0.22em] text-[#0A66C2]">
+              FOR DEVELOPERS, BUILDERS & WRITERS
+            </span>
+          </div>
+
+          <h1 className="mx-auto max-w-[1100px] text-[52px] font-medium leading-[0.96] tracking-[-0.06em] text-black md:text-[66px]">
+            Turn Thoughts into
+            <br />
+            Documents, Diagrams and
+            <br />
+            <span className="text-[#0A66C2]">Published</span> Knowledge
+          </h1>
+
+          <p className="mx-auto mt-7 max-w-190 text-[18px] leading-[1.3] text-[#666666] md:text-[20px]">
+            Capture ideas, map them visually, organize them with AI, and publish
+            them all inside one connected workspace.
+          </p>
+
+          <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Button
+              size="lg"
+              className="h-13 rounded-none bg-black px-8 text-[15px] font-medium text-white hover:bg-neutral-900"
+              onClick={handleStartWriting}
+              disabled={isAuthenticated === null}
+            >
+              Start Writing
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+
+            <Button
+              size="lg"
+              variant="outline"
+              className="h-13 rounded-none border-neutral-300 bg-white px-8 text-[15px] font-medium hover:bg-neutral-50"
+              onClick={handleBrowseContent}
+            >
+              Browse Content
+            </Button>
+          </div>
+
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm font-medium text-neutral-600">
+            <span>✦ Markdown</span>
+            <span>✦ Visual Canvas</span>
+            <span>✦ AI Organization</span>
+            <span>✦ Publishing</span>
+          </div>
+
+          <div className="hidden lg:block">
+            <div className="relative mx-auto mt-40 h-[300px] w-[900px] pt-10">
+              <AnimationContainer />
+          
+              <SignalCard
+                className="absolute left-1/2 top-[-110px] -translate-x-1/2"
+                icon={<Lightbulb size={18} />}
+                label="Capture Ideas"
+              />
+          
+              <SignalCard
+                className="absolute left-10 top-[-10px]"
+                icon={<GitBranch size={18} />}
+                label="Visual Canvas"
+              />
+          
+              <SignalCard
+                className="absolute top-[90px]"
+                icon={<Brain size={18} />}
+                label="Organize Knowledge"
+              />
+          
+              <SignalCard
+                className="absolute right-[90px] top-[-10px]"
+                icon={<FileText size={18} />}
+                label="Markdown Editor"
+              />
+          
+              <SignalCard
+                className="absolute right-[5px] top-[90px]"
+                icon={<Rocket size={18} />}
+                label="Instant Publishing"
+              />
+            </div>
+          
+            <div className="-mt-1">
+              <DottedFooter />
+              <CenterHub />
+            </div>
+          </div>
+        </div>
+      </AppContainer>
+    </section>
+  );
+}
+
+function SignalCard({
+  icon,
+  label,
+  className,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "z-30 flex items-center gap-3 border border-white/60 bg-white/30 px-5 py-3 backdrop-blur-md",
+        "shadow-[0_8px_30px_rgba(255,255,255,0.15)]",
+        className,
+      )}
+    >
+      {icon}
+      <span className="font-mono text-xs md:text-sm uppercase tracking-[0.15em] text-black">
+        {label}
+      </span>
+    </div>
+  );
+}
+
+function DottedFooter() {
+  return (
+    <div className="absolute bottom-0 z-20 h-[70px] w-full bg-white">
+      <div
+        className="h-full w-full"
+        style={{
+          backgroundImage: "radial-gradient(#d9d9d9 1px, transparent 1px)",
+          backgroundSize: "14px 14px",
+        }}
+      />
+    </div>
+  );
+}
+
+function CenterHub() {
+  return (
+    <div className="absolute bottom-0 left-1/2 z-40 -translate-x-1/2 pt-4">
+      <div className="ml-10 flex h-[140px] w-[140px] items-center justify-center rounded-t-[24px] border border-white/70 bg-[#f5f5f5] md:h-[180px] md:w-[180px]">
+        <Workflow
+          className="h-12 w-12 text-black md:h-16 md:w-16"
+          strokeWidth={1.75}
+        />
+      </div>
+    </div>
+  );
+}

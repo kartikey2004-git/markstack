@@ -90,10 +90,10 @@ export function UserMenu() {
   if (!user) {
     return (
       <div className="flex items-center gap-2">
-        <Button variant="outline" size="sm" onClick={redirectToSignIn}>
+        <Button variant="outline" size="sm" onClick={redirectToSignIn} className="rounded-none p-2">
           Sign In
         </Button>
-        <Button size="sm" onClick={redirectToSignUp}>
+        <Button size="sm" onClick={redirectToSignUp} className="rounded-none p-2">
           Sign Up
         </Button>
       </div>
@@ -142,10 +142,6 @@ export function UserMenu() {
             <span>All Blogs</span>
           </DropdownMenuItem>
 
-          <DropdownMenuItem onClick={() => router.push("/todos")}>
-            <CheckSquare className="mr-2 h-4 w-4" />
-            <span>Todos</span>
-          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => router.push("/canvases")}>
             <Palette className="mr-2 h-4 w-4" />
             <span>Canvas</span>
