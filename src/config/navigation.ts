@@ -34,11 +34,6 @@ export const NAVIGATION_CONFIG: NavGroup[] = [
         public: true,
       },
       {
-        title: "Todo Planner",
-        url: "/todos",
-        public: true,
-      },
-      {
         title: "My Blogs",
         url: "/dashboard/blogs",
         public: true,
