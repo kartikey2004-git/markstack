@@ -13,6 +13,8 @@ export async function GET() {
         title: true,
         description: true,
         slug: true,
+        content: true,
+        htmlContent: true,
         readTime: true,
         createdAt: true,
         coverImage: true,
