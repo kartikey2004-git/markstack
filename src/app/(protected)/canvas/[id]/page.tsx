@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams } from "next/navigation";
 import DrawingCanvas from "@/components/canvas/drawing-canvas";
-import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -30,7 +29,6 @@ interface CanvasData {
 
 export default function CanvasPage() {
   const params = useParams();
-  const { theme } = useTheme();
   const [canvasData, setCanvasData] = useState<CanvasData | null>(null);
 
   const [loading, setLoading] = useState(true);
@@ -334,7 +332,7 @@ export default function CanvasPage() {
             excalidrawAPI={(api) => {
               excalidrawAPIRef.current = api;
             }}
-            theme={theme as "light" | "dark"}
+            theme="light"
             className="absolute inset-0"
           />
         </div>

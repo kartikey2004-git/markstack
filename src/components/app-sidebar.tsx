@@ -18,7 +18,6 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { UserMenu } from "@/components/shared/user-menu";
-import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { NAVIGATION_CONFIG } from "@/config/navigation";
 
 interface AppSidebarProps {
@@ -81,7 +80,6 @@ export function AppSidebar({ children }: AppSidebarProps) {
             <SidebarTrigger />
             <div className="flex-1" />
             <div className="flex items-center gap-2">
-              <ThemeToggle />
               <UserMenu />
             </div>
           </header>

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export const Demo = () => {
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-white">
+    <section className="relative min-h-screen w-full overflow-hidden bg-background">
       {/* Animated Network */}
       <AnimationContainer />
     </section>

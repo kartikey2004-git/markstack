@@ -81,40 +81,6 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.87 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.371 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.809 0.105 251.813);
-  --chart-2: oklch(0.623 0.214 259.815);
-  --chart-3: oklch(0.546 0.245 262.881);
-  --chart-4: oklch(0.488 0.243 264.376);
-  --chart-5: oklch(0.424 0.199 265.638);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -272,7 +238,7 @@
 }
 
 .prose mark {
-  @apply bg-yellow-200 dark:bg-yellow-800 px-1 py-0.5 rounded;
+  @apply bg-yellow-200 px-1 py-0.5 rounded;
 }
 
 /* Code block syntax highlighting adjustments */
@@ -292,7 +258,7 @@
 .prose .hljs-keyword,
 .prose .hljs-selector-tag,
 .prose .hljs-subst {
-  @apply text-purple-500 dark:text-purple-400;
+  @apply text-purple-500;
 }
 
 .prose .hljs-number,
@@ -300,56 +266,56 @@
 .prose .hljs-variable,
 .prose .hljs-template-variable,
 .prose .hljs-tag .hljs-attr {
-  @apply text-blue-500 dark:text-blue-400;
+  @apply text-blue-500;
 }
 
 .prose .hljs-string,
 .prose .hljs-doctag {
-  @apply text-green-500 dark:text-green-400;
+  @apply text-green-500;
 }
 
 .prose .hljs-title,
 .prose .hljs-section,
 .prose .hljs-selector-id {
-  @apply text-yellow-500 dark:text-yellow-400;
+  @apply text-yellow-500;
 }
 
 .prose .hljs-type,
 .prose .hljs-class .hljs-title {
-  @apply text-cyan-500 dark:text-cyan-400;
+  @apply text-cyan-500;
 }
 
 .prose .hljs-tag,
 .prose .hljs-name,
 .prose .hljs-attribute {
-  @apply text-red-500 dark:text-red-400;
+  @apply text-red-500;
 }
 
 .prose .hljs-regexp,
 .prose .hljs-link {
-  @apply text-orange-500 dark:text-orange-400;
+  @apply text-orange-500;
 }
 
 .prose .hljs-symbol,
 .prose .hljs-bullet {
-  @apply text-pink-500 dark:text-pink-400;
+  @apply text-pink-500;
 }
 
 .prose .hljs-built_in,
 .prose .hljs-builtin-name {
-  @apply text-indigo-500 dark:text-indigo-400;
+  @apply text-indigo-500;
 }
 
 .prose .hljs-meta {
-  @apply text-gray-500 dark:text-gray-400;
+  @apply text-gray-500;
 }
 
 .prose .hljs-deletion {
-  @apply bg-red-100 dark:bg-red-900/20;
+  @apply bg-red-100;
 }
 
 .prose .hljs-addition {
-  @apply bg-green-100 dark:bg-green-900/20;
+  @apply bg-green-100;
 }
 
 .prose .hljs-emphasis {

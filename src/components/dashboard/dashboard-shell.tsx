@@ -14,7 +14,6 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { UserMenu } from "@/components/shared/user-menu";
-import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { cn } from "@/lib/utils";
 
 interface DashboardShellProps {
@@ -110,7 +109,6 @@ export function DashboardShell({ children }: DashboardShellProps) {
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium">{activeTitle}</p>
               </div>
-              <ThemeToggle />
               <UserMenu />
             </div>
           </header>

@@ -1,9 +1,8 @@
 "use client";
 
-import { useRef, useCallback, useEffect, useState } from "react";
+import { useRef, useCallback } from "react";
 import Editor from "@monaco-editor/react";
 import type { Monaco } from "@monaco-editor/react";
-import { useTheme } from "next-themes";
 import { useSlashCommands } from "@/hooks/use-slash-commands";
 import type { EditorInstance } from "@/types/editor";
 
@@ -19,12 +18,6 @@ export function MarkdownEditor({
   onEditorReady,
 }: MarkdownEditorProps) {
   const editorRef = useRef<EditorInstance | null>(null);
-  const [mounted, setMounted] = useState(false);
-  const { resolvedTheme } = useTheme();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const {
     isOpen,
@@ -117,7 +110,7 @@ export function MarkdownEditor({
         value={value}
         onChange={(value) => onChange(value || "")}
         onMount={handleEditorDidMount}
-        theme={mounted && resolvedTheme === "light" ? "vs" : "vs-dark"}
+        theme="vs"
         options={{
           minimap: { enabled: false },
           wordWrap: "on",
