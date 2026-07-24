@@ -75,7 +75,7 @@ export function MarkdownPreview({ content, isLoading }: MarkdownPreviewProps) {
   return (
     <div className="h-full overflow-auto p-6 sm:p-8">
       <div
-        className="prose prose-gray max-w-none dark:prose-invert
+        className="prose prose-gray max-w-none
           prose-headings:font-semibold
           prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl
           prose-p:leading-relaxed

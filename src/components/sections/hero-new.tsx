@@ -41,7 +41,7 @@ export function HeroNew() {
   };
 
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden bg-background -mt-24 pt-32">
       <AppContainer className="relative z-10">
         <div className="mx-auto max-w-215 scale-[0.88] origin-top text-center">
           <div className="mb-7">
@@ -50,7 +50,7 @@ export function HeroNew() {
             </span>
           </div>
 
-          <h1 className="mx-auto max-w-[1100px] text-[52px] font-medium leading-[0.96] tracking-[-0.06em] text-black md:text-[66px]">
+          <h1 className="mx-auto max-w-[1100px] text-[52px] font-medium leading-[0.96] tracking-[-0.06em] text-foreground md:text-[66px]">
             Turn Thoughts into
             <br />
             Documents, Diagrams and
@@ -58,7 +58,7 @@ export function HeroNew() {
             <span className="text-[#0A66C2]">Published</span> Knowledge
           </h1>
 
-          <p className="mx-auto mt-7 max-w-190 text-[18px] leading-[1.3] text-[#666666] md:text-[20px]">
+          <p className="mx-auto mt-7 max-w-190 text-[18px] leading-[1.3] text-muted-foreground md:text-[20px]">
             Capture ideas, map them visually, organize them with AI, and publish
             them all inside one connected workspace.
           </p>
@@ -66,7 +66,7 @@ export function HeroNew() {
           <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Button
               size="lg"
-              className="h-13 rounded-none bg-black px-8 text-[15px] font-medium text-white hover:bg-neutral-900"
+              className="h-13 rounded-none bg-foreground px-8 text-[15px] font-medium text-background hover:bg-foreground/90"
               onClick={handleStartWriting}
               disabled={isAuthenticated === null}
             >
@@ -77,14 +77,14 @@ export function HeroNew() {
             <Button
               size="lg"
               variant="outline"
-              className="h-13 rounded-none border-neutral-300 bg-white px-8 text-[15px] font-medium hover:bg-neutral-50"
+              className="h-13 rounded-none px-8 text-[15px] font-medium"
               onClick={handleBrowseContent}
             >
               Browse Content
             </Button>
           </div>
 
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm font-medium text-neutral-600">
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm font-medium text-muted-foreground">
             <span>✦ Markdown</span>
             <span>✦ Visual Canvas</span>
             <span>✦ AI Organization</span>
@@ -149,13 +149,13 @@ function SignalCard({
   return (
     <div
       className={cn(
-        "z-30 flex items-center gap-3 border border-white/60 bg-white/30 px-5 py-3 backdrop-blur-md",
-        "shadow-[0_8px_30px_rgba(255,255,255,0.15)]",
+        "z-30 flex items-center gap-3 border border-border bg-background/60 px-5 py-3 backdrop-blur-md",
+        "shadow-[0_8px_30px_rgba(0,0,0,0.06)]",
         className,
       )}
     >
       {icon}
-      <span className="font-mono text-xs md:text-sm uppercase tracking-[0.15em] text-black">
+      <span className="font-mono text-xs md:text-sm uppercase tracking-[0.15em] text-foreground">
         {label}
       </span>
     </div>
@@ -164,11 +164,11 @@ function SignalCard({
 
 function DottedFooter() {
   return (
-    <div className="absolute bottom-0 z-20 h-[70px] w-full bg-white">
+    <div className="absolute bottom-0 z-20 h-[70px] w-full bg-background">
       <div
         className="h-full w-full"
         style={{
-          backgroundImage: "radial-gradient(#d9d9d9 1px, transparent 1px)",
+          backgroundImage: "radial-gradient(var(--border) 1px, transparent 1px)",
           backgroundSize: "14px 14px",
         }}
       />
@@ -179,9 +179,9 @@ function DottedFooter() {
 function CenterHub() {
   return (
     <div className="absolute bottom-0 left-1/2 z-40 -translate-x-1/2 pt-4">
-      <div className="ml-10 flex h-[140px] w-[140px] items-center justify-center rounded-t-[24px] border border-white/70 bg-[#f5f5f5] md:h-[180px] md:w-[180px]">
+      <div className="ml-10 flex h-[140px] w-[140px] items-center justify-center rounded-t-[24px] border border-border bg-muted md:h-[180px] md:w-[180px]">
         <Workflow
-          className="h-12 w-12 text-black md:h-16 md:w-16"
+          className="h-12 w-12 text-foreground md:h-16 md:w-16"
           strokeWidth={1.75}
         />
       </div>

@@ -37,7 +37,7 @@ export default async function BlogsPage() {
   });
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 -mt-20">
       <div className="mb-6 space-y-1 sm:mb-8">
         <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
           Blogs

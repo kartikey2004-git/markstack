@@ -92,7 +92,7 @@ export default async function BlogPostPage({
   const isDraftPreview = post.status === "draft";
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background -mt-20">
       <div className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
         <header className="mb-8 space-y-4 sm:mb-10 sm:space-y-5">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
@@ -108,7 +108,7 @@ export default async function BlogPostPage({
                 {isDraftPreview && (
                   <Badge
                     variant="outline"
-                    className="rounded-md border-amber-500/40 px-2 py-0.5 text-xs text-amber-600 dark:text-amber-400"
+                    className="rounded-md border-amber-500/40 px-2 py-0.5 text-xs text-amber-600"
                   >
                     Draft
                   </Badge>
@@ -185,7 +185,7 @@ export default async function BlogPostPage({
 
         <main
           className={[
-            "prose prose-gray dark:prose-invert",
+            "prose prose-gray",
             // ── Base size
             "prose-sm sm:prose-base",
             // ── Headings

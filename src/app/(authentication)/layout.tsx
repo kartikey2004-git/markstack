@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { AppContainer } from "@/components/layout/app-container";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
@@ -14,7 +13,6 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           >
             MarkStack
           </Link>
-          <ThemeToggle />
         </AppContainer>
       </header>
 
