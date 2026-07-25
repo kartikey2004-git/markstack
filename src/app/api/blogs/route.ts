@@ -4,6 +4,7 @@ import db from "@/lib/database";
 import { serializeMDX } from "@/lib/markdown/mdx-renderer";
 import { calculateReadTime } from "@/lib/markdown/read-time";
 import { handleDatabaseError } from "@/lib/server/error-handler";
+import { revalidatePublicBlogCache } from "@/lib/revalidate-public-site";
 import type { Prisma } from "@prisma/client";
 
 export async function GET() {
@@ -76,6 +77,8 @@ export async function POST(request: NextRequest) {
         authorId: user.id,
       },
     });
+
+    await revalidatePublicBlogCache();
 
     return NextResponse.json(blog, { status: 201 });
   } catch (error: unknown) {
