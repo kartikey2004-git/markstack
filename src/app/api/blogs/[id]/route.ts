@@ -4,6 +4,7 @@ import db from "@/lib/database";
 import { serializeMDX } from "@/lib/markdown/mdx-renderer";
 import { calculateReadTime } from "@/lib/markdown/read-time";
 import { getErrorCode } from "@/lib/server/error-utils";
+import { revalidatePublicBlogCache } from "@/lib/revalidate-public-site";
 import type { Prisma } from "@prisma/client";
 
 export async function GET(
@@ -91,6 +92,8 @@ export async function PATCH(
       return NextResponse.json({ error: "Blog not found" }, { status: 404 });
     }
 
+    await revalidatePublicBlogCache();
+
     return NextResponse.json(blog);
   } catch (error: unknown) {
     console.error("Error updating blog:", error);
@@ -137,6 +140,8 @@ export async function DELETE(
     if (deleteResult.count === 0) {
       return NextResponse.json({ error: "Blog not found" }, { status: 404 });
     }
+
+    await revalidatePublicBlogCache();
 
     return NextResponse.json(
       { message: "Blog deleted successfully" },
