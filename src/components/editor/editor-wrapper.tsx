@@ -96,7 +96,6 @@ export function EditorWrapper({ blog }: EditorWrapperProps) {
               placeholder="Blog title..."
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="h-10"
             />
             <Textarea
               placeholder="Brief description..."
@@ -106,9 +105,10 @@ export function EditorWrapper({ blog }: EditorWrapperProps) {
               rows={1}
             />
             <Button
+              size="lg"
               onClick={handleSaveBlog}
               disabled={isSaving || !title.trim() || !content.trim()}
-              className="h-10 whitespace-nowrap"
+              className="whitespace-nowrap"
             >
               <Save className="mr-2 size-4" />
               {isSaving ? "Saving..." : "Save Blog"}
@@ -124,7 +124,7 @@ export function EditorWrapper({ blog }: EditorWrapperProps) {
           onFileUpload={setContent}
         />
 
-        <div className="h-[70vh] min-h-[130px]">
+        <div className="h-[70vh] min-h-32.5">
           <ResizablePanelGroup
             orientation={isMobile ? "vertical" : "horizontal"}
             className="h-full"

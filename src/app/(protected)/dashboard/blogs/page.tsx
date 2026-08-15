@@ -26,10 +26,13 @@ import {
   Clock3,
   Send,
   FileX,
+  FileText,
 } from "lucide-react";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { ProtectedPageWrapper } from "@/components/layout/protected-page-wrapper";
+import { ErrorState } from "@/components/shared/error-state";
+import { EmptyState } from "@/components/shared/empty-state";
 
 export default function DashboardBlogsPage() {
   const { blogs, loading, error, deleteBlog, publishBlog, unpublishBlog } =
@@ -45,13 +48,8 @@ export default function DashboardBlogsPage() {
 
   if (error) {
     return (
-      <ProtectedPageWrapper>
-        <Card className="mx-auto max-w-xl border-destructive/30 bg-destructive/5">
-          <CardHeader>
-            <CardTitle>Unable to load your blogs</CardTitle>
-            <CardDescription>{error}</CardDescription>
-          </CardHeader>
-        </Card>
+      <ProtectedPageWrapper title="My blogs">
+        <ErrorState title="Unable to load your blogs" description={error} />
       </ProtectedPageWrapper>
     );
   }
@@ -62,7 +60,7 @@ export default function DashboardBlogsPage() {
       description="Manage your posts in one place."
       actions={
         <Link href="/editor" className="w-full sm:w-auto">
-          <Button className="h-10 w-full gap-2 sm:w-auto">
+          <Button size="lg" className="w-full gap-2 sm:w-auto">
             <Plus className="size-4" />
             New blog
           </Button>
@@ -70,17 +68,12 @@ export default function DashboardBlogsPage() {
       }
     >
       {blogs.length === 0 ? (
-        <Card className="border-dashed border-border/80 bg-card/60">
-          <CardContent className="py-14 text-center">
-            <h3 className="text-lg font-medium">No blogs yet</h3>
-            <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
-              Create your first post to start building your writing archive.
-            </p>
-            <Link href="/editor">
-              <Button className="mt-6">Create your first blog</Button>
-            </Link>
-          </CardContent>
-        </Card>
+        <EmptyState
+          icon={FileText}
+          title="No blogs yet"
+          description="Create your first post to start building your writing archive."
+          action={{ label: "Create your first blog", href: "/editor" }}
+        />
       ) : (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {blogs.map((blog) => (

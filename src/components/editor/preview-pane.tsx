@@ -2,6 +2,7 @@
 
 import React from "react";
 import { MDXRemote } from "next-mdx-remote";
+import { Loader2 } from "lucide-react";
 import "highlight.js/styles/github-dark.css";
 import type { SerializedMdx } from "@/lib/markdown/mdx-renderer";
 import { MermaidComponent } from "./mermaid-component";
@@ -52,7 +53,7 @@ export function MarkdownPreview({ content, isLoading }: MarkdownPreviewProps) {
     return (
       <div className="flex h-full items-center justify-center p-6">
         <div className="flex flex-col items-center gap-3">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary" />
+          <Loader2 className="size-6 animate-spin text-muted-foreground" />
           <p className="text-sm text-muted-foreground">Rendering preview...</p>
         </div>
       </div>

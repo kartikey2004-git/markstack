@@ -1,28 +1,30 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function CaseStudiesSection() {
   return (
-    <section className="relative overflow-hidden bg-[#fafafa] py-20">
+    <section className="relative overflow-hidden bg-muted/30 py-20">
       {/* Dot Grid */}
       <div
         className="absolute inset-0 opacity-50"
         style={{
           backgroundImage:
-            "radial-gradient(#d4d4d4 1px, transparent 1px)",
+            "radial-gradient(var(--border) 1px, transparent 1px)",
           backgroundSize: "16px 16px",
         }}
       />
 
-      <div className="relative mx-auto max-w-4xl border border-zinc-300 bg-[#f7f7f7] p-4 md:p-6">
+      <div className="relative mx-auto max-w-4xl border border-border bg-card p-4 md:p-6">
         {/* Header */}
         <div className="py-8 text-center">
-          <div className="mb-4 inline-flex bg-amber-50 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.25em] text-amber-700">
+          <div className="mb-4 inline-flex bg-muted px-2 py-1 font-mono text-[9px] uppercase tracking-[0.25em] text-foreground">
             FOR DEVELOPERS, WRITERS & BUILDERS
           </div>
 
-          <h2 className="mx-auto max-w-2xl text-3xl font-medium leading-tighter tracking-[-0.01em] text-black md:text-5xl">
+          <h2 className="mx-auto max-w-2xl text-3xl font-medium leading-tighter tracking-[-0.01em] text-foreground md:text-5xl">
             Everything You Need
             Between an Idea
             <br />
@@ -31,7 +33,7 @@ export default function CaseStudiesSection() {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-12 gap-[1px] bg-zinc-300">
+        <div className="grid grid-cols-12 gap-[1px] bg-border">
           <CaseCard
             company="Capture"
             title="Notes, snippets, research, and documentation."
@@ -82,7 +84,7 @@ function CaseCard({
       transition={{
         duration: 0.2,
       }}
-      className={`relative min-h-[170px] overflow-hidden border border-zinc-300 bg-white ${className}`}
+      className={`relative min-h-[170px] overflow-hidden border border-border bg-card ${className}`}
     >
       {blue && (
         <div
@@ -95,11 +97,11 @@ function CaseCard({
       )}
 
       <div className="relative z-10 p-3">
-        <div className="mb-10 text-xs font-semibold text-black">
+        <div className="mb-10 text-xs font-semibold text-foreground">
           {company}
         </div>
 
-        <h3 className="text-sm leading-snug text-black">
+        <h3 className="text-sm leading-snug text-foreground">
           {title}
         </h3>
 
@@ -119,7 +121,7 @@ function GradientCard({
       whileHover={{
         y: -4,
       }}
-      className={`relative min-h-[170px] overflow-hidden border border-zinc-300 ${className}`}
+      className={`relative min-h-[170px] overflow-hidden border border-border ${className}`}
     >
       <motion.div
         animate={{
@@ -146,11 +148,11 @@ function GradientCard({
 
       <div className="relative z-10 flex h-full flex-col p-5">
         <div className="-mt-2">
-          <div className="mb-9 text-xs font-semibold text-black">
+          <div className="mb-9 text-xs font-semibold text-foreground">
             Publish
           </div>
       
-          <h3 className="max-w-[180px] text-sm leading-snug text-black">
+          <h3 className="max-w-[180px] text-sm leading-snug text-foreground">
             SEO-ready blogs and documentation.
           </h3>
         </div>
@@ -169,7 +171,7 @@ function GalileoCard({
       whileHover={{
         y: -4,
       }}
-      className={`relative overflow-hidden border border-zinc-300 bg-white ${className}`}
+      className={`relative overflow-hidden border border-border bg-card ${className}`}
     >
       <div className="p-3">
         <div className="mb-4 text-xs font-semibold">
@@ -183,11 +185,11 @@ function GalileoCard({
         </h3>
 
         <div className="mt-4 flex gap-2">
-          <span className="border border-zinc-300 px-1 py-0.5 text-[8px] uppercase">
+          <span className="border border-border px-1 py-0.5 text-[8px] uppercase">
             One WORKFLOW 
           </span>
 
-          <span className="border border-zinc-300 px-1 py-0.5 text-[8px] uppercase">
+          <span className="border border-border px-1 py-0.5 text-[8px] uppercase">
             ONE WORKSPACE
           </span>
         </div>
@@ -203,19 +205,19 @@ function GalileoCard({
       />
 
       <div className="absolute bottom-3 left-3 right-3 flex gap-2">
-        <div className="flex-1 border border-white/50 bg-white/60 p-2 backdrop-blur">
+        <div className="flex-1 border border-background/50 bg-background/60 p-2 backdrop-blur">
           <div className="text-xl font-medium">3</div>
-          <div className="text-[9px] uppercase text-zinc-600">
+          <div className="text-[9px] uppercase text-muted-foreground">
             CONNECTED WORKFLOWS
           </div>
         </div>
 
-        <div className="flex-1 border border-white/50 bg-white/60 p-2 backdrop-blur">
+        <div className="flex-1 border border-background/50 bg-background/60 p-2 backdrop-blur">
           <div className="text-xl font-medium">
             1
           </div>
 
-          <div className="text-[9px] uppercase text-zinc-600">
+          <div className="text-[9px] uppercase text-muted-foreground">
             UNIFIED WORKSPACE
           </div>
         </div>
@@ -230,39 +232,40 @@ function CTABanner() {
       whileHover={{
         scale: 1.01,
       }}
-      className="relative mt-[1px] overflow-hidden border border-zinc-300 bg-black"
+      className="relative mt-[1px] overflow-hidden border border-border bg-foreground"
     >
       {/* Noise */}
       <div
         className="absolute inset-0 opacity-[0.08]"
         style={{
           backgroundImage:
-            "radial-gradient(circle,#ffffff 1px,transparent 1px)",
+            "radial-gradient(circle,var(--background) 1px,transparent 1px)",
           backgroundSize: "4px 4px",
         }}
       />
 
       {/* Decorative */}
       <div className="absolute right-10 top-1/2 h-40 w-40 -translate-y-1/2 opacity-20">
-        <div className="absolute h-20 w-4 bg-white rotate-45" />
-        <div className="absolute h-20 w-4 -rotate-45 bg-white" />
-        <div className="absolute left-10 h-20 w-4 bg-white rotate-45" />
+        <div className="absolute h-20 w-4 bg-background rotate-45" />
+        <div className="absolute h-20 w-4 -rotate-45 bg-background" />
+        <div className="absolute left-10 h-20 w-4 bg-background rotate-45" />
       </div>
 
       <div className="relative z-10 p-6 md:p-8">
-        <h3 className="max-w-lg text-2xl font-medium text-white md:text-3xl">
-          Everything Between an Idea 
+        <h3 className="max-w-lg text-2xl font-medium text-background md:text-3xl">
+          Everything Between an Idea
           <br />
           and a Published Article.
         </h3>
 
-        <p className="mt-3 max-w-md text-sm text-zinc-400">
+        <p className="mt-3 max-w-md text-sm text-background/60">
           MarkStack brings everything together so your ideas stay connected from first thought to final publication.
         </p>
 
-        <button className="mt-6 bg-white px-4 py-2 text-xs font-medium text-black transition hover:bg-zinc-100">
-          Get Started Free →
-        </button>
+        <Button variant="secondary" size="lg" className="mt-6">
+          Get Started Free
+          <ArrowRight className="size-4" />
+        </Button>
       </div>
     </motion.div>
   );

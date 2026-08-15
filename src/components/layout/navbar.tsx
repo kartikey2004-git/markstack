@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { AppContainer } from "@/components/layout/app-container";
-import { ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { authClient } from "@/lib/auth-client";
 import { UserMenu } from "../shared/user-menu";
@@ -25,7 +24,7 @@ export function Navbar() {
   }, []);
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-white bg-opacity-80 backdrop-blur-md border-b border-border py-4">
+    <nav className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md border-b border-border py-4">
       <AppContainer className="flex items-center justify-between">
         {/* Logo */}
         <Link

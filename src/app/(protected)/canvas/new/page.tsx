@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -51,7 +52,7 @@ export default function NewCanvasPage() {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-background p-4">
+    <div className="flex min-h-[70vh] items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Create New Canvas</CardTitle>
@@ -60,17 +61,14 @@ export default function NewCanvasPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div>
-            <label htmlFor="title" className="text-sm font-medium">
-              Canvas Title
-            </label>
+          <div className="space-y-2">
+            <Label htmlFor="title">Canvas Title</Label>
             <Input
               id="title"
               type="text"
               placeholder="Enter canvas title..."
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="mt-1"
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   createCanvas();
@@ -79,9 +77,10 @@ export default function NewCanvasPage() {
             />
           </div>
           <Button
+            size="lg"
             onClick={createCanvas}
             disabled={creating || !title.trim()}
-            className="w-full bg-black text-white hover:bg-black/90 disabled:bg-black/50"
+            className="w-full"
           >
             {creating ? "Creating..." : "Create Canvas"}
           </Button>
