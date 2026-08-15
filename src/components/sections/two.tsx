@@ -27,10 +27,10 @@ const PATHS = [
 
 export const AnimationContainer = () => {
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 mx-auto max-w-[734px]">
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 mx-auto max-w-183.5">
       <svg
         viewBox="0 0 734 405"
-        className="block h-[405px] w-full overflow-visible"
+        className="block h-101.5 w-full overflow-visible"
         fill="none"
       >
         {PATHS.map((path) => (

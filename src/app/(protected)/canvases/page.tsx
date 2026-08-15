@@ -125,7 +125,7 @@ export default function AllCanvasesPage() {
                       {canvas.title || "Untitled Canvas"}
                     </CardTitle>
 
-                    <span className="text-xs text-muted-foreground whitespace-nowrap flex-shrink-0">
+                    <span className="text-xs text-muted-foreground whitespace-nowrap shrink-0">
                       {new Date(canvas.createdAt).toLocaleDateString()}
                     </span>
                   </div>
@@ -155,7 +155,7 @@ export default function AllCanvasesPage() {
                       </Button>
                     </Link>
 
-                    <div className="flex items-center gap-1 flex-shrink-0">
+                    <div className="flex items-center gap-1 shrink-0">
                       <Button
                         variant="ghost"
                         size="icon"

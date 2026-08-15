@@ -20,7 +20,7 @@ export function HeroNew() {
       try {
         const session = await authClient.getSession();
         setIsAuthenticated(!!session.data);
-      } catch (error) {
+      } catch {
         setIsAuthenticated(false);
       }
     };
@@ -92,35 +92,35 @@ export function HeroNew() {
           </div>
 
           <div className="hidden lg:block">
-            <div className="relative mx-auto mt-40 h-[300px] w-[900px] pt-10">
+            <div className="relative mx-auto mt-40 h-75 w-225 pt-10">
               <AnimationContainer />
           
               <SignalCard
-                className="absolute left-1/2 top-[-110px] -translate-x-1/2"
+                className="absolute left-1/2 -top-27.5 -translate-x-1/2"
                 icon={<Lightbulb size={18} />}
                 label="Capture Ideas"
               />
           
               <SignalCard
-                className="absolute left-10 top-[-10px]"
+                className="absolute left-10 -top-2.5"
                 icon={<GitBranch size={18} />}
                 label="Visual Canvas"
               />
           
               <SignalCard
-                className="absolute top-[90px]"
+                className="absolute top-22.5"
                 icon={<Brain size={18} />}
                 label="Organize Knowledge"
               />
           
               <SignalCard
-                className="absolute right-[90px] top-[-10px]"
+                className="absolute right-22.5 -top-2.5"
                 icon={<FileText size={18} />}
                 label="Markdown Editor"
               />
           
               <SignalCard
-                className="absolute right-[5px] top-[90px]"
+                className="absolute right-1.25 top-22.5"
                 icon={<Rocket size={18} />}
                 label="Instant Publishing"
               />
@@ -164,7 +164,7 @@ function SignalCard({
 
 function DottedFooter() {
   return (
-    <div className="absolute bottom-0 z-20 h-[70px] w-full bg-background">
+    <div className="absolute bottom-0 z-20 h-17.5 w-full bg-background">
       <div
         className="h-full w-full"
         style={{
@@ -179,7 +179,7 @@ function DottedFooter() {
 function CenterHub() {
   return (
     <div className="absolute bottom-0 left-1/2 z-40 -translate-x-1/2 pt-4">
-      <div className="ml-10 flex h-[140px] w-[140px] items-center justify-center rounded-t-[24px] border border-border bg-muted md:h-[180px] md:w-[180px]">
+      <div className="ml-10 flex h-35 w-35 items-center justify-center rounded-t-[24px] border border-border bg-muted md:h-45 md:w-45">
         <Workflow
           className="h-12 w-12 text-foreground md:h-16 md:w-16"
           strokeWidth={1.75}

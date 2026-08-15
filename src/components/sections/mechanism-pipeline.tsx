@@ -81,11 +81,11 @@ export function MechanismPipeline() {
                 className={`
                   group
                   relative
-                  h-[220px]
+                  h-55
                   overflow-hidden
                   border-2 cursor-pointer
                   ${step.border}
-                  bg-gradient-to-br
+                  bg-linear-to-br
                   ${step.bg}
                   p-4
                   transition-all
@@ -98,7 +98,7 @@ export function MechanismPipeline() {
                 <div className="absolute inset-0">
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.9),transparent_50%)]" />
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,rgba(255,255,255,0.5),transparent_40%)]" />
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-transparent blur-2xl" />
+                  <div className="absolute inset-0 bg-linear-to-br from-white/40 via-transparent to-transparent blur-2xl" />
                 </div>
         
                 {/* Icon */}
