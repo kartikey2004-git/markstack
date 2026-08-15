@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { requireAuth } from "@/lib/auth-utils";
 import db from "@/lib/database";
 import { EditorWrapper } from "@/components/editor/editor-wrapper";
+import { ProtectedPageWrapper } from "@/components/layout/protected-page-wrapper";
 import type { Blog } from "@/types/blog";
 
 export default async function EditorPage({
@@ -28,5 +29,12 @@ export default async function EditorPage({
     status: blog.status as "draft" | "published",
   };
 
-  return <EditorWrapper blog={typedBlog} />;
+  return (
+    <ProtectedPageWrapper
+      title="Edit blog"
+      description="Write and preview your markdown content in real-time"
+    >
+      <EditorWrapper blog={typedBlog} />
+    </ProtectedPageWrapper>
+  );
 }

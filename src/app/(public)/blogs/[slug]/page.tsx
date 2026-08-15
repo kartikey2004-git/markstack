@@ -92,27 +92,15 @@ export default async function BlogPostPage({
   const isDraftPreview = post.status === "draft";
 
   return (
-    <div className="min-h-screen bg-background -mt-20">
+    <div className="min-h-screen bg-background">
       <div className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
         <header className="mb-8 space-y-4 sm:mb-10 sm:space-y-5">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
             <div className="min-w-0 flex-1 space-y-4">
               <div className="flex flex-wrap items-center gap-2">
-                <Badge
-                  variant="secondary"
-                  className="rounded-md px-2 py-0.5 text-xs"
-                >
-                  Blog Post
-                </Badge>
+                <Badge variant="secondary">Blog Post</Badge>
 
-                {isDraftPreview && (
-                  <Badge
-                    variant="outline"
-                    className="rounded-md border-amber-500/40 px-2 py-0.5 text-xs text-amber-600"
-                  >
-                    Draft
-                  </Badge>
-                )}
+                {isDraftPreview && <Badge variant="outline">Draft</Badge>}
 
                 <div className="flex items-center gap-1 rounded-md border bg-muted/40 px-2 py-1 text-xs text-muted-foreground">
                   <Clock className="size-3.5 shrink-0" />

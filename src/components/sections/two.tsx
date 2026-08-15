@@ -2,15 +2,6 @@
 
 import { motion } from "framer-motion";
 
-export const Demo = () => {
-  return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-background">
-      {/* Animated Network */}
-      <AnimationContainer />
-    </section>
-  );
-};
-
 const PATHS = [
   {
     d: "M 0 0 L 0 404.609",

@@ -11,6 +11,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ErrorState } from "@/components/shared/error-state";
 import { toast } from "sonner";
 import {
   Save,
@@ -252,16 +254,32 @@ export default function CanvasPage() {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center h-full w-full">
-        <div className="text-red-500 text-lg">{error}</div>
+      <div className="flex h-full w-full items-center justify-center p-4 sm:p-6">
+        <ErrorState
+          className="w-full max-w-md"
+          description={error}
+          action={{ label: "Try again", onClick: fetchCanvas }}
+        />
       </div>
     );
   }
 
   if (loading || !canvasData) {
     return (
-      <div className="flex items-center justify-center h-full w-full">
-        <div className="text-muted-foreground">Loading canvas...</div>
+      <div className="flex h-full w-full flex-col">
+        <div className="flex-shrink-0 border-b bg-background px-4 py-3 sm:px-6">
+          <div className="flex items-center justify-between gap-3">
+            <Skeleton className="h-6 w-24" />
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-8 w-20" />
+              <Skeleton className="h-8 w-20" />
+              <Skeleton className="h-8 w-24" />
+            </div>
+          </div>
+        </div>
+        <div className="flex-1 p-4 sm:p-6">
+          <Skeleton className="h-full w-full" />
+        </div>
       </div>
     );
   }

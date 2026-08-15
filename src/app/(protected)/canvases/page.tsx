@@ -5,9 +5,12 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PageSkeleton } from "@/components/ui/page-skeleton";
-import { Plus, Eye, Share2, Trash2, Palette, FileText } from "lucide-react";
+import { Plus, Eye, Share2, Trash2, Palette } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { AuthGuard } from "@/components/auth/auth-guard";
+import { ProtectedPageWrapper } from "@/components/layout/protected-page-wrapper";
+import { ErrorState } from "@/components/shared/error-state";
+import { EmptyState } from "@/components/shared/empty-state";
 import { toast } from "sonner";
 
 interface Canvas {
@@ -68,7 +71,9 @@ export default function AllCanvasesPage() {
   if (loading) {
     return (
       <AuthGuard>
-        <PageSkeleton cardCount={8} gridCols="2" />
+        <ProtectedPageWrapper>
+          <PageSkeleton cardCount={8} gridCols="2" />
+        </ProtectedPageWrapper>
       </AuthGuard>
     );
   }
@@ -76,49 +81,37 @@ export default function AllCanvasesPage() {
   if (error) {
     return (
       <AuthGuard>
-        <div className="flex items-center justify-center h-64">
-          <div className="text-red-500 text-lg">{error}</div>
-        </div>
+        <ProtectedPageWrapper title="Your canvases">
+          <ErrorState
+            description={error}
+            action={{ label: "Try again", onClick: fetchCanvases }}
+          />
+        </ProtectedPageWrapper>
       </AuthGuard>
     );
   }
 
   return (
     <AuthGuard>
-      <div className="px-4 sm:px-6 py-6 max-w-screen-2xl mx-auto space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
-            Your Canvases
-          </h1>
-          <Link href="/canvas/new">
-            <Button className="w-full sm:w-auto bg-black text-white hover:bg-black/90">
-              <Plus className="w-4 h-4 mr-2" />
-              New Canvas
+      <ProtectedPageWrapper
+        title="Your canvases"
+        description="Organize your ideas, sketches, and projects in one place."
+        actions={
+          <Link href="/canvas/new" className="w-full sm:w-auto">
+            <Button size="lg" className="w-full gap-2 sm:w-auto">
+              <Plus className="size-4" />
+              New canvas
             </Button>
           </Link>
-        </div>
+        }
+      >
         {canvases.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 sm:py-16">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-muted rounded-full flex items-center justify-center mb-6">
-              <Palette className="w-10 h-10 sm:w-12 sm:h-12 text-muted-foreground" />
-            </div>
-            <h3 className="text-xl sm:text-2xl font-semibold mb-2 text-center">
-              No canvases yet
-            </h3>
-            <p className="text-muted-foreground text-center max-w-md mb-8 text-sm sm:text-base">
-              Start creating by setting up your first design canvas. Organize
-              your ideas, sketches, and projects in one place.
-            </p>
-            <Link href="/canvas/new">
-              <Button
-                size="lg"
-                className="w-full sm:w-auto bg-black text-white hover:bg-black/90"
-              >
-                <Plus className="w-5 h-5 mr-2" />
-                Create Your First Canvas
-              </Button>
-            </Link>
-          </div>
+          <EmptyState
+            icon={Palette}
+            title="No canvases yet"
+            description="Start creating by setting up your first design canvas. Organize your ideas, sketches, and projects in one place."
+            action={{ label: "Create your first canvas", href: "/canvas/new" }}
+          />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {canvases.map((canvas) => (
@@ -196,7 +189,7 @@ export default function AllCanvasesPage() {
             ))}
           </div>
         )}
-      </div>
+      </ProtectedPageWrapper>
     </AuthGuard>
   );
 }

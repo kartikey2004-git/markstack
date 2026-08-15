@@ -24,33 +24,33 @@ const chartData = [
 
 export default function ReplyRateSection() {
   return (
-    <section className="relative overflow-hidden bg-[#fafafa] py-16">
+    <section className="relative overflow-hidden bg-muted/30 py-16">
       {/* Dot Grid Background */}
       <div
         className="absolute inset-0 opacity-60"
         style={{
           backgroundImage:
-            "radial-gradient(circle,#d4d4d4 1px,transparent 1px)",
+            "radial-gradient(circle,var(--border) 1px,transparent 1px)",
           backgroundSize: "16px 16px",
         }}
       />
 
-      <div className="relative mx-auto max-w-6xl border border-zinc-200 bg-[#f8f8f8] p-6 md:p-8">
+      <div className="relative mx-auto max-w-6xl border border-border bg-card p-6 md:p-8">
         {/* Header */}
         <div className="max-w-5xl">
-          <div className="inline-flex items-center bg-blue-50 px-3 py-2 text-xs uppercase tracking-[0.2em] text-blue-700">
+          <div className="inline-flex items-center bg-muted px-3 py-2 text-xs uppercase tracking-[0.2em] text-foreground">
             • ONE WORKSPACE. ZERO CONTEXT SWITCHING
           </div>
 
-          <h2 className="mt-6 text-3xl font-medium tracking-tight text-black md:text-5xl">
+          <h2 className="mt-6 text-3xl font-medium tracking-tight text-foreground md:text-5xl">
             The Workflow Is Why Creators Stay.
           </h2>
 
-          <p className="mt-6 max-w-5xl text-zinc-600">
+          <p className="mt-6 max-w-5xl text-muted-foreground">
             Most creators rely on separate tools for writing, visual thinking, and publishing. MarkStack brings everything together in one connected workspace, so ideas flow seamlessly from capture to publication.
           </p>
 
-          <p className="mt-5 text-zinc-700">
+          <p className="mt-5 text-foreground/80">
             The difference: ideas stay connected from capture to publication.
           </p>
         </div>
@@ -71,21 +71,21 @@ function ReplyRateChart() {
   return (
     <div className="relative h-[400px]">
       {/* Chart Title */}
-      <div className="mb-8 text-center font-mono text-xs uppercase tracking-[0.3em] text-zinc-600">
+      <div className="mb-8 text-center font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">
         Workflow Completion
       </div>
 
-      <div className="relative h-[320px] border-l border-b border-zinc-300">
+      <div className="relative h-[320px] border-l border-b border-border">
         {/* Horizontal Grid */}
         {[0, 5, 10, 15, 20, 25, 30].map((tick) => (
           <div
             key={tick}
-            className="absolute left-0 right-0 border-t border-dashed border-zinc-200"
+            className="absolute left-0 right-0 border-t border-dashed border-border"
             style={{
               bottom: `${(tick / maxValue) * 100}%`,
             }}
           >
-            <span className="absolute -left-8 -top-3 text-xs text-zinc-500">
+            <span className="absolute -left-8 -top-3 text-xs text-muted-foreground">
               {tick}%
             </span>
           </div>
@@ -113,7 +113,7 @@ function ReplyRateChart() {
                   y: -4,
                 }}
                 className={`relative w-20 border ${
-                  item.featured ? "border-emerald-200" : "border-zinc-300"
+                  item.featured ? "border-foreground/40" : "border-border"
                 }`}
               >
                 {/* Standard Bars */}
@@ -123,7 +123,7 @@ function ReplyRateChart() {
                       className="absolute inset-0 opacity-60"
                       style={{
                         background:
-                          "repeating-linear-gradient(135deg,#ddd,#ddd 2px,transparent 2px,transparent 6px)",
+                          "repeating-linear-gradient(135deg,var(--border),var(--border) 2px,transparent 2px,transparent 6px)",
                       }}
                     />
                   </>
@@ -151,12 +151,12 @@ function ReplyRateChart() {
                   </>
                 )}
 
-                <div className="absolute left-3 top-3 z-10 text-xs text-zinc-700">
+                <div className="absolute left-3 top-3 z-10 text-xs text-foreground">
                   {item.value}%
                 </div>
               </motion.div>
 
-              <div className="mt-4 text-center font-mono text-xs uppercase tracking-[0.15em] text-zinc-600">
+              <div className="mt-4 text-center font-mono text-xs uppercase tracking-[0.15em] text-muted-foreground">
                 {item.label}
               </div>
             </div>
@@ -173,63 +173,37 @@ function TestimonialCard() {
       whileHover={{
         y: -6,
       }}
-      className="group relative overflow-hidden rounded-sm border border-zinc-300 bg-white max-w-[380px]"
+      className="group relative overflow-hidden rounded-sm border border-border bg-card shadow-sm max-w-[380px]"
     >
-      {/* Animated Glow */}
-      <motion.div
-        animate={{
-          rotate: [0, 360],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-        className="absolute -inset-40 opacity-70"
-        style={{
-          background:
-            "conic-gradient(from 0deg,#ffd7d7,#d7fff4,#ddd7ff,#ffd7d7)",
-          filter: "blur(80px)",
-        }}
-      />
-
       {/* Noise */}
       <div
         className="absolute inset-0 opacity-[0.04]"
         style={{
-          backgroundImage: "radial-gradient(circle,#000 1px,transparent 1px)",
+          backgroundImage:
+            "radial-gradient(circle,var(--foreground) 1px,transparent 1px)",
           backgroundSize: "4px 4px",
         }}
       />
 
       <div className="relative z-10 p-8 md:p-10">
-        <div className="text-5xl leading-none text-zinc-900">“</div>
+        <div className="text-5xl leading-none text-foreground">&ldquo;</div>
 
-        <p className="mt-3 text-base leading-relaxed text-zinc-700 md:text-lg">
-          "Instead of moving content between tools, I stay focused on the work itself. Notes, diagrams, AI organization, and publishing all happen in one place."
+        <p className="mt-3 text-base leading-relaxed text-foreground/80 md:text-lg">
+          &ldquo;Instead of moving content between tools, I stay focused on the work itself. Notes, diagrams, AI organization, and publishing all happen in one place.&rdquo;
         </p>
 
         <div className="mt-10 flex items-center gap-3">
-          <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-200 to-blue-400" />
+          <div className="h-12 w-12 rounded-full bg-muted" />
 
           <div>
-            <div className="font-medium text-zinc-900">Kartikey Bhatnagar</div>
+            <div className="font-medium text-foreground">Kartikey Bhatnagar</div>
 
-            <div className="text-sm text-zinc-500">
+            <div className="text-sm text-muted-foreground">
               Full Stack Engineer
             </div>
           </div>
         </div>
       </div>
-
-      {/* Border Glow */}
-      <div
-        className="pointer-events-none absolute inset-0 rounded-sm"
-        style={{
-          boxShadow:
-            "inset 0 0 0 1px rgba(255,255,255,0.7), 0 0 40px rgba(180,255,220,0.15)",
-        }}
-      />
     </motion.div>
   );
 }

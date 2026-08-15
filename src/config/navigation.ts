@@ -42,8 +42,3 @@ export const NAVIGATION_CONFIG: NavGroup[] = [
   },
 ];
 
-// Flatten for navbar usage (public links only)
-export const PUBLIC_NAV_LINKS: NavLink[] = NAVIGATION_CONFIG
-  .flatMap(group => group.items)
-  .filter(link => link.public)
-  .map(({ public: _, ...link }) => link);

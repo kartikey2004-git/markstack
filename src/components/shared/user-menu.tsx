@@ -20,11 +20,7 @@ import {
   LogOut,
   PenSquare,
   BookOpen,
-  User,
-  LayoutDashboard,
-  CheckSquare,
   Palette,
-  Settings,
 } from "lucide-react";
 
 type SessionUser = {

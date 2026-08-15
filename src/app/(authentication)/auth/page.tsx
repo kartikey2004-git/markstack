@@ -23,7 +23,7 @@ export default async function AuthPage({
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center bg-gradient-to-br from-background via-background to-muted/20 py-10 sm:py-14">
+    <div className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center bg-background py-10 sm:py-14">
       <AppContainer className="w-full max-w-md">
         <div className="w-full max-w-md space-y-8">
           <div className="space-y-2 text-center">

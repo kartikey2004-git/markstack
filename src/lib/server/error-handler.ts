@@ -58,9 +58,4 @@ export function handleDatabaseError(error: unknown): NextResponse {
   );
 }
 
-export function getErrorCode(error: unknown): string | null {
-  if (error instanceof Prisma.PrismaClientKnownRequestError) {
-    return error.code;
-  }
-  return null;
-}
+

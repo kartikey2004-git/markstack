@@ -36,7 +36,8 @@ export function BlogExportMenu({ blogId, slug }: BlogExportMenuProps) {
         <Button
           type="button"
           variant="outline"
-          className="h-10 gap-2 border-border/80 bg-background/80 shadow-sm backdrop-blur-sm"
+          size="lg"
+          className="gap-2 border-border/80 bg-background/80 shadow-sm backdrop-blur-sm"
           disabled={isExporting}
         >
           <Download className="size-4" />

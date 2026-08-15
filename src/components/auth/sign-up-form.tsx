@@ -87,7 +87,6 @@ export function SignUpForm() {
               placeholder="John Doe"
               required
               disabled={isLoading}
-              className="h-10"
             />
           </div>
           <div className="space-y-2">
@@ -100,7 +99,6 @@ export function SignUpForm() {
               placeholder="john@example.com"
               required
               disabled={isLoading}
-              className="h-10"
             />
           </div>
           <div className="space-y-2">
@@ -114,12 +112,11 @@ export function SignUpForm() {
               required
               minLength={8}
               disabled={isLoading}
-              className="h-10"
             />
           </div>
         </CardContent>
         <CardFooter className="flex flex-col space-y-4 pt-0">
-          <Button type="submit" className="h-10 w-full" disabled={isLoading}>
+          <Button type="submit" size="lg" className="w-full" disabled={isLoading}>
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Sign Up
           </Button>

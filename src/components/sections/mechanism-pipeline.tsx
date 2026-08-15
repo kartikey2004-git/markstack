@@ -6,6 +6,7 @@ import {
   Workflow,
   Rocket,
 } from "lucide-react";
+import { AppContainer } from "@/components/layout/app-container";
 
 const steps = [
   {
@@ -40,32 +41,32 @@ const steps = [
 
 export function MechanismPipeline() {
   return (
-    <section className="relative overflow-hidden bg-[#fafafa] py-20 -mt-28">
+    <section className="relative overflow-hidden bg-muted/30 py-20">
       {/* Dotted Background */}
       <div
         className="absolute inset-0 opacity-60"
         style={{
           backgroundImage:
-            "radial-gradient(#d4d4d8 1px, transparent 1px)",
+            "radial-gradient(var(--border) 1px, transparent 1px)",
           backgroundSize: "12px 12px",
         }}
       />
 
-      <div className="relative z-10 mx-auto max-w-6xl px-6">
+      <AppContainer className="relative z-10">
         {/* Badge */}
         <div className="mb-6 flex justify-center">
-          <div className="border border-blue-200 bg-blue-50 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.25em] text-blue-600">
+          <div className="border border-border bg-muted px-3 py-1 text-[10px] font-medium uppercase tracking-[0.25em] text-foreground">
             THE CREATOR WORKFLOW, REIMAGINED
           </div>
         </div>
 
         {/* Heading */}
-        <h2 className="mx-auto max-w-3xl text-center text-3xl font-medium tracking-tight text-black md:text-5xl">
+        <h2 className="mx-auto max-w-3xl text-center text-3xl font-medium tracking-tight text-foreground md:text-5xl">
           Stop Switching Between Tools. Start Building Knowledge.
         </h2>
 
         {/* Description */}
-        <p className="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-neutral-600 md:text-base">
+        <p className="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-muted-foreground md:text-base">
           From first idea to final publication, MarkStack keeps your notes, visuals, AI assistance, and content connected in one seamless workflow.
         </p>
 
@@ -90,7 +91,7 @@ export function MechanismPipeline() {
                   transition-all
                   duration-300
                   hover:-translate-y-1
-                  hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)]
+                  hover:shadow-xl
                 `}
               >
                 {/* Watercolor Effect */}
@@ -104,14 +105,14 @@ export function MechanismPipeline() {
                 <Icon
                   size={18}
                   strokeWidth={1.5}
-                  className="relative z-10 text-black transition-all duration-300 group-hover:scale-110"
+                  className="relative z-10 text-foreground transition-all duration-300 group-hover:scale-110"
                 />
         
                 {/* Content */}
                 <div className="absolute bottom-4 left-4 right-4 z-10">
                   <h3
                     className="
-                      text-base font-medium text-black md:text-lg
+                      text-base font-medium text-foreground md:text-lg
                       transition-all duration-300
                       group-hover:mb-2
                     "
@@ -129,7 +130,7 @@ export function MechanismPipeline() {
                       group-hover:opacity-100
                     "
                   >
-                    <p className="text-sm leading-relaxed text-black/60">
+                    <p className="text-sm leading-relaxed text-foreground/60">
                       {step.description}
                     </p>
                   </div>
@@ -138,7 +139,7 @@ export function MechanismPipeline() {
             );
           })}
         </div>
-      </div>
+      </AppContainer>
     </section>
   );
 }

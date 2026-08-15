@@ -41,24 +41,24 @@ export function HeroNew() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-background -mt-24 pt-32">
+    <section className="relative overflow-hidden bg-background pt-16 pb-20 sm:pt-20">
       <AppContainer className="relative z-10">
         <div className="mx-auto max-w-215 scale-[0.88] origin-top text-center">
           <div className="mb-7">
-            <span className="inline-flex items-center bg-[#dfeaf5] px-5 py-2 text-[12px] font-medium uppercase tracking-[0.22em] text-[#0A66C2]">
+            <span className="inline-flex items-center bg-muted px-5 py-2 text-xs font-medium uppercase tracking-[0.22em] text-foreground">
               FOR DEVELOPERS, BUILDERS & WRITERS
             </span>
           </div>
 
-          <h1 className="mx-auto max-w-[1100px] text-[52px] font-medium leading-[0.96] tracking-[-0.06em] text-foreground md:text-[66px]">
+          <h1 className="mx-auto max-w-5xl text-5xl font-medium leading-none tracking-tighter text-foreground md:text-6xl">
             Turn Thoughts into
             <br />
             Documents, Diagrams and
             <br />
-            <span className="text-[#0A66C2]">Published</span> Knowledge
+            <span className="text-blue-600">Published</span> Knowledge
           </h1>
 
-          <p className="mx-auto mt-7 max-w-190 text-[18px] leading-[1.3] text-muted-foreground md:text-[20px]">
+          <p className="mx-auto mt-7 max-w-190 text-lg leading-snug text-muted-foreground md:text-xl">
             Capture ideas, map them visually, organize them with AI, and publish
             them all inside one connected workspace.
           </p>
@@ -150,7 +150,7 @@ function SignalCard({
     <div
       className={cn(
         "z-30 flex items-center gap-3 border border-border bg-background/60 px-5 py-3 backdrop-blur-md",
-        "shadow-[0_8px_30px_rgba(0,0,0,0.06)]",
+        "shadow-lg",
         className,
       )}
     >
