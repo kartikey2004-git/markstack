@@ -6,8 +6,8 @@ import { rehypeMermaid } from "./rehype-mermaid";
 
 export type SerializedMdx = {
   compiledSource: string;
-  scope: Record<string, any>;
-  frontmatter: Record<string, any>;
+  scope: Record<string, unknown>;
+  frontmatter: Record<string, unknown>;
 };
 
 function preprocessMarkdown(content: string): string {

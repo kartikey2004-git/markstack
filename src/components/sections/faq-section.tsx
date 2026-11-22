@@ -37,7 +37,7 @@ const faqs = [
 
 export default function FAQSection() {
   return (
-    <section className="relative overflow-hidden bg-muted/30 py-20">
+    <section id="faq" className="relative scroll-mt-20 overflow-hidden bg-muted/30 py-20">
       {/* Dot Background */}
       <div
         className="absolute inset-0 opacity-50"

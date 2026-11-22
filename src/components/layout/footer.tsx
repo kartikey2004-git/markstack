@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { MouseEvent } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import { AppContainer } from "@/components/layout/app-container";
 import {
@@ -18,89 +18,54 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+const EMAIL = "kartikeybhatnagar247@gmail.com";
+const INSTAGRAM_URL = "https://www.instagram.com/kartikk_huuu/";
+const GITHUB_URL = "https://github.com/kartikey2004-git/markstack";
+const TWITTER_URL = "https://x.com/kartikeybuilds";
+
 type FooterLink = {
   label: string;
   href: string;
-  sectionId?: "features" | "faq";
 };
 
-type SocialLink = {
-  href: string;
-  label: string;
+type SocialLink = FooterLink & {
   icon: LucideIcon;
 };
 
+// "/#section" links land on the home page and scroll to that section.
 const productLinks: FooterLink[] = [
-  { label: "Editor", href: "/editor" },
+  { label: "Home", href: "/" },
+  { label: "Features", href: "/#features" },
+  { label: "FAQs", href: "/#faq" },
+];
+
+const workspaceLinks: FooterLink[] = [
   { label: "Blogs", href: "/blogs" },
-  { label: "Features", href: "/", sectionId: "features" },
-  { label: "FAQs", href: "/", sectionId: "faq" },
+  { label: "Canvases", href: "/canvases" },
+  { label: "Editor", href: "/editor" },
 ];
 
 const resourceLinks: FooterLink[] = [
-  { label: "GitHub", href: "https://github.com/kartikey2004-git" },
-  { label: "Support", href: "mailto:hello@markstack.app" },
-  { label: "Instagram", href: "https://www.instagram.com/_k4rtik.exe/" },
-  { label: "Twitter", href: "https://x.com/kartikeybuilds" },
+  { label: "GitHub", href: GITHUB_URL },
+  { label: "Instagram", href: INSTAGRAM_URL },
+  { label: "Twitter", href: TWITTER_URL },
+  { label: "Support", href: `mailto:${EMAIL}` },
 ];
 
 const socialLinks: SocialLink[] = [
-  {
-    href: "https://github.com/kartikey2004-git",
-    label: "GitHub",
-    icon: Github,
-  },
-  {
-    href: "mailto:hello@markstack.app",
-    label: "Support Us",
-    icon: Mail,
-  },
-  {
-    href: "https://www.instagram.com/_k4rtik.exe/",
-    label: "Instagram",
-    icon: Instagram,
-  },
-  {
-    href: "https://x.com/kartikeybuilds",
-    label: "Twitter",
-    icon: Twitter,
-  },
+  { label: "GitHub", href: GITHUB_URL, icon: Github },
+  { label: "Instagram", href: INSTAGRAM_URL, icon: Instagram },
+  { label: "Twitter", href: TWITTER_URL, icon: Twitter },
+  { label: "Support", href: `mailto:${EMAIL}`, icon: Mail },
 ];
 
-function FooterNavLink({ label, href, sectionId }: FooterLink) {
+const linkClass = "block transition-colors hover:text-foreground";
+
+function FooterNavLink({ label, href }: FooterLink) {
   const pathname = usePathname();
-  const router = useRouter();
-  const isExternal = href.startsWith("http");
+  const isExternal = /^https?:\/\//.test(href);
   const isMailTo = href.startsWith("mailto:");
-
-  const handleSectionNavigation = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-
-    const scrollToSection = () => {
-      const target = document.getElementById(sectionId!);
-      target?.scrollIntoView({ behavior: "smooth", block: "start" });
-    };
-
-    if (pathname === "/") {
-      scrollToSection();
-      return;
-    }
-
-    window.sessionStorage.setItem("home-scroll-target", sectionId!);
-    router.push("/");
-  };
-
-  if (sectionId) {
-    return (
-      <button
-        type="button"
-        onClick={handleSectionNavigation}
-        className="block text-left transition-colors hover:text-foreground"
-      >
-        {label}
-      </button>
-    );
-  }
+  const isSectionLink = href.startsWith("/#");
 
   if (isExternal || isMailTo) {
     return (
@@ -108,15 +73,27 @@ function FooterNavLink({ label, href, sectionId }: FooterLink) {
         href={href}
         target={isExternal ? "_blank" : undefined}
         rel={isExternal ? "noreferrer" : undefined}
-        className="block transition-colors hover:text-foreground"
+        className={linkClass}
       >
         {label}
       </a>
     );
   }
 
+  // On the home page, scroll to the section directly. The sticky navbar offset
+  // comes from scroll-mt-20 on the section. From other pages, Link navigates.
+  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (!isSectionLink || pathname !== "/") return;
+
+    const target = document.getElementById(href.slice(2));
+    if (!target) return;
+
+    event.preventDefault();
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
-    <Link href={href} className="block transition-colors hover:text-foreground">
+    <Link href={href} onClick={handleClick} className={linkClass}>
       {label}
     </Link>
   );
@@ -126,7 +103,7 @@ export function Footer() {
   return (
     <footer className="border-t border-border/60 bg-muted/30 backdrop-blur">
       <AppContainer className="px-6 py-8 sm:py-10">
-        <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-4 md:items-start">
+        <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 lg:gap-8 lg:items-start">
           <div className="space-y-3">
             <h4 className="text-sm font-medium text-foreground">About App</h4>
             <p className="text-sm leading-6 text-muted-foreground">
@@ -136,34 +113,33 @@ export function Footer() {
           </div>
 
           <div className="space-y-3">
-            <h4 className="text-sm font-medium text-foreground">Products</h4>
-            <div className="space-y-2 text-sm text-muted-foreground">
+            <h4 className="text-sm font-medium text-foreground">Product</h4>
+            <nav aria-label="Product" className="space-y-2 text-sm text-muted-foreground">
               {productLinks.map((link) => (
-                <FooterNavLink
-                  key={link.label}
-                  label={link.label}
-                  href={link.href}
-                  sectionId={link.sectionId}
-                />
+                <FooterNavLink key={link.label} {...link} />
               ))}
-            </div>
+            </nav>
+          </div>
+
+          <div className="space-y-3">
+            <h4 className="text-sm font-medium text-foreground">Workspace</h4>
+            <nav aria-label="Workspace" className="space-y-2 text-sm text-muted-foreground">
+              {workspaceLinks.map((link) => (
+                <FooterNavLink key={link.label} {...link} />
+              ))}
+            </nav>
           </div>
 
           <div className="space-y-3">
             <h4 className="text-sm font-medium text-foreground">Resources</h4>
-            <div className="space-y-2 text-sm text-muted-foreground">
+            <nav aria-label="Resources" className="space-y-2 text-sm text-muted-foreground">
               {resourceLinks.map((link) => (
-                <FooterNavLink
-                  key={link.label}
-                  label={link.label}
-                  href={link.href}
-                  sectionId={link.sectionId}
-                />
+                <FooterNavLink key={link.label} {...link} />
               ))}
-            </div>
+            </nav>
           </div>
 
-          <div className="space-y-3 md:justify-self-end">
+          <div className="space-y-3">
             <h4 className="text-sm font-medium text-foreground">Connect</h4>
             <div className="flex items-center gap-2">
               {socialLinks.map((social) => {
@@ -178,7 +154,7 @@ export function Footer() {
                         target={isExternal ? "_blank" : undefined}
                         rel={isExternal ? "noreferrer" : undefined}
                         aria-label={social.label}
-                        className="size-8 flex items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                        className="flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                       >
                         <Icon className="size-4" />
                         <span className="sr-only">{social.label}</span>

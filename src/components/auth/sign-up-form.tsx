@@ -53,7 +53,7 @@ export function SignUpForm() {
           },
         },
       );
-    } catch (err) {
+    } catch {
       setError("An unexpected error occurred");
     } finally {
       setIsLoading(false);

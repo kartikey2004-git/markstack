@@ -78,12 +78,6 @@ function CaseCard({
 }) {
   return (
     <motion.div
-      whileHover={{
-        y: -4,
-      }}
-      transition={{
-        duration: 0.2,
-      }}
       className={`relative min-h-[170px] overflow-hidden border border-border bg-card ${className}`}
     >
       {blue && (
@@ -118,9 +112,6 @@ function GradientCard({
 }) {
   return (
     <motion.div
-      whileHover={{
-        y: -4,
-      }}
       className={`relative min-h-[170px] overflow-hidden border border-border ${className}`}
     >
       <motion.div
@@ -130,11 +121,6 @@ function GradientCard({
             "100% 50%",
             "0% 50%",
           ],
-        }}
-        transition={{
-          duration: 12,
-          repeat: Infinity,
-          ease: "linear",
         }}
         className="absolute inset-0"
         style={{
@@ -168,9 +154,6 @@ function GalileoCard({
 }) {
   return (
     <motion.div
-      whileHover={{
-        y: -4,
-      }}
       className={`relative overflow-hidden border border-border bg-card ${className}`}
     >
       <div className="p-3">
@@ -229,9 +212,6 @@ function GalileoCard({
 function CTABanner() {
   return (
     <motion.div
-      whileHover={{
-        scale: 1.01,
-      }}
       className="relative mt-[1px] overflow-hidden border border-border bg-foreground"
     >
       {/* Noise */}
@@ -261,11 +241,6 @@ function CTABanner() {
         <p className="mt-3 max-w-md text-sm text-background/60">
           MarkStack brings everything together so your ideas stay connected from first thought to final publication.
         </p>
-
-        <Button variant="secondary" size="lg" className="mt-6">
-          Get Started Free
-          <ArrowRight className="size-4" />
-        </Button>
       </div>
     </motion.div>
   );

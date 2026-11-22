@@ -1,20 +1,12 @@
-import { aiClient } from "@/config/ai-client";
+import { getAIClient } from "@/config/ai-client";
 
-interface StructureMarkdownOptions {
-  apiKey?: string;
-  model?: string;
-}
-
-export async function structureMarkdown(
-  markdown: string,
-  options: StructureMarkdownOptions = {},
-): Promise<string> {
+export async function structureMarkdown(markdown: string): Promise<string> {
   if (!markdown || markdown.trim().length === 0) {
     throw new Error("Markdown content cannot be empty");
   }
 
   try {
-    const structuredMarkdown = await aiClient.structureMarkdown(markdown);
+    const structuredMarkdown = await getAIClient().structureMarkdown(markdown);
     return structuredMarkdown;
   } catch (error) {
     console.error("Error structuring markdown:", error);

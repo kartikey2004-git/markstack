@@ -2,8 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import db from "@/lib/database";
 
+// Canvas data is stored as untyped JSON; these are the keys this route reads.
+interface StoredCanvasData {
+  elements?: unknown[];
+  appState?: Record<string, unknown>;
+  files?: Record<string, unknown>;
+}
+
 // Helper function to sanitize canvas data
-function sanitizeCanvasData(data: any) {
+function sanitizeCanvasData(data: StoredCanvasData | null | undefined) {
   if (!data) return { elements: [], appState: {}, files: {} };
 
   return {
@@ -69,7 +76,7 @@ export async function GET(
     // Sanitize canvas data to ensure proper structure
     const sanitizedCanvas = {
       ...canvas,
-      data: sanitizeCanvasData(canvas.data),
+      data: sanitizeCanvasData(canvas.data as StoredCanvasData | null),
     };
 
     return NextResponse.json({ canvas: sanitizedCanvas });

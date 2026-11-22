@@ -1,28 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { AppContainer } from "@/components/layout/app-container";
-import { useState, useEffect } from "react";
-import { authClient } from "@/lib/auth-client";
 import { UserMenu } from "../shared/user-menu";
 
 export function Navbar() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const session = await authClient.getSession();
-        setIsAuthenticated(!!session.data);
-      } catch {
-        setIsAuthenticated(false);
-      }
-    };
-
-    checkAuth();
-  }, []);
-
   return (
     <nav className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md border-b border-border py-4">
       <AppContainer className="flex items-center justify-between">

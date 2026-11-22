@@ -67,36 +67,33 @@ export default function ReplyRateSection() {
 
 function ReplyRateChart() {
   const maxValue = 100;
+  const gridLines = [0, 25, 50, 75, 100];
 
   return (
-    <div className="relative h-[400px]">
+    <div className="min-w-0">
       {/* Chart Title */}
-      <div className="mb-8 text-center font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">
+      <div className="mb-8 text-center font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground md:text-xs md:tracking-[0.3em]">
         Workflow Completion
       </div>
 
-      <div className="relative h-[320px] border-l border-b border-border">
-        {/* Horizontal Grid */}
-        {[0, 5, 10, 15, 20, 25, 30].map((tick) => (
+      <div className="relative h-64 border-b border-l border-border sm:h-72 md:h-[320px]">
+        {/* Horizontal grid, on the same 0–100% scale as the bars */}
+        {gridLines.map((tick) => (
           <div
             key={tick}
             className="absolute left-0 right-0 border-t border-dashed border-border"
             style={{
               bottom: `${(tick / maxValue) * 100}%`,
             }}
-          >
-            <span className="absolute -left-8 -top-3 text-xs text-muted-foreground">
-              {tick}%
-            </span>
-          </div>
+          />
         ))}
 
         {/* Bars */}
-        <div className="absolute inset-0 flex items-end justify-around px-6 pb-0">
+        <div className="absolute inset-0 flex items-end justify-around gap-2 px-2 sm:gap-4 sm:px-6">
           {chartData.map((item, index) => (
             <div
               key={item.label}
-              className="flex h-full flex-col items-center justify-end"
+              className="flex h-full min-w-0 flex-1 flex-col items-center justify-end"
             >
               <motion.div
                 initial={{ height: 0 }}
@@ -112,7 +109,7 @@ function ReplyRateChart() {
                 whileHover={{
                   y: -4,
                 }}
-                className={`relative w-20 border ${
+                className={`relative w-full max-w-20 border ${
                   item.featured ? "border-foreground/40" : "border-border"
                 }`}
               >
@@ -151,12 +148,12 @@ function ReplyRateChart() {
                   </>
                 )}
 
-                <div className="absolute left-3 top-3 z-10 text-xs text-foreground">
+                <div className="absolute left-2 top-2 z-10 text-xs text-foreground sm:left-3 sm:top-3">
                   {item.value}%
                 </div>
               </motion.div>
 
-              <div className="mt-4 text-center font-mono text-xs uppercase tracking-[0.15em] text-muted-foreground">
+              <div className="mt-4 break-words text-center font-mono text-[10px] uppercase leading-snug tracking-[0.1em] text-muted-foreground md:text-xs md:tracking-[0.15em]">
                 {item.label}
               </div>
             </div>
@@ -170,9 +167,6 @@ function ReplyRateChart() {
 function TestimonialCard() {
   return (
     <motion.div
-      whileHover={{
-        y: -6,
-      }}
       className="group relative overflow-hidden rounded-sm border border-border bg-card shadow-sm max-w-[380px]"
     >
       {/* Noise */}
@@ -193,8 +187,6 @@ function TestimonialCard() {
         </p>
 
         <div className="mt-10 flex items-center gap-3">
-          <div className="h-12 w-12 rounded-full bg-muted" />
-
           <div>
             <div className="font-medium text-foreground">Kartikey Bhatnagar</div>
 

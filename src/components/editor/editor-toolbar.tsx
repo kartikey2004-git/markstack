@@ -15,7 +15,6 @@ import {
   Sparkles,
   Loader2,
   Upload,
-  FileText,
   GitBranch,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";

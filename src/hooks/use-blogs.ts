@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "sonner";
 import type { Blog, BlogSummary } from "@/types/blog";
+import { jsonRequestInit, requestJson, requestOk } from "@/lib/api/client";
 
 export function useBlogs() {
   const [blogs, setBlogs] = useState<BlogSummary[]>([]);
@@ -14,16 +15,14 @@ export function useBlogs() {
       setLoading(true);
       setError(null);
 
-      const response = await fetch("/api/blogs");
-
-      if (!response.ok) {
-        if (response.status === 401) {
-          throw new Error("Please sign in to view your blogs");
-        }
-        throw new Error("Failed to fetch blogs");
-      }
-
-      const data = await response.json();
+      const data = await requestJson<{ blogs?: BlogSummary[] }>(
+        "/api/blogs",
+        undefined,
+        {
+          fallback: "Failed to fetch blogs",
+          unauthorized: "Please sign in to view your blogs",
+        },
+      );
       setBlogs((data.blogs || []) as BlogSummary[]);
     } catch (error) {
       console.error("Error fetching blogs:", error);
@@ -38,20 +37,11 @@ export function useBlogs() {
 
   const fetchBlog = useCallback(async (id: string): Promise<Blog | null> => {
     try {
-      const response = await fetch(`/api/blogs/${id}`);
-
-      if (!response.ok) {
-        if (response.status === 401) {
-          throw new Error("Please sign in to view this blog");
-        }
-        if (response.status === 404) {
-          throw new Error("Blog not found");
-        }
-        throw new Error("Failed to fetch blog");
-      }
-
-      const blog = await response.json();
-      return blog;
+      return await requestJson<Blog>(`/api/blogs/${id}`, undefined, {
+        fallback: "Failed to fetch blog",
+        unauthorized: "Please sign in to view this blog",
+        notFound: "Blog not found",
+      });
     } catch (error) {
       console.error("Error fetching blog:", error);
       const errorMessage =
@@ -63,19 +53,11 @@ export function useBlogs() {
 
   const deleteBlog = useCallback(async (id: string): Promise<boolean> => {
     try {
-      const response = await fetch(`/api/blogs/${id}`, {
-        method: "DELETE",
+      await requestOk(`/api/blogs/${id}`, { method: "DELETE" }, {
+        fallback: "Failed to delete blog",
+        unauthorized: "Please sign in to delete this blog",
+        notFound: "Blog not found",
       });
-
-      if (!response.ok) {
-        if (response.status === 401) {
-          throw new Error("Please sign in to delete this blog");
-        }
-        if (response.status === 404) {
-          throw new Error("Blog not found");
-        }
-        throw new Error("Failed to delete blog");
-      }
 
       // Remove from local state
       setBlogs((prev) => prev.filter((blog) => blog.id !== id));
@@ -93,23 +75,15 @@ export function useBlogs() {
   const updateBlogStatus = useCallback(
     async (id: string, status: "draft" | "published"): Promise<boolean> => {
       try {
-        const response = await fetch(`/api/blogs/${id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
+        await requestOk(
+          `/api/blogs/${id}`,
+          jsonRequestInit("PATCH", { status }),
+          {
+            fallback: "Failed to update blog status",
+            unauthorized: "Please sign in to update this blog",
+            notFound: "Blog not found",
           },
-          body: JSON.stringify({ status }),
-        });
-
-        if (!response.ok) {
-          if (response.status === 401) {
-            throw new Error("Please sign in to update this blog");
-          }
-          if (response.status === 404) {
-            throw new Error("Blog not found");
-          }
-          throw new Error("Failed to update blog status");
-        }
+        );
 
         // Update local state
         setBlogs((prev) =>

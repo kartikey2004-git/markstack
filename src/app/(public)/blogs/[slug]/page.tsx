@@ -161,11 +161,9 @@ export default async function BlogPostPage({
               </div>
             </div>
 
-            {currentUser?.id === post.authorId && (
-              <div className="flex shrink-0 items-start sm:pt-1">
-                <BlogExportMenu blogId={post.id} slug={post.slug} />
-              </div>
-            )}
+            <div className="flex shrink-0 items-start sm:pt-1">
+              <BlogExportMenu blogId={post.id} slug={post.slug} />
+            </div>
           </div>
 
           <Separator />
