@@ -7,13 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  FileDown,
-  FileText,
-  Loader2,
-  Download,
-  ChevronDown,
-} from "lucide-react";
+import { FileText, Loader2, Download, ChevronDown } from "lucide-react";
 import { useBlogExport } from "@/hooks/use-blog-export";
 
 interface BlogExportMenuProps {
@@ -22,13 +16,10 @@ interface BlogExportMenuProps {
 }
 
 export function BlogExportMenu({ blogId, slug }: BlogExportMenuProps) {
-  const {
-    exportMarkdown,
-    exportPdf,
-    isExportingMarkdown,
-    isExportingPdf,
-    isExporting,
-  } = useBlogExport(blogId, slug);
+  const { exportMarkdown, isExportingMarkdown, isExporting } = useBlogExport(
+    blogId,
+    slug,
+  );
 
   return (
     <DropdownMenu>
@@ -61,22 +52,6 @@ export function BlogExportMenu({ blogId, slug }: BlogExportMenuProps) {
             <FileText className="size-4" />
           )}
           Export Markdown
-        </DropdownMenuItem>
-
-        <DropdownMenuItem
-          className="gap-2"
-          onClick={(event) => {
-            event.preventDefault();
-            exportPdf();
-          }}
-          disabled={isExporting}
-        >
-          {isExportingPdf ? (
-            <Loader2 className="size-4 animate-spin" />
-          ) : (
-            <FileDown className="size-4" />
-          )}
-          Export PDF
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

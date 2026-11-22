@@ -2,16 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
-
-type ExportFormat = "markdown" | "pdf";
-
-function getExportPath(format: ExportFormat) {
-  return format === "markdown" ? "md" : "pdf";
-}
-
-function getFileExtension(format: ExportFormat) {
-  return format === "pdf" ? "pdf" : "md";
-}
+import { downloadBlob } from "@/lib/download";
 
 function getContentDispositionFilename(
   response: Response,
@@ -34,22 +25,6 @@ async function readErrorMessage(response: Response) {
   return text || "Export failed";
 }
 
-async function downloadResponseBlob(
-  response: Response,
-  fallbackFileName: string,
-) {
-  const blob = await response.blob();
-  const objectUrl = URL.createObjectURL(blob);
-  const anchor = document.createElement("a");
-  anchor.href = objectUrl;
-  anchor.download = getContentDispositionFilename(response, fallbackFileName);
-  anchor.rel = "noopener noreferrer";
-  document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
-  setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
-}
-
 async function downloadMarkdownResponseText(
   response: Response,
   fallbackFileName: string,
@@ -58,65 +33,46 @@ async function downloadMarkdownResponseText(
   const blob = new Blob([markdownText], {
     type: "text/markdown;charset=utf-8",
   });
-  const objectUrl = URL.createObjectURL(blob);
-  const anchor = document.createElement("a");
-  anchor.href = objectUrl;
-  anchor.download = getContentDispositionFilename(response, fallbackFileName);
-  anchor.rel = "noopener noreferrer";
-  document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
-  setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+  downloadBlob(
+    blob,
+    getContentDispositionFilename(response, fallbackFileName),
+  );
 }
 
 export function useBlogExport(blogId: string, slug: string) {
-  const [activeFormat, setActiveFormat] = useState<ExportFormat | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
 
-  const runExport = useCallback(
-    async (format: ExportFormat) => {
-      const label = format === "pdf" ? "PDF" : "Markdown";
-      const fallbackFileName = `${slug}.${getFileExtension(format)}`;
-      const loadingToast = toast.loading(`Preparing ${label} export...`);
+  const exportMarkdown = useCallback(async () => {
+    const loadingToast = toast.loading("Preparing Markdown export...");
 
-      setActiveFormat(format);
+    setIsExporting(true);
 
-      try {
-        const response = await fetch(
-          `/api/blogs/${blogId}/export/${getExportPath(format)}`,
-          {
-            method: "GET",
-            credentials: "include",
-          },
-        );
+    try {
+      const response = await fetch(`/api/blogs/${blogId}/export/md`, {
+        method: "GET",
+        credentials: "include",
+      });
 
-        if (!response.ok) {
-          const errorMessage = await readErrorMessage(response);
-          throw new Error(errorMessage);
-        }
-
-        if (format === "markdown") {
-          await downloadMarkdownResponseText(response, fallbackFileName);
-        } else {
-          await downloadResponseBlob(response, fallbackFileName);
-        }
-
-        toast.success(`${label} downloaded`, { id: loadingToast });
-      } catch (error) {
-        const errorMessage =
-          error instanceof Error ? error.message : `Failed to export ${label}`;
-        toast.error(errorMessage, { id: loadingToast });
-      } finally {
-        setActiveFormat(null);
+      if (!response.ok) {
+        const errorMessage = await readErrorMessage(response);
+        throw new Error(errorMessage);
       }
-    },
-    [blogId, slug],
-  );
+
+      await downloadMarkdownResponseText(response, `${slug}.md`);
+
+      toast.success("Markdown downloaded", { id: loadingToast });
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to export Markdown";
+      toast.error(errorMessage, { id: loadingToast });
+    } finally {
+      setIsExporting(false);
+    }
+  }, [blogId, slug]);
 
   return {
-    exportMarkdown: useCallback(() => runExport("markdown"), [runExport]),
-    exportPdf: useCallback(() => runExport("pdf"), [runExport]),
-    isExportingMarkdown: activeFormat === "markdown",
-    isExportingPdf: activeFormat === "pdf",
-    isExporting: activeFormat !== null,
+    exportMarkdown,
+    isExportingMarkdown: isExporting,
+    isExporting,
   };
 }

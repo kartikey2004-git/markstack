@@ -10,7 +10,7 @@ export function sanitizeDownloadName(value: string) {
     .slice(0, 120);
 }
 
-export function buildExportFilename(slug: string, extension: "md" | "pdf") {
+export function buildExportFilename(slug: string, extension: "md") {
   const baseName = sanitizeDownloadName(slug) || "blog-export";
   return `${baseName}.${extension}`;
 }

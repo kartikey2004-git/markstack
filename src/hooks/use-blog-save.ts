@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { toast } from "sonner";
 import type { BlogDraft, BlogMutationPayload } from "@/types/blog";
 import { generateSlug } from "@/lib/utils";
+import { jsonRequestInit, requestJson } from "@/lib/api/client";
 
 export function useBlogSave() {
   const [isSaving, setIsSaving] = useState(false);
@@ -82,20 +83,11 @@ export function useBlogSave() {
           slug,
         };
 
-        const response = await fetch(url, {
-          method,
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}));
-          throw new Error(errorData.error || "Failed to save blog");
-        }
-
-        const data = await response.json();
+        const data = await requestJson<{ slug: string }>(
+          url,
+          jsonRequestInit(method, payload),
+          { fallback: "Failed to save blog" },
+        );
 
         toast.success("Blog saved successfully!", { id: toastId });
         clearDraft(); // Clear draft after successful save

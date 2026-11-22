@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useCallback, useMemo, useState } from "react";
+import { useRef, useCallback, useMemo } from "react";
 import "@excalidraw/excalidraw/index.css";
 
 const Excalidraw = dynamic(
@@ -11,100 +11,94 @@ const Excalidraw = dynamic(
   },
 );
 
+import type {
+  AppState,
+  BinaryFiles,
+  ExcalidrawImperativeAPI,
+  ExcalidrawInitialDataState,
+} from "@excalidraw/excalidraw/types";
+import type { ExcalidrawElement } from "@excalidraw/excalidraw/element/types";
+import type { CanvasData } from "@/types/canvas";
+
 interface DrawingCanvasProps {
-  initialData?: any;
-  onChange?: (elements: readonly any[], appState: any, files: any) => void;
-  onSave?: (data: {
-    elements: readonly any[];
-    appState: any;
-    files: any;
-  }) => void;
+  initialData?: CanvasData | null;
+  onChange?: (
+    elements: readonly ExcalidrawElement[],
+    appState: Partial<AppState>,
+    files: BinaryFiles,
+  ) => void;
   readOnly?: boolean;
   theme?: "light" | "dark";
   className?: string;
-  excalidrawAPI?: (api: any) => void;
-}
-
-interface UndoRedoState {
-  past: Array<{ elements: readonly any[]; appState: any }>;
-  present: { elements: readonly any[]; appState: any };
-  future: Array<{ elements: readonly any[]; appState: any }>;
+  excalidrawAPI?: (api: ExcalidrawImperativeAPI) => void;
 }
 
 export default function DrawingCanvas({
   initialData,
   onChange,
-  onSave,
   readOnly = false,
   theme = "light",
   className = "",
   excalidrawAPI,
 }: DrawingCanvasProps) {
-  const excalidrawRef = useRef<any>(null);
-  const initialDataRef = useRef<any>(null);
-  const hasInitialized = useRef(false);
-  const lastCanvasDataRef = useRef<any>(null);
+  const excalidrawRef = useRef<ExcalidrawImperativeAPI | null>(null);
+  const lastCanvasDataRef = useRef<{
+    elements: readonly ExcalidrawElement[];
+    appState: Partial<AppState>;
+  } | null>(null);
 
   // Safe initial data creation with useMemo
-  const safeInitialData = useMemo(() => {
+  const safeInitialData = useMemo<ExcalidrawInitialDataState | undefined>(() => {
     if (!initialData) return undefined;
 
+    // The stored appState is untyped JSON and does not match Excalidraw's
+    // AppState exactly (e.g. collaborators is an array, zoom is a plain number),
+    // so it is read as a record with defaults and cast once at the boundary.
+    const stored = (initialData.appState ?? {}) as Record<string, unknown>;
+    const pick = (key: string, fallback: unknown) => stored[key] || fallback;
+
     return {
-      elements: initialData?.elements || [],
+      elements: initialData.elements || [],
       appState: {
-        collaborators: Array.isArray(initialData?.appState?.collaborators)
-          ? initialData.appState.collaborators
+        collaborators: Array.isArray(stored.collaborators)
+          ? stored.collaborators
           : [],
-        viewBackgroundColor:
-          initialData?.appState?.viewBackgroundColor || "#ffffff",
-        currentItemStrokeColor:
-          initialData?.appState?.currentItemStrokeColor || "#1e1e1e",
-        currentItemBackgroundColor:
-          initialData?.appState?.currentItemBackgroundColor || "transparent",
-        currentItemFillStyle:
-          initialData?.appState?.currentItemFillStyle || "solid",
-        currentItemStrokeWidth:
-          initialData?.appState?.currentItemStrokeWidth || 1,
-        currentItemStrokeStyle:
-          initialData?.appState?.currentItemStrokeStyle || "solid",
-        currentItemRoughness: initialData?.appState?.currentItemRoughness || 1,
-        currentItemOpacity: initialData?.appState?.currentItemOpacity || 100,
-        currentFontFamily: initialData?.appState?.currentFontFamily || 1,
-        currentFontSize: initialData?.appState?.currentFontSize || 20,
-        currentTextAlign: initialData?.appState?.currentTextAlign || "left",
-        currentTextVerticalAlign:
-          initialData?.appState?.currentTextVerticalAlign || "top",
-        currentItemStartArrowhead:
-          initialData?.appState?.currentItemStartArrowhead || null,
-        currentItemEndArrowhead:
-          initialData?.appState?.currentItemEndArrowhead || null,
-        scrollX: initialData?.appState?.scrollX || 0,
-        scrollY: initialData?.appState?.scrollY || 0,
-        zoom: initialData?.appState?.zoom || { value: 1 },
-        viewModeEnabled: initialData?.appState?.viewModeEnabled || false,
-        zenModeEnabled: initialData?.appState?.zenModeEnabled || false,
-        gridModeEnabled: initialData?.appState?.gridModeEnabled || false,
+        viewBackgroundColor: pick("viewBackgroundColor", "#ffffff"),
+        currentItemStrokeColor: pick("currentItemStrokeColor", "#1e1e1e"),
+        currentItemBackgroundColor: pick(
+          "currentItemBackgroundColor",
+          "transparent",
+        ),
+        currentItemFillStyle: pick("currentItemFillStyle", "solid"),
+        currentItemStrokeWidth: pick("currentItemStrokeWidth", 1),
+        currentItemStrokeStyle: pick("currentItemStrokeStyle", "solid"),
+        currentItemRoughness: pick("currentItemRoughness", 1),
+        currentItemOpacity: pick("currentItemOpacity", 100),
+        currentFontFamily: pick("currentFontFamily", 1),
+        currentFontSize: pick("currentFontSize", 20),
+        currentTextAlign: pick("currentTextAlign", "left"),
+        currentTextVerticalAlign: pick("currentTextVerticalAlign", "top"),
+        currentItemStartArrowhead: pick("currentItemStartArrowhead", null),
+        currentItemEndArrowhead: pick("currentItemEndArrowhead", null),
+        scrollX: pick("scrollX", 0),
+        scrollY: pick("scrollY", 0),
+        zoom: pick("zoom", { value: 1 }),
+        viewModeEnabled: pick("viewModeEnabled", false),
+        zenModeEnabled: pick("zenModeEnabled", false),
+        gridModeEnabled: pick("gridModeEnabled", false),
       },
       files: {},
-    };
-  }, [initialData?.id, initialData?.elements?.length]); // Only depend on stable values
-
-  // Initialize canvas data once on mount - CRITICAL FIX
-  useEffect(() => {
-    if (!safeInitialData) return;
-
-    // Only initialize if we haven't already
-    if (hasInitialized.current) {
-      return;
-    }
-
-    initialDataRef.current = safeInitialData;
-    hasInitialized.current = true;
-  }, [safeInitialData]);
+    } as unknown as ExcalidrawInitialDataState;
+    // Depends only on the element count (the canvas id was never part of the data).
+  }, [initialData?.elements?.length]);
 
   // Handle canvas changes with proper state management
   const handleChange = useCallback(
-    (elements: readonly any[], appState: any, files: any) => {
+    (
+      elements: readonly ExcalidrawElement[],
+      appState: Partial<AppState>,
+      files: BinaryFiles,
+    ) => {
       const newCanvasData = { elements, appState };
       if (
         JSON.stringify(lastCanvasDataRef.current) ===
@@ -121,59 +115,6 @@ export default function DrawingCanvas({
     },
     [onChange],
   );
-
-  const undo = useCallback(() => {
-    if (!initialDataRef.current) return;
-
-    const currentData = lastCanvasDataRef.current;
-    if (!currentData) return;
-
-    // Create previous state from current elements (simplified)
-    const previousElements = currentData.elements.slice(0, -1);
-    if (previousElements.length === 0) return;
-
-    const newCanvasData = {
-      elements: previousElements,
-      appState: currentData.appState,
-    };
-
-    lastCanvasDataRef.current = newCanvasData;
-
-    if (excalidrawRef.current) {
-      excalidrawRef.current.updateScene({
-        elements: previousElements,
-        appState: currentData.appState,
-      });
-    }
-
-    if (onChange) {
-      onChange(previousElements, currentData.appState, {});
-    }
-  }, [onChange]);
-
-  const redo = useCallback(() => {
-  }, [onChange]);
-
-  // Add keyboard shortcuts
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (readOnly) return;
-
-      // Ctrl+Z for undo, Ctrl+Shift+Z for redo
-      if (event.ctrlKey || event.metaKey) {
-        if (event.shiftKey && event.key === "z") {
-          event.preventDefault();
-          redo();
-        } else if (event.key === "z") {
-          event.preventDefault();
-          undo();
-        }
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [undo, redo, readOnly]);
 
   return (
     <div className={`h-full w-full ${className}`}>

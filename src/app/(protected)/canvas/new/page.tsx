@@ -13,7 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { toast } from "sonner";
-import { nanoid } from "nanoid";
+import { jsonRequestInit, requestJson } from "@/lib/api/client";
 
 export default function NewCanvasPage() {
   const [title, setTitle] = useState("");
@@ -28,23 +28,14 @@ export default function NewCanvasPage() {
 
     setCreating(true);
     try {
-      const canvasId = nanoid();
-      const response = await fetch("/api/canvas/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ title: title.trim() }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to create canvas");
-      }
-
-      const data = await response.json();
+      const data = await requestJson<{ canvas: { id: string } }>(
+        "/api/canvas/create",
+        jsonRequestInit("POST", { title: title.trim() }),
+        { fallback: "Failed to create canvas" },
+      );
       toast.success("Canvas created successfully!");
       router.push(`/canvas/${data.canvas.id}`);
-    } catch (error) {
+    } catch {
       toast.error("Failed to create canvas");
     } finally {
       setCreating(false);

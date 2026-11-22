@@ -14,7 +14,6 @@ type RateLimitResult =
 const WINDOW_MS = 10 * 60 * 1000;
 const LIMITS: Record<ExportKind, number> = {
   markdown: 20,
-  pdf: 5,
 };
 
 const globalStore = globalThis as typeof globalThis & {
