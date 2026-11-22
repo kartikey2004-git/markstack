@@ -18,4 +18,4 @@ export interface ExportableBlog {
   };
 }
 
-export type ExportKind = "markdown" | "pdf";
+export type ExportKind = "markdown";

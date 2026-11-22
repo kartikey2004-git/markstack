@@ -106,6 +106,17 @@
     @apply font-sans;
   }
 
+  /* Smooth scrolling for in-page links (e.g. footer → #features), unless the user prefers reduced motion. */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
   /* Custom scrollbar styles - Thin scrollbars */
   ::-webkit-scrollbar {
     width: 4px;

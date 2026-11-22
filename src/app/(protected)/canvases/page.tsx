@@ -12,6 +12,7 @@ import { ProtectedPageWrapper } from "@/components/layout/protected-page-wrapper
 import { ErrorState } from "@/components/shared/error-state";
 import { EmptyState } from "@/components/shared/empty-state";
 import { toast } from "sonner";
+import { jsonRequestInit, requestJson, requestOk } from "@/lib/api/client";
 
 interface Canvas {
   id: string;
@@ -31,11 +32,11 @@ export default function AllCanvasesPage() {
 
   const fetchCanvases = async () => {
     try {
-      const response = await fetch("/api/canvases");
-      if (!response.ok) {
-        throw new Error("Failed to fetch canvases");
-      }
-      const data = await response.json();
+      const data = await requestJson<{ canvases: Canvas[] }>(
+        "/api/canvases",
+        undefined,
+        { fallback: "Failed to fetch canvases" },
+      );
       setCanvases(data.canvases);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load canvases");
@@ -50,17 +51,11 @@ export default function AllCanvasesPage() {
     }
 
     try {
-      const response = await fetch(`/api/canvas/${canvasId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ canvasId }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete canvas");
-      }
+      await requestOk(
+        `/api/canvas/${canvasId}`,
+        jsonRequestInit("DELETE", { canvasId }),
+        { fallback: "Failed to delete canvas" },
+      );
 
       setCanvases(canvases.filter((canvas) => canvas.id !== canvasId));
     } catch (err) {

@@ -1,8 +1,8 @@
 import { visit } from "unist-util-visit";
-import type { Element } from "hast";
+import type { Element, Root } from "hast";
 
 export function rehypeMermaid() {
-  return (tree: any) => {
+  return (tree: Root) => {
     visit(tree, "element", (node: Element) => {
       if (
         node.tagName === "code" &&

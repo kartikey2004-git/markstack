@@ -7,6 +7,22 @@ import { AppContainer } from "@/components/layout/app-container";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
+// Human-readable name of the protected page the visitor was trying to open.
+const DESTINATION_LABELS: Array<{ prefix: string; label: string }> = [
+  { prefix: "/editor", label: "Editor" },
+  { prefix: "/canvases", label: "Canvases" },
+  { prefix: "/canvas", label: "Canvas" },
+  { prefix: "/dashboard", label: "your blogs" },
+];
+
+function getDestinationLabel(path: string) {
+  return (
+    DESTINATION_LABELS.find(
+      ({ prefix }) => path === prefix || path.startsWith(`${prefix}/`),
+    )?.label ?? null
+  );
+}
+
 export default async function AuthPage({
   searchParams,
 }: {
@@ -16,6 +32,7 @@ export default async function AuthPage({
   const { tab, callbackUrl } = await searchParams;
 
   const safeCallbackUrl = callbackUrl?.startsWith("/") ? callbackUrl : "/";
+  const destinationLabel = getDestinationLabel(safeCallbackUrl);
 
   // Redirect authenticated users to their callback destination.
   if (session?.user) {
@@ -31,7 +48,9 @@ export default async function AuthPage({
               Welcome to Markstack
             </h2>
             <p className="text-sm text-muted-foreground">
-              Sign in to your account or create a new one
+              {destinationLabel
+                ? `Sign in to open ${destinationLabel}.`
+                : "Sign in to your account or create a new one"}
             </p>
           </div>
 
