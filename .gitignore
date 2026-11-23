@@ -41,3 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 /src/generated/prisma
+
+# Local editor and prompt config (not part of the project)
+.vscode/
+.github/prompts/
