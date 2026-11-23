@@ -1,6 +1,6 @@
 # MarkStack
 
-A unified creator workspace with visual canvases, blog publishing, and task planning.
+A unified creator workspace with visual canvases, blog publishing.
 
 ## Project Overview
 
@@ -11,7 +11,6 @@ MarkStack is a comprehensive productivity platform designed for developers and c
 - **Markdown Editor with AI Integration** - Monaco-based editor with Google Gemini AI-powered structure conversion
 - **Visual Canvas** - Drawing and diagramming capabilities using Excalidraw
 - **Blog Publishing System** - Transform markdown documents into SEO-optimized blog posts
-- **Task Planning & Calendar** - Integrated todo management with calendar view
 - **User Authentication** - Better Auth integration with Google OAuth support
 - **Responsive Design** - Modern UI built with Tailwind CSS and shadcn/ui components
 - **Dark/Light Theme** - Theme switching with smooth animations
@@ -71,7 +70,6 @@ markstack/
 │   │   ├── canvas/             # Drawing canvas components
 │   │   ├── editor/             # Markdown editor components
 │   │   ├── layout/             # Layout components
-│   │   ├── planner/            # Task planning components
 │   │   └── sections/           # Landing page sections
 │   ├── lib/                    # Utility libraries
 │   │   ├── ai/                 # AI integration
@@ -172,12 +170,6 @@ markstack/
 - Create visual diagrams and flowcharts at `/canvas`
 - Use Excalidraw for collaborative whiteboarding
 - Save and organize multiple canvases
-
-**Task Planning**
-
-- Manage todos and deadlines at `/todos`
-- Calendar view for date-based planning
-- Track completed and pending tasks
 
 **Blog Publishing**
 
