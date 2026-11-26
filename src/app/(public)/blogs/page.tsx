@@ -14,27 +14,34 @@ import { formatDistanceToNow } from "date-fns";
 export const revalidate = 600;
 
 export default async function BlogsPage() {
-  const blogs = await db.blog.findMany({
-    where: {
-      status: "published",
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-    select: {
-      id: true,
-      slug: true,
-      title: true,
-      description: true,
-      updatedAt: true,
-      author: {
-        select: {
-          name: true,
-          email: true,
+  // If the database is unreachable (for example over quota), render the empty
+  // state instead of failing the build or the request.
+  const blogs = await db.blog
+    .findMany({
+      where: {
+        status: "published",
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        description: true,
+        updatedAt: true,
+        author: {
+          select: {
+            name: true,
+            email: true,
+          },
         },
       },
-    },
-  });
+    })
+    .catch((error: unknown) => {
+      console.error("Public blogs page: database unavailable", error);
+      return [];
+    });
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
