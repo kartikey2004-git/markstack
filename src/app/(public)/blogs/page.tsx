@@ -11,7 +11,7 @@ import { Eye, Clock3, User } from "lucide-react";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 600;
 
 export default async function BlogsPage() {
   const blogs = await db.blog.findMany({

@@ -78,7 +78,9 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    await revalidatePublicBlogCache();
+    if (blog.status === "published") {
+      await revalidatePublicBlogCache();
+    }
 
     return NextResponse.json(blog, { status: 201 });
   } catch (error: unknown) {

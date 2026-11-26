@@ -69,6 +69,11 @@ export async function PATCH(
     if (description !== undefined) updateData.description = description || null;
     if (status !== undefined) updateData.status = status;
 
+    const previous = await db.blog.findFirst({
+      where: { id, authorId: user.id },
+      select: { status: true },
+    });
+
     const updateResult = await db.blog.updateMany({
       where: {
         id,
@@ -92,7 +97,11 @@ export async function PATCH(
       return NextResponse.json({ error: "Blog not found" }, { status: 404 });
     }
 
-    await revalidatePublicBlogCache();
+    // Only published posts appear on the public site, so skip the external
+    // revalidate calls for draft-only edits.
+    if (previous?.status === "published" || blog.status === "published") {
+      await revalidatePublicBlogCache();
+    }
 
     return NextResponse.json(blog);
   } catch (error: unknown) {
